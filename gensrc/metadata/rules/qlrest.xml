@@ -1,0 +1,82 @@
+
+<root>
+
+  <RuleGroups>
+
+    <RuleGroup name='pyDeclaration' indent='2' delimiter=';&#10;'>
+      <Wrap>&#10;%s;</Wrap>
+      <Rules>
+        <Rule tensorRank='scalar' type='QuantLib::Date'>%(indent)sself.%(name)s = ""</Rule>
+        <Rule tensorRank='scalar' superType='libraryClass' type='QuantLib::Quote'>%(indent)sself.%(name)s = 0.0</Rule>
+        <Rule tensorRank='scalar' superType='libToHandle' type='QuantLib::Quote'>%(indent)sself.%(name)s = 0.0</Rule>
+        <Rule tensorRank='scalar' nativeType='any'>%(indent)sself.%(name)s = False</Rule>
+        <Rule tensorRank='scalar' nativeType='bool'>%(indent)sself.%(name)s = False</Rule>
+        <Rule tensorRank='scalar' nativeType='string'>%(indent)sself.%(name)s = ""</Rule>
+        <Rule tensorRank='scalar' nativeType='double'>%(indent)sself.%(name)s = 0.0</Rule>
+        <Rule tensorRank='scalar' nativeType='int'>%(indent)sself.%(name)s = 0</Rule>
+        <Rule tensorRank='scalar'>%(indent)sself.%(name)s = 0</Rule>
+        <Rule tensorRank='vector'>%(indent)sself.%(name)s = []</Rule>
+        <Rule tensorRank='matrix'>%(indent)sself.%(name)s = {}</Rule>
+       </Rules>
+    </RuleGroup>
+
+    <RuleGroup name='functionDeclaration' indent='3' delimiter=',&#10;'>
+      <Wrap>&#10;%s</Wrap>
+      <Rules>
+        <Rule tensorRank='vector' nativeType='double'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Period'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Date'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt; ( pt.get_child("%(name)s") )</Rule>
+        <!-- <Rule tensorRank='vector' nativeType='long'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;( pt.get_child("%(name)s"))</Rule> -->
+        <Rule tensorRank='vector'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
+        <!-- <Rule tensorRank='vector'> %(indent)s pt.get&lt;std::vector&lt;%(nativeType)s&gt; &gt;(%(name)s) </Rule> -->
+        <Rule tensorRank='matrix' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::matrix_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
+        <Rule tensorRank='matrix' type='QuantLib::Period'>%(indent)s ql_rest::matrix_cast&lt;ObjectHandler::property_t,std::string&gt;(obj.%(name)s)</Rule>
+        <Rule tensorRank='matrix' nativeType='string'>%(indent)s ql_rest::matrix_cast&lt;std::string&gt;( pt.get&lt;%(nativeType)s&gt;("%(name)s" )</Rule>
+        <Rule tensorRank='matrix' nativeType='double'>%(indent)s ql_rest::matrix_cast&lt;%(nativeType)s&gt;( pt.get&lt;%(nativeType)s&gt;("%(name)s" )</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Real'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Natural'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Date' default='true'> %(indent)s ql_rest::from_iso_string_to_oh_property(pt.get&lt;std::string&gt;("%(name)s"))</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Date'> %(indent)s ql_rest::from_iso_string(pt.get&lt;std::string&gt;("%(name)s") )</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Quote' nativeType='string'> %(indent)s ObjectHandler::property_t(pt.get&lt;std::string&gt;("%(name)s")) </Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Quote'> %(indent)s ObjectHandler::property_t(pt.get&lt;%(nativeType)s&gt;("%(name)s")) </Rule>
+        <Rule tensorRank='scalar' nativeType='string'> %(indent)s pt.get&lt;std::string&gt;("%(name)s")</Rule>
+        <Rule tensorRank='scalar' nativeType='any'> %(indent)s pt.get&lt;bool&gt;("%(name)s")</Rule>
+        <!-- <Rule tensorRank='scalar' nativeType='any'> %(indent)s obj.%(name)s</Rule> -->
+        <Rule tensorRank='scalar'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
+        <!-- <Rule tensorRank='scalar' nativeType='any'>%(indent)s obj.%(name)s</Rule> -->
+        <Rule tensorRank='scalar' nativeType='string'>%(indent)s static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s)</Rule>
+        <Rule tensorRank='scalar' superType='libraryClass' type='QuantLib::Quote'>%(indent)s ObjectHandler::property_t (static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s))</Rule>
+        <Rule tensorRank='scalar' nativeType='any'>%(indent)s ObjectHandler::property_t ( static_cast&lt;bool&gt;(obj.%(name)s) )</Rule>
+        <Rule tensorRank='scalar' nativeType='string' default='true'>%(indent)s ObjectHandler::property_t (static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s))</Rule>
+        <Rule tensorRank='scalar' default='true'>%(indent)s ObjectHandler::property_t (static_cast&lt;%(nativeType)s &gt;(obj.%(name)s))</Rule>
+        <Rule tensorRank='scalar' nativeType='string'>%(indent)s static_cast&lt; const std::string &gt; (obj.%(name)s)</Rule>
+        <Rule tensorRank='scalar'>%(indent)s static_cast&lt;%(nativeType)s&gt; (obj.%(name)s)</Rule>
+        <Rule tensorRank='vector' nativeType='any'>%(indent)s std::vector&lt;ObjectHandler::property_t&gt; ( static_cast&lt;%(nativeType)s &gt;(obj.%(name)s) )</Rule>
+        <Rule tensorRank='matrix' nativeType='string'>%(indent)s std::vector&lt;std::vector &lt;std::string&gt; &gt; (obj.%(name)s)</Rule>
+        <Rule tensorRank='matrix'>%(indent)s std::vector&lt;std::vector&lt;%(nativeType)s&gt; &gt; (obj.%(name)s)</Rule>
+      </Rules>
+    </RuleGroup>
+
+    <RuleGroup name='functionReturnType'>
+      <Wrap>&#10;%s</Wrap>
+      <Rules>
+	<Rule default='true'>ObjectHandler::property_t</Rule>
+        <Rule tensorRank='scalar' nativeType='string'>String</Rule>
+        <Rule tensorRank='scalar' nativeType='any'>Property</Rule>
+        <Rule tensorRank='scalar' nativeType='void'>bool</Rule>
+        <Rule tensorRank='scalar'>%(nativeType)s</Rule>
+        <Rule tensorRank='vector' nativeType='string'>stringVector</Rule>
+        <Rule tensorRank='vector' nativeType='any'>std::vector&lt;ObjectHandler::property_t&gt;</Rule>
+        <Rule tensorRank='vector'>std::vector&lt;%(nativeType)s&gt;</Rule>
+        <Rule tensorRank='matrix' nativeType='string'>std::vector&lt;std::vector&lt;std::string&gt; &gt;</Rule>
+        <Rule tensorRank='matrix'>std::vector&lt;std::vector&lt;%(nativeType)s&gt; &gt;</Rule>
+      </Rules>
+    </RuleGroup>
+
+  </RuleGroups>
+
+</root>

@@ -1,0 +1,5 @@
+#include "%(categoryName)s_reader.hpp"
+
+using namespace ql_rest;
+
+%(bufferCpp)s

@@ -1,0 +1,8 @@
+
+
+%(qlCallResultType)s %(categoryName)s::%(functionName)s(ptree const& pt)
+{
+    return QuantLibAddinCpp::%(functionName)s(
+         %(functionDeclaration)s
+    );
+}

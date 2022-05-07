@@ -1,0 +1,17 @@
+#include <qlo/qladdindefines.hpp>
+#include <qlo/handle.hpp>
+%(categoryIncludes)s
+#include <qlo/conversions/all.hpp>
+#include <oh/property.hpp>
+
+#include "qlrest_common.h"
+
+#include <qlo/Addins/Cpp/addincpp.hpp>
+
+namespace ql_rest
+{
+    struct %(categoryName)s
+    {
+    %(bufferHpp)s
+    };
+};

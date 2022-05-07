@@ -1,0 +1,12 @@
+
+import json
+from json import JSONEncoder
+
+class %(functionName)s(JSONEncoder):
+
+    def __init__(self):
+        self.instanceID = ""
+        %(pyDeclaration)s
+
+    def default(self, o):
+        return o.__dict__

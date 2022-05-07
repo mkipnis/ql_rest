@@ -1,0 +1,9 @@
+AM_CPPFLAGS = -I${deps_dir_include} -I${deps_dir_include}/qlo
+AM_LDFLAGS = -release $(PACKAGE_VERSION)
+includedir = $(prefix)/include/qlrest/
+
+
+lib_LTLIBRARIES = libQLRest.la
+
+include_HEADERS =  qlrest_common.h %(headers)s
+libQLRest_la_SOURCES = %(sources)s

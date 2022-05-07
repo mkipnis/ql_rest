@@ -1,0 +1,25 @@
+
+<Addin name='qlREST'>
+
+  <relativePath>qlrest</relativePath>
+  <rootDirectory>qlrest</rootDirectory>
+  <namespaceAddin>QuantLibAddinRest</namespaceAddin>
+  <coreCategories>true</coreCategories>
+  <addinCategories>true</addinCategories>
+
+  <copyright>
+    Copyright (C) Mike Kipnis
+  </copyright>
+
+  <Buffers>
+    <Buffer name='bufferPY' fileName='stub.qlrest.python_class' local='true'/>
+    <Buffer name='bufferPythonModule' fileName='stub.qlrest.python_module' local='true'/>
+    <Buffer name='bufferDataReaderDeclaration' fileName='stub.qlrest.DataReaderDeclaration' local='true'/>
+    <Buffer name='bufferHeader' fileName='stub.qlrest.header' local='true'/>
+    <Buffer name='bufferDataReaderImplementation' fileName='stub.qlrest.DataReaderImplementation' local='true'/>
+    <Buffer name='bufferBody' fileName='stub.qlrest.body' local='true'/>
+    <Buffer name='bufferMakefile' fileName='stub.makefile.am' local='true'/>
+  </Buffers>
+
+</Addin>
+

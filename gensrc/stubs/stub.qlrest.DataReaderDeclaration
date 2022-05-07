@@ -1,0 +1,2 @@
+  
+        static %(qlCallResultType)s %(functionName)s(ptree const& pt);

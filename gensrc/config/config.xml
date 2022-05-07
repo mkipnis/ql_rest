@@ -1,0 +1,7 @@
+
+<Config>
+  <namespaceObjects>QuantLibAddin</namespaceObjects> 
+  <relativePath>gensrc</relativePath>
+  <libRootDirectory>qlo</libRootDirectory>
+</Config>
+

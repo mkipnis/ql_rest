@@ -1,0 +1,70 @@
+
+<root>
+
+  <addinCategoryNames>
+
+    <categoryName>piecewiseyieldcurve</categoryName>
+    <categoryName>index</categoryName>
+    <categoryName>exercise</categoryName>
+    <categoryName>bonds</categoryName>
+    <categoryName>swap</categoryName>
+    <categoryName>swaption</categoryName>
+    <categoryName>swaptionvolstructure</categoryName>
+    <categoryName>ratehelpers</categoryName>
+    <categoryName>schedule</categoryName>
+    <categoryName>pricingengines</categoryName>
+    <categoryName>volatilities</categoryName>
+    <categoryName>payoffs</categoryName>
+    <categoryName>processes</categoryName>
+    <categoryName>options</categoryName>
+    <categoryName>vanillaswap</categoryName>
+    <categoryName>forwardrateagreement</categoryName>
+    <categoryName>overnightindexedswap</categoryName>
+
+    <!-- <categoryName>abcd</categoryName>
+    <categoryName>accountingengines</categoryName>
+    <categoryName>assetswap</categoryName>
+    <categoryName>alphaform</categoryName>
+    <categoryName>browniangenerators</categoryName>
+    <categoryName>btp</categoryName>
+    <categoryName>calendar</categoryName>
+    <categoryName>capfloor</categoryName>
+    <categoryName>capletvolstructure</categoryName>
+    <categoryName>cmsmarket</categoryName>
+    <categoryName>cmsmarketcalibration</categoryName>
+    <categoryName>couponvectors</categoryName>
+    <categoryName>correlation</categoryName>
+    <categoryName>ctsmmcapletcalibration</categoryName>
+    <categoryName>curvestate</categoryName>
+    <categoryName>date</categoryName>
+    <categoryName>daycounter</categoryName>
+    <categoryName>defaulttermstructures</categoryName>
+    <categoryName>driftcalculators</categoryName>
+    <categoryName>evolutiondescription</categoryName>
+    <categoryName>handles</categoryName>
+    <categoryName>instruments</categoryName>
+    <categoryName>interpolation</categoryName>
+    <categoryName>leg</categoryName>
+    <categoryName>marketmodels</categoryName>
+    <categoryName>marketmodelevolvers</categoryName>
+    <categoryName>mathf</categoryName>
+    <categoryName>optimization</categoryName>
+    <categoryName>prices</categoryName>
+    <categoryName>products</categoryName>
+    <categoryName>randomsequencegenerator</categoryName>
+    <categoryName>rangeaccrual</categoryName>
+    <categoryName>sequencestatistics</categoryName>
+    <categoryName>settings</categoryName>
+    <categoryName>shortratemodels</categoryName>
+    <categoryName>smilesection</categoryName>
+    <categoryName>statistics</categoryName>
+    <categoryName>termstructures</categoryName>
+    <categoryName>timeseries</categoryName>
+    <categoryName>utilities</categoryName>
+    <categoryName>volatility</categoryName> 
+    <categoryName>quotes</categoryName>
+    <categoryName>credit</categoryName> -->
+  </addinCategoryNames>
+  
+</root>
+
