@@ -44,7 +44,8 @@ AC_CONFIG_FILES([
     Makefile
     qlrest/Makefile
     test-suite/Makefile
-    Examples/bond_pricer/bond_pricer_server/Makefile])
+    Examples/bond_pricer/bond_pricer_server/Makefile
+    Examples/swap_designer/swap_pricer/Makefile])
 
 AC_OUTPUT
 

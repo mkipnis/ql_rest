@@ -34,29 +34,14 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
-/*
-#include <Addins/Cpp/ratehelpers.hpp>
-#include <Addins/Cpp/pricingengines.hpp>
-#include <Addins/Cpp/piecewiseyieldcurve.hpp>
-#include <qlo/piecewiseyieldcurve.hpp>
-#include <qlo/bonds.hpp>
-
-#include <oh/ohdefines.hpp>
-#include <oh/property.hpp>
-#include <oh/repository.hpp>
-
-#include <Addins/Cpp/addincpp.hpp>
-#include <ql/quantlib.hpp>
-*/
-
 #include <ql/quantlib.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 #include <oh/ohdefines.hpp>
 
 #include <qlrest/qlrest_common.h>
 
-using json_raw_ptr = boost::property_tree::ptree*;
-using json_ptr_pc_queue = boost::lockfree::queue< json_raw_ptr >;
+using json_weak_ptr = boost::property_tree::ptree*;
+using json_ptr_pc_queue = boost::lockfree::queue< json_weak_ptr >;
 using json_ptr_pc_queue_ptr = std::shared_ptr<json_ptr_pc_queue>;
 
 #endif /* common_h */

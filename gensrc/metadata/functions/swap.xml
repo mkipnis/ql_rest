@@ -109,6 +109,25 @@
       </ParameterList>
     </Constructor>
 
+    <Member name='qlSwapNumberOfLegs' type='QuantLib::Swap'>
+      <description>returns the number of legs for the given Swap object.</description>
+      <libraryFunction>numberOfLegs</libraryFunction>
+      <SupportedPlatforms>
+        <!--SupportedPlatform name='Excel' calcInWizard='false'/-->
+        <SupportedPlatform name='Excel'/>
+        <!--SupportedPlatform name='Cpp'/-->
+        <SupportedPlatform name='Calc'/>
+      </SupportedPlatforms>
+      <ParameterList>
+        <Parameters>
+        </Parameters>
+      </ParameterList>
+      <ReturnValue>
+        <type>double</type>
+        <tensorRank>scalar</tensorRank>
+      </ReturnValue>
+    </Member>
+
     <Member name='qlSwapLegBPS' type='QuantLib::Swap'>
       <description>returns the BPS of the i-th leg for the given Swap object.</description>
       <libraryFunction>legBPS</libraryFunction>

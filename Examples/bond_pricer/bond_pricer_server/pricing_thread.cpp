@@ -49,8 +49,8 @@ void pricing_thread::run_pricer()
     
     while (!this->_done.load())
     {
+        json_weak_ptr pricer_request;
         
-        json_raw_ptr pricer_request;
         while (_pricer_queue->pop(pricer_request))
         {
             auto request_id = pricer_request->get<std::string>("request_id");
@@ -68,14 +68,10 @@ void pricing_thread::run_pricer()
                 auto curve = pricer_request->get_child("curve");
                 auto bond_template = curve.get_child("bond_template");
                 auto curve_points = curve.get_child("curve_points");
-                // auto curve_date = curve.get_child("curve_date");
-                //auto curve_out = curve.get_child("curve_out");
             
                 curve_builder cb( pricer_request->get<std::string>("request_id"), curve_points, bond_template);
                 
                 pricer_results->add_child("yield_curve", cb.get_yield_curve());
-                //pricer_results->add_child("curve_date", curve_date);
-
                 
                 auto curve_object = cb.get_curve_object();
                 auto bond_engine = cb.get_bond_engine();
@@ -131,7 +127,7 @@ void pricing_thread::stop()
    _done.store(true);
 }
 
-void pricing_thread::enqueue_request(std::string request_id, json_raw_ptr request_ptr)
+void pricing_thread::enqueue_request(std::string request_id, json_weak_ptr request_ptr)
 {
     _pricer_queue->push(request_ptr);
 

@@ -22,6 +22,7 @@
   </serializationIncludes>
   <copyright>
     Copyright (C) 2009, 2011, 2015 Ferdinando Ametrano
+    Copyright (C) 2019 BN Algorithms Ltd
   </copyright>
   <Functions>
 
@@ -72,6 +73,11 @@
             <tensorRank>scalar</tensorRank>
             <description>overnight leg spread.</description>
           </Parameter>
+          <Parameter name='PaymentLag' exampleValue='2' default='0'>
+            <type>QuantLib::Natural</type>
+            <tensorRank>scalar</tensorRank>
+            <description>Lag to payment</description>
+          </Parameter>	  
         </Parameters>
       </ParameterList>
     </Constructor>
@@ -120,6 +126,11 @@
             <type>QuantLib::Spread</type>
             <tensorRank>scalar</tensorRank>
             <description>the spread in the overnight leg rate.</description>
+          </Parameter>
+          <Parameter name='PaymentLag' exampleValue='2' default='0'>
+            <type>QuantLib::Natural</type>
+            <tensorRank>scalar</tensorRank>
+            <description>Lag to payment</description>
           </Parameter>
         </Parameters>
       </ParameterList>

@@ -217,7 +217,7 @@
           <Parameter name='TraitsID' default='"Discount"'>
             <type>string</type>
             <tensorRank>scalar</tensorRank>
-            <description>Discount, ZeroRate, or ForwardRate.</description>
+            <description>Discount, ZeroYield, or ForwardRate.</description>
           </Parameter>
           <Parameter name='InterpolatorID' default='"CubicSpline"'>
             <type>string</type>

@@ -158,7 +158,7 @@
     <DataType defaultSuperType='libraryClass'>QuantLib::SwapRateHelper</DataType>
     <DataType defaultSuperType='libraryClass'>QuantLib::Swaption</DataType>
     <DataType defaultSuperType='libraryClass'>QuantLib::SwaptionHelper</DataType>
-    <DataType defaultSuperType='libraryClass'>QuantLib::CalibrationHelper</DataType>
+    <DataType defaultSuperType='libraryClass'>QuantLib::BlackCalibrationHelper</DataType>
     <DataType defaultSuperType='libraryClass'>QuantLib::SymmetricSchurDecomposition</DataType>
     <DataType defaultSuperType='libraryClass'>QuantLib::SyntheticCDO</DataType>
     <DataType defaultSuperType='libraryClass'>QuantLib::TimeHomogeneousForwardCorrelation</DataType>

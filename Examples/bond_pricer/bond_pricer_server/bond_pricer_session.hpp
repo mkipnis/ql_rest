@@ -53,46 +53,40 @@ public:
     void run();
     void do_read();
     void on_read( boost::system::error_code ec, std::size_t bytes_transferred);
-    void on_write( boost::system::error_code ec, std::size_t bytes_transferred, bool close);
+    void on_write( bool close, boost::system::error_code ec, std::size_t bytes_transferred);
     void do_close();
     
 private:
     struct send_lambda
     {
-        bond_pricer_session& _self;
+        bond_pricer_session& self_;
 
         explicit
         send_lambda(bond_pricer_session& self)
-            : _self(self)
+            : self_(self)
         {
         }
 
         template<bool isRequest, class Body, class Fields>
-        void
-        operator()(boost::beast::http::message<isRequest, Body, Fields>&& msg) const
+        void operator()(boost::beast::http::message<isRequest, Body, Fields>&& msg) const
         {
             auto sp = std::make_shared<boost::beast::http::message<isRequest, Body, Fields>>(std::move(msg));
-            
-            _self._res = sp;
-            
-            boost::beast::http::async_write( _self._socket, *sp,
-                    boost::asio::bind_executor(
-                    _self._strand,
-                        std::bind(
-                        &bond_pricer_session::on_write,
-                        _self.shared_from_this(),
-                        std::placeholders::_1,
-                        std::placeholders::_2,
-                        sp->need_eof())));
+
+            self_.res_ = sp;
+
+            boost::beast::http::async_write( self_.stream_, *sp,
+                    boost::beast::bind_front_handler(
+                    &bond_pricer_session::on_write,
+                    self_.shared_from_this(),
+                    sp->need_eof()));
         }
     };
 
-    boost::asio::ip::tcp::tcp::socket _socket;
-    boost::asio::strand<boost::asio::io_context::executor_type> _strand;
-    boost::beast::flat_buffer _buffer;
-    boost::beast::http::request<boost::beast::http::string_body> _req;
-    std::shared_ptr<void> _res;
-    send_lambda _lambda;
+    boost::beast::flat_buffer buffer_;
+    boost::beast::tcp_stream stream_;
+    boost::beast::http::request<boost::beast::http::string_body> req_;
+    std::shared_ptr<void> res_;
+    send_lambda lambda_;
     
     std::shared_ptr<pricing_thread> _pricer;
 };
