@@ -27,7 +27,10 @@
 #define curve_builder_hpp
 
 #include <stdio.h>
-#include "common.h"
+#include <string>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 class curve_builder
 {

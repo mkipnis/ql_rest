@@ -4,5 +4,5 @@ Generates *.py files and h/cpp file for ql_rest
 
 Unix:
 -----
-$ python qlrest_gensrc.py --oh_dir=$HOME/ObjectHandler-1.12.0 --gensrc_dir=$HOME/gensrc-1.12.0 --qladdin_dir=$HOME/QuantLibAddin-1.12.0
+$ python qlrest_gensrc.py --oh_dir=$HOME/ObjectHandler-1.22.0 --gensrc_dir=$HOME/gensrc-1.22.0 --qladdin_dir=$HOME/QuantLibAddin-1.22.0
 
