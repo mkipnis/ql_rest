@@ -5,5 +5,5 @@ includedir = $(prefix)/include/qlrest/
 
 lib_LTLIBRARIES = libQLRest.la
 
-include_HEADERS =  qlrest_common.h %(headers)s
+include_HEADERS =  qlrest_common.h basic_microservice.hpp %(headers)s
 libQLRest_la_SOURCES = %(sources)s

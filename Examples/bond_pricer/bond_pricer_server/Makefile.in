@@ -100,10 +100,7 @@ CONFIG_HEADER = $(top_builddir)/qlrest/config.hpp
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
-am_BondPricer_OBJECTS = BondPricer-pricing_thread.$(OBJEXT) \
-	BondPricer-bond_pricer_session.$(OBJEXT) \
-	BondPricer-main.$(OBJEXT) \
-	BondPricer-bond_pricer_listener.$(OBJEXT) \
+am_BondPricer_OBJECTS = BondPricer-main.$(OBJEXT) \
 	BondPricer-curve_builder.$(OBJEXT) \
 	BondPricer-bond_pricer.$(OBJEXT)
 BondPricer_OBJECTS = $(am_BondPricer_OBJECTS)
@@ -131,11 +128,8 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/qlrest
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/BondPricer-bond_pricer.Po \
-	./$(DEPDIR)/BondPricer-bond_pricer_listener.Po \
-	./$(DEPDIR)/BondPricer-bond_pricer_session.Po \
 	./$(DEPDIR)/BondPricer-curve_builder.Po \
-	./$(DEPDIR)/BondPricer-main.Po \
-	./$(DEPDIR)/BondPricer-pricing_thread.Po
+	./$(DEPDIR)/BondPricer-main.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -311,13 +305,7 @@ top_srcdir = @top_srcdir@
 BondPricer_CPPFLAGS = -I${deps_dir_include} -I${deps_dir_include}/qlo -I../../../
 BondPricer_LDADD = ../../../qlrest/libQLRest.la
 BondPricer_LDFLAGS = -lObjectHandler -lQuantLib -lQuantLibAddin -lpthread -lQuantLibAddinCpp -lboost_filesystem -lboost_serialization -lboost_system -lboost_regex -lboost_date_time
-BondPricer_SOURCES = pricing_thread.cpp \
-			bond_pricer_session.cpp \
-			main.cpp \
-			bond_pricer_listener.cpp \
-			curve_builder.cpp \
-			bond_pricer.cpp
-
+BondPricer_SOURCES = main.cpp curve_builder.cpp bond_pricer.cpp
 all: all-am
 
 .SUFFIXES:
@@ -372,11 +360,8 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-bond_pricer.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-bond_pricer_listener.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-bond_pricer_session.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-curve_builder.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-main.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/BondPricer-pricing_thread.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -405,34 +390,6 @@ am--depfiles: $(am__depfiles_remade)
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(LTCXXCOMPILE) -c -o $@ $<
 
-BondPricer-pricing_thread.o: pricing_thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-pricing_thread.o -MD -MP -MF $(DEPDIR)/BondPricer-pricing_thread.Tpo -c -o BondPricer-pricing_thread.o `test -f 'pricing_thread.cpp' || echo '$(srcdir)/'`pricing_thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-pricing_thread.Tpo $(DEPDIR)/BondPricer-pricing_thread.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pricing_thread.cpp' object='BondPricer-pricing_thread.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-pricing_thread.o `test -f 'pricing_thread.cpp' || echo '$(srcdir)/'`pricing_thread.cpp
-
-BondPricer-pricing_thread.obj: pricing_thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-pricing_thread.obj -MD -MP -MF $(DEPDIR)/BondPricer-pricing_thread.Tpo -c -o BondPricer-pricing_thread.obj `if test -f 'pricing_thread.cpp'; then $(CYGPATH_W) 'pricing_thread.cpp'; else $(CYGPATH_W) '$(srcdir)/pricing_thread.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-pricing_thread.Tpo $(DEPDIR)/BondPricer-pricing_thread.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='pricing_thread.cpp' object='BondPricer-pricing_thread.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-pricing_thread.obj `if test -f 'pricing_thread.cpp'; then $(CYGPATH_W) 'pricing_thread.cpp'; else $(CYGPATH_W) '$(srcdir)/pricing_thread.cpp'; fi`
-
-BondPricer-bond_pricer_session.o: bond_pricer_session.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-bond_pricer_session.o -MD -MP -MF $(DEPDIR)/BondPricer-bond_pricer_session.Tpo -c -o BondPricer-bond_pricer_session.o `test -f 'bond_pricer_session.cpp' || echo '$(srcdir)/'`bond_pricer_session.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-bond_pricer_session.Tpo $(DEPDIR)/BondPricer-bond_pricer_session.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bond_pricer_session.cpp' object='BondPricer-bond_pricer_session.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-bond_pricer_session.o `test -f 'bond_pricer_session.cpp' || echo '$(srcdir)/'`bond_pricer_session.cpp
-
-BondPricer-bond_pricer_session.obj: bond_pricer_session.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-bond_pricer_session.obj -MD -MP -MF $(DEPDIR)/BondPricer-bond_pricer_session.Tpo -c -o BondPricer-bond_pricer_session.obj `if test -f 'bond_pricer_session.cpp'; then $(CYGPATH_W) 'bond_pricer_session.cpp'; else $(CYGPATH_W) '$(srcdir)/bond_pricer_session.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-bond_pricer_session.Tpo $(DEPDIR)/BondPricer-bond_pricer_session.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bond_pricer_session.cpp' object='BondPricer-bond_pricer_session.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-bond_pricer_session.obj `if test -f 'bond_pricer_session.cpp'; then $(CYGPATH_W) 'bond_pricer_session.cpp'; else $(CYGPATH_W) '$(srcdir)/bond_pricer_session.cpp'; fi`
-
 BondPricer-main.o: main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-main.o -MD -MP -MF $(DEPDIR)/BondPricer-main.Tpo -c -o BondPricer-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-main.Tpo $(DEPDIR)/BondPricer-main.Po
@@ -446,20 +403,6 @@ BondPricer-main.obj: main.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='BondPricer-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
-
-BondPricer-bond_pricer_listener.o: bond_pricer_listener.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-bond_pricer_listener.o -MD -MP -MF $(DEPDIR)/BondPricer-bond_pricer_listener.Tpo -c -o BondPricer-bond_pricer_listener.o `test -f 'bond_pricer_listener.cpp' || echo '$(srcdir)/'`bond_pricer_listener.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-bond_pricer_listener.Tpo $(DEPDIR)/BondPricer-bond_pricer_listener.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bond_pricer_listener.cpp' object='BondPricer-bond_pricer_listener.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-bond_pricer_listener.o `test -f 'bond_pricer_listener.cpp' || echo '$(srcdir)/'`bond_pricer_listener.cpp
-
-BondPricer-bond_pricer_listener.obj: bond_pricer_listener.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-bond_pricer_listener.obj -MD -MP -MF $(DEPDIR)/BondPricer-bond_pricer_listener.Tpo -c -o BondPricer-bond_pricer_listener.obj `if test -f 'bond_pricer_listener.cpp'; then $(CYGPATH_W) 'bond_pricer_listener.cpp'; else $(CYGPATH_W) '$(srcdir)/bond_pricer_listener.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/BondPricer-bond_pricer_listener.Tpo $(DEPDIR)/BondPricer-bond_pricer_listener.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='bond_pricer_listener.cpp' object='BondPricer-bond_pricer_listener.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o BondPricer-bond_pricer_listener.obj `if test -f 'bond_pricer_listener.cpp'; then $(CYGPATH_W) 'bond_pricer_listener.cpp'; else $(CYGPATH_W) '$(srcdir)/bond_pricer_listener.cpp'; fi`
 
 BondPricer-curve_builder.o: curve_builder.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(BondPricer_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT BondPricer-curve_builder.o -MD -MP -MF $(DEPDIR)/BondPricer-curve_builder.Tpo -c -o BondPricer-curve_builder.o `test -f 'curve_builder.cpp' || echo '$(srcdir)/'`curve_builder.cpp
@@ -620,11 +563,8 @@ clean-am: clean-generic clean-libtool clean-noinstPROGRAMS \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/BondPricer-bond_pricer.Po
-	-rm -f ./$(DEPDIR)/BondPricer-bond_pricer_listener.Po
-	-rm -f ./$(DEPDIR)/BondPricer-bond_pricer_session.Po
 	-rm -f ./$(DEPDIR)/BondPricer-curve_builder.Po
 	-rm -f ./$(DEPDIR)/BondPricer-main.Po
-	-rm -f ./$(DEPDIR)/BondPricer-pricing_thread.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -671,11 +611,8 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/BondPricer-bond_pricer.Po
-	-rm -f ./$(DEPDIR)/BondPricer-bond_pricer_listener.Po
-	-rm -f ./$(DEPDIR)/BondPricer-bond_pricer_session.Po
 	-rm -f ./$(DEPDIR)/BondPricer-curve_builder.Po
 	-rm -f ./$(DEPDIR)/BondPricer-main.Po
-	-rm -f ./$(DEPDIR)/BondPricer-pricing_thread.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
