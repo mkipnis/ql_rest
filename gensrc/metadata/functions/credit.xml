@@ -628,7 +628,7 @@
       </SupportedPlatforms>
       <ParameterList>
         <Parameters>
-          <Parameter name='QLEventType' 
+          <Parameter name='EventType' 
                      exampleValue='FailureToPayEvent, BankruptcyEvent'
                      default='"NONE"'>
             <type>string</type>

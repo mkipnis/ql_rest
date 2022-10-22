@@ -65,14 +65,6 @@ curve_builder::curve_builder( std::string request_id,
         QuantLib::Date startDate = ust_calendar.advance( adjustedSettlmentDate, start_period);
         QuantLib::Date endDate = ust_calendar.advance( startDate, end_period);
 
-        /*
-        std::cout<<QuantLib::io::short_date(startDate)<<std::endl;
-        // This is in fact the default format
-        std::cout<<QuantLib::io::iso_date(startDate)<<std::endl;
-        // ISO date format
-        std::cout<<QuantLib::io::iso_date(endDate)<<std::endl;
-*/
-        //boost::property_tree::ptree schedule = schedule_ptree;
         std::string schedule_obj_id = request_id + std::string("/schedule/") +  tenor;
         
         bond_template.get_child("ust_bond_schedule").put("ObjectId", schedule_obj_id);

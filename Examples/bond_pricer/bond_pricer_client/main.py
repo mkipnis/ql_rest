@@ -1,3 +1,28 @@
+"""
+   Copyright (C) 2022 Mike Kipnis
+
+   This file is part of ql_rest, a free-software/open-source library
+   for utilization of QuantLib over REST
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+"""
+
 import json
 import time
 import requests
@@ -76,21 +101,21 @@ if __name__ == '__main__':
     json_out = []
 
     price_request_out["instruments"] = instrument_groups[0]
-    server_response = publish_request("http://localhost:15555/submit_request", price_request_out)
+    server_response = publish_request("http://localhost:15555/submit_request/", price_request_out)
     json_out.append(server_response)
 
     price_request_out["instruments"] = instrument_groups[1]
-    server_response = publish_request("http://localhost:16666/submit_request", price_request_out)
+    server_response = publish_request("http://localhost:16666/submit_request/", price_request_out)
     json_out.append(server_response)
 
     time.sleep(3)
 
     response = [];
 
-    pricer_reply = check_request("http://localhost:15555/check_request", json_out[0])
+    pricer_reply = check_request("http://localhost:15555/check_request/", json_out[0])
     response.append(pricer_reply)
 
-    pricer_reply = check_request("http://localhost:16666/check_request", json_out[1])
+    pricer_reply = check_request("http://localhost:16666/check_request/", json_out[1])
     response.append(pricer_reply)
 
     for cusip in instrument_groups[0]:

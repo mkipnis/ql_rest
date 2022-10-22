@@ -1,0 +1,49 @@
+{
+  "name": "swap_designer_front_end",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "ag-grid-community": "^28.0.2",
+    "ag-grid-react": "^28.0.0",
+    "bootstrap": "^5.2.0",
+    "chart.js": "^3.8.0",
+    "date-fns": "^2.29.1",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.4.0",
+    "react-chartjs-2": "^4.3.1",
+    "react-datepicker": "^4.8.0",
+    "react-dom": "^18.2.0",
+    "react-number-format": "^4.9.4",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.4.0",
+    "react-uuid": "^1.0.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
