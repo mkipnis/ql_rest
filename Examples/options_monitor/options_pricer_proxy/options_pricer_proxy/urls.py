@@ -17,11 +17,13 @@ from django.contrib import admin
 from django.urls import path
 from options_pricer_proxy import market_data
 from options_pricer_proxy import pricing
-
+from rest_framework import routers
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('get_latest_prices/', market_data.get_latest_prices),
     path('get_latest_vols/', market_data.get_latest_vols),
     path('submit_request/', pricing.submit_request),
     path('check_request/', pricing.check_request),
+    path('', TemplateView.as_view(template_name='index.html'))
 ]

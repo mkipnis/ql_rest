@@ -7,7 +7,7 @@ import requests
 def submit_request(request):
     print('RequestBody' + str(request.body))
 
-    url = 'http://localhost:7921/submit_request/'
+    url = 'http://localhost:17921/submit_request/'
 
     response = requests.get(url, data=request.body, headers={"Content-Type": "application/json"})
     print(response.json())
@@ -23,7 +23,7 @@ def submit_request(request):
 def check_request(request):
     print('RequestBody' + str(request.body))
 
-    url = 'http://localhost:7921/check_request/'
+    url = 'http://localhost:17921/check_request/'
 
     response = requests.get(url, data=request.body, headers={"Content-Type": "application/json"})
     print(response.json())

@@ -15885,7 +15885,7 @@ LDFLAGS="${LDFLAGS} -L${deps_path_lib}"
 
 # Done, output the configured files
 
-ac_config_files="$ac_config_files Makefile qlrest/Makefile test-suite/Makefile Examples/bond_pricer/bond_pricer_server/Makefile Examples/swap_designer/swap_pricer/Makefile"
+ac_config_files="$ac_config_files Makefile qlrest/Makefile test-suite/Makefile Examples/bond_pricer/bond_pricer_server/Makefile Examples/swap_designer/swap_pricer/Makefile Examples/options_monitor/options_pricer_server/Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -17006,6 +17006,7 @@ do
     "test-suite/Makefile") CONFIG_FILES="$CONFIG_FILES test-suite/Makefile" ;;
     "Examples/bond_pricer/bond_pricer_server/Makefile") CONFIG_FILES="$CONFIG_FILES Examples/bond_pricer/bond_pricer_server/Makefile" ;;
     "Examples/swap_designer/swap_pricer/Makefile") CONFIG_FILES="$CONFIG_FILES Examples/swap_designer/swap_pricer/Makefile" ;;
+    "Examples/options_monitor/options_pricer_server/Makefile") CONFIG_FILES="$CONFIG_FILES Examples/options_monitor/options_pricer_server/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
