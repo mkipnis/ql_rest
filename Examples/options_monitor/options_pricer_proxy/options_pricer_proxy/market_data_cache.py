@@ -90,7 +90,7 @@ class MarketDataCache(threading.Thread):
                 self.thread_lock.release()
 
             for ticker in current_market_data_snapshot:
-                if (current_timestamp - current_market_data_snapshot[ticker]['timestamp']) > 12000:
+                if (current_timestamp - current_market_data_snapshot[ticker]['timestamp']) > 86400:
                     print('Lets reload : ' + ticker)
                     self.get_price(ticker, True)
                     self.get_vols(ticker, True)
