@@ -20,7 +20,6 @@ from options_pricer_proxy import pricing
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('get_latest_prices/', market_data.get_latest_prices),
     path('get_latest_vols/', market_data.get_latest_vols),
     path('submit_request/', pricing.submit_request),

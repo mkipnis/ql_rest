@@ -104,6 +104,6 @@ class MarketDataCacheConfig(AppConfig):
     market_data_cache = MarketDataCache()
 
     def ready(self):
-        print('My app')
+        print('OptionsPricerProxy')
         self.market_data_cache.start()
-        print('My app - is ready')
+        print('OptionsPricerProxy - is ready')
