@@ -23,33 +23,33 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
 
   function compareCall(params) {
     if (params.data.Strike <= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,1)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(75,192,192,1)'};
     } else {
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,0.7)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(75,192,192,0.7)'};
     }
   }
 
   function comparePut(params) {
     if (params.data.Strike >= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,1)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(255, 99, 132,1)'};
     } else {
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,0.7)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(255, 99, 132,0.7)'};
     }
   }
 
   function compareCallGreeks(params) {
     if (params.data.Strike <= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', opacity: '1'};
+      return {'textAlign': 'right', padding:'0px', opacity: '1'};
     } else {
-      return {'textAlign': 'right', padding:'3px', opacity: '0.7'};
+      return {'textAlign': 'right', padding:'0px', opacity: '0.7'};
     }
   }
 
   function comparePutGreeks(params) {
     if (params.data.Strike >= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', opacity: '1'};
+      return {'textAlign': 'right', padding:'0px', opacity: '1'};
     } else {
-      return {'textAlign': 'right', padding:'3px', opacity: '0.7'};
+      return {'textAlign': 'right', padding:'0px', opacity: '0.7'};
     }
   }
 

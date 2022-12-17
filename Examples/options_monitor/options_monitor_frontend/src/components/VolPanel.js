@@ -20,17 +20,17 @@ const VolPanel = React.forwardRef ((props, ref) => {
 
   function compareCall(params) {
     if (params.data.Strike <= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,1)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(75,192,192,1)'};
     } else {
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,0.7)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(75,192,192,0.7)'};
     }
   }
 
   function comparePut(params) {
     if (params.data.Strike >= props.marketPrice.Price ){
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,1)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(255, 99, 132,1)'};
     } else {
-      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,0.7)'};
+      return {'textAlign': 'right', padding:'0px', color: 'rgba(255, 99, 132,0.7)'};
     }
   }
 
@@ -39,7 +39,7 @@ const VolPanel = React.forwardRef ((props, ref) => {
     getRowHeight: (params) => 25,
     headerName : 'Market Data - Vols',
     children: [
-      { field: 'Strike', cellStyle: {'textAlign': 'right', padding:'3px'},  flex: 1,  sortable: false,  editable: true },
+      { field: 'Strike', cellStyle: {'textAlign': 'right', padding:'0px'},  flex: 1,  sortable: false,  editable: true },
       { field: 'call_vol', headerName:'Call Volatility',
         cellStyle: compareCall,
         flex: 1,  sortable: false,  editable: true,
