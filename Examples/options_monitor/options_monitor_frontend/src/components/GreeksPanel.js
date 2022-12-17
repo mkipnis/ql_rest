@@ -124,6 +124,8 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
             selected_node = node;
             node.setSelected(true);
             greeksGridRef.current.api.ensureIndexVisible(node.rowIndex);
+            var updated_row = greeksGridRef.current.api.getDisplayedRowAtIndex(node.rowIndex);
+            greeksGridRef.current.api.flashCells({ rowNodes: [updated_row] });
 
             return true;
           }
@@ -131,6 +133,7 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
     }
 
   }, [props.workingPrice, props.volData]);
+
 
   useImperativeHandle(ref, () => ({
     update_greeks(greeks) {
@@ -150,7 +153,30 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
           }
       }
       );
-  }
+  },
+
+  flash_stike(strike) {
+
+      var selected_node = undefined;
+
+      greeksGridRef.current.api.forEachNode(node =>
+      {
+        if ( selected_node === undefined && node.data.Strike == strike.data.Strike )
+        {
+
+          selected_node = node;
+          node.setSelected(true);
+          greeksGridRef.current.api.ensureIndexVisible(node.rowIndex);
+          var updated_row = greeksGridRef.current.api.getDisplayedRowAtIndex(node.rowIndex);
+          greeksGridRef.current.api.flashCells({ rowNodes: [updated_row] });
+
+          return true;
+        }
+    }
+    );
+}
+
+
 }));
 
 
