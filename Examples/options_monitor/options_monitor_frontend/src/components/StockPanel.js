@@ -34,7 +34,15 @@ const StockPanel = React.forwardRef ((props, ref) => {
     setStockPrices(props.symbols);
 
     if ( stockGridRef.current.api != null )
+    {
       stockGridRef.current.api.refreshCells();
+
+      stockGridRef.current.api.forEachNode( node=> {
+      if ( node.data.Symbol === props.defaultTicker ) {
+        node.setSelected(true);
+        }
+      })
+    }
 
 },  [props.symbols]);
 
@@ -57,11 +65,6 @@ const StockPanel = React.forwardRef ((props, ref) => {
 
       props.gridReadyCallback();
 
-      stockGridRef.current.api.forEachNode( node=> {
-      if ( node.rowIndex === 0 ) {
-        node.setSelected(true);
-        }
-      })
     }
   }
 

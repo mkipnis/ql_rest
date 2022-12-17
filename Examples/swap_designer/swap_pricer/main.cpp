@@ -48,7 +48,7 @@
 #include "swap_builder_helper.hpp"
 
 
-auto swap_pricer_request_processor = [] (ql_rest::json_weak_ptr pricer_request)
+auto swap_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
     boost::property_tree::ptree pricer_results;
     auto request_id = pricer_request->get<std::string>("request_id");

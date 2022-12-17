@@ -3,12 +3,16 @@ import time
 import copy
 import yfinance as yf
 import pandas as pd
+from datetime import datetime
+from pytz import timezone
 
 from django.apps import AppConfig
 
 class MarketDataCache(threading.Thread):
+
     def __init__(self):
         super().__init__()
+
         self.thread_lock = threading.Lock()
         self.market_data = {}
         self.vol_cache = {}
@@ -21,19 +25,26 @@ class MarketDataCache(threading.Thread):
         stock = yf.Ticker(ticker)
         yp_price = {}
         yp_price['price'] = stock.info['regularMarketPrice']
+        if yp_price['price'] == None:
+            data = stock.history()
+            yp_price['price'] = data['Close'].iloc[-1]
+
         yp_price['timestamp'] = current_timestamp
 
         return yp_price
 
     # transform vols to smile
     def get_strike_to_vol_dict(self, opt):
-        sr2 = pd.Series(opt['impliedVolatility'])
+
+        sr2 = pd.Series(opt['impliedVolatility']).apply(lambda vol: round(vol * 100))
         sr3 = pd.Series(opt['strike'])
         vols = list(sr2.to_dict().values())
         strike = list(sr3.to_dict().values())
+
         return pd.Series(vols, index=strike).to_dict()
 
     def get_yp_vols(self, ticker):
+
         stock = yf.Ticker(ticker)
         exps = stock.options
 
@@ -80,7 +91,23 @@ class MarketDataCache(threading.Thread):
 
     def run(self):
 
+        tz = timezone('EST')
+
         while (1):
+
+            current_est_time = datetime.now(tz)
+
+            if current_est_time.isoweekday() > 5:
+                time.sleep(60*60)
+                continue
+
+            is_market_open_time = (((current_est_time.hour * 60 + current_est_time.minute) > 9 * 60 + 30) and
+                                   ((current_est_time.hour * 60 + current_est_time.minute) < 16 * 60 + 30))
+
+            if is_market_open_time == False:
+                time.sleep(60)
+                continue
+
             current_timestamp = int(time.time())
 
             self.thread_lock.acquire()

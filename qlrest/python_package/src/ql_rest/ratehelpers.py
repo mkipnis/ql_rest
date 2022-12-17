@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlBondHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Price = 0.0;
@@ -29,7 +28,6 @@ from json import JSONEncoder
 class qlDatedOISRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.StartDate = "";
@@ -50,7 +48,6 @@ from json import JSONEncoder
 class qlDepositRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;
@@ -68,7 +65,6 @@ from json import JSONEncoder
 class qlDepositRateHelper2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;
@@ -91,7 +87,6 @@ from json import JSONEncoder
 class qlFixedRateBondHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Price = 0.0;
@@ -122,7 +117,6 @@ from json import JSONEncoder
 class qlFraRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;
@@ -143,7 +137,6 @@ from json import JSONEncoder
 class qlFraRateHelper2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;
@@ -169,7 +162,6 @@ from json import JSONEncoder
 class qlFuturesRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Price = 0.0;
@@ -190,7 +182,6 @@ from json import JSONEncoder
 class qlFuturesRateHelper2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Price = 0.0;
@@ -215,7 +206,6 @@ from json import JSONEncoder
 class qlFuturesRateHelper3(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Price = 0.0;
@@ -237,7 +227,6 @@ from json import JSONEncoder
 class qlFxSwapRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FwdPoint = 0.0;
@@ -262,7 +251,6 @@ from json import JSONEncoder
 class qlOISRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SettlDays = 0;
@@ -285,7 +273,6 @@ from json import JSONEncoder
 class qlRateHelperImpliedQuote(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;
@@ -299,7 +286,6 @@ from json import JSONEncoder
 class qlRateHelperQuoteError(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;
@@ -313,7 +299,6 @@ from json import JSONEncoder
 class qlRateHelperQuoteIsValid(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;
@@ -327,7 +312,6 @@ from json import JSONEncoder
 class qlRateHelperQuoteName(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;
@@ -341,7 +325,6 @@ from json import JSONEncoder
 class qlRateHelperQuoteValue(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;
@@ -355,7 +338,6 @@ from json import JSONEncoder
 class qlSwapRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;
@@ -378,7 +360,6 @@ from json import JSONEncoder
 class qlSwapRateHelper2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Rate = 0.0;

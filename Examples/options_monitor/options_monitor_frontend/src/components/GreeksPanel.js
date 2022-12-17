@@ -4,7 +4,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
 import PricerHelper from '../helpers/PricerHelper'
-//import { SwapIndexes } from '../data/SwapIndexes'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
@@ -22,6 +21,38 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
       if (!isNaN(params.value)) return parseFloat(params.value).toFixed(2);
   };
 
+  function compareCall(params) {
+    if (params.data.Strike <= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,1)'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,0.7)'};
+    }
+  }
+
+  function comparePut(params) {
+    if (params.data.Strike >= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,1)'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,0.7)'};
+    }
+  }
+
+  function compareCallGreeks(params) {
+    if (params.data.Strike <= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', opacity: '1'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', opacity: '0.7'};
+    }
+  }
+
+  function comparePutGreeks(params) {
+    if (params.data.Strike >= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', opacity: '1'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', opacity: '0.7'};
+    }
+  }
+
 
 
   const greeksGridColumnDefs = [
@@ -29,27 +60,27 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
     {
     headerName : 'Calls',
     children: [
-    { field: 'call_vol', cellStyle: {'textAlign': 'right'}, headerName:'Volatility', sortable: true, sortable: true, flex: 1,
+    { field: 'call_vol', cellStyle: compareCall, headerName:'Volatility', sortable: true, sortable: true, flex: 1,
             cellRenderer: props => {
-                    if (!isNaN(props.value)) return `${(props.value * 100)|0}%`;},  sortable: true, flex: 1},
-    { field: 'call_npv', headerName:'Price' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'call_delta', headerName:'Delta' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'call_gamma', headerName:'Gamma' ,  sortable: true, flex: 1,  cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'call_vega',  headerName:'Vega' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'call_theta', headerName:'Theta' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'call_rho', headerName:'Rho' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
+                    if (!isNaN(props.value) && !isNaN(props.data.call_npv)) return `${(props.value * 100)|0}%`;},  sortable: true, flex: 1},
+    { field: 'call_npv', headerName:'Price' ,  sortable: true, flex: 1, cellStyle: compareCall, valueFormatter: numberFormatter},
+    { field: 'call_delta', headerName:'Delta' ,  sortable: true, flex: 1, cellStyle: compareCallGreeks, valueFormatter: numberFormatter},
+    { field: 'call_gamma', headerName:'Gamma' ,  sortable: true, flex: 1,  cellStyle: compareCallGreeks, valueFormatter: numberFormatter},
+    { field: 'call_vega',  headerName:'Vega' ,  sortable: true, flex: 1, cellStyle: compareCallGreeks, valueFormatter: numberFormatter},
+    { field: 'call_theta', headerName:'Theta' ,  sortable: true, flex: 1, cellStyle: compareCallGreeks, valueFormatter: numberFormatter},
+    { field: 'call_rho', headerName:'Rho' ,  sortable: true, flex: 1, cellStyle: compareCallGreeks, valueFormatter: numberFormatter},
   ]
 },
   {headerName : 'Puts', style:{'align':'center'},
   children: [
-    { field: 'put_vol', headerName:'Volatility', cellStyle: {'textAlign': 'right'},  sortable: true, flex: 1, cellRenderer: props => {
-                    if (!isNaN(props.value)) return `${(props.value * 100)|0}%`;}},
-    { field: 'put_npv', headerName:'Price' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'put_delta', headerName:'Delta' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'put_gamma', headerName:'Gamma' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'put_vega', headerName:'Vega' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'put_theta', headerName:'Theta' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
-    { field: 'put_rho', headerName:'Rho' ,  sortable: true, flex: 1, cellStyle: {'textAlign': 'right'}, valueFormatter: numberFormatter},
+    { field: 'put_vol', headerName:'Volatility', cellStyle: comparePut,  sortable: true, flex: 1, cellRenderer: props => {
+                    if (!isNaN(props.value) && !isNaN(props.data.put_npv)) return `${(props.value * 100)|0}%`;}},
+    { field: 'put_npv', headerName:'Price' ,  sortable: true, flex: 1, cellStyle: comparePut, valueFormatter: numberFormatter},
+    { field: 'put_delta', headerName:'Delta' ,  sortable: true, flex: 1, cellStyle: comparePutGreeks, valueFormatter: numberFormatter},
+    { field: 'put_gamma', headerName:'Gamma' ,  sortable: true, flex: 1, cellStyle: comparePutGreeks, valueFormatter: numberFormatter},
+    { field: 'put_vega', headerName:'Vega' ,  sortable: true, flex: 1, cellStyle: comparePutGreeks, valueFormatter: numberFormatter},
+    { field: 'put_theta', headerName:'Theta' ,  sortable: true, flex: 1, cellStyle: comparePutGreeks, valueFormatter: numberFormatter},
+    { field: 'put_rho', headerName:'Rho' ,  sortable: true, flex: 1, cellStyle: comparePutGreeks, valueFormatter: numberFormatter},
 ]
   }
   ];

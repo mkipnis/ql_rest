@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 
 const { forwardRef, useRef, useImperativeHandle } = React;
 
-const SmilePanel = React.forwardRef ((vols, ref) => {
+const SmilePanel = React.forwardRef ((props, ref) => {
 
   const chartRef = useRef();
 
@@ -28,9 +28,9 @@ const SmilePanel = React.forwardRef ((vols, ref) => {
           var call_vols = [];
           var name = "N/A";
 
-          if ( vols != undefined && vols.volData != undefined ) {
+          if ( props != undefined && props.volData != undefined ) {
 
-            for (const vol of vols.volData)
+            for (const vol of props.volData)
             {
               put_vols.push(vol.put_vol)
               call_vols.push(vol.call_vol)
@@ -38,8 +38,6 @@ const SmilePanel = React.forwardRef ((vols, ref) => {
             }
 
           }
-
-          //var name = swapCurve.swapCurve.swapIndex.Name;
 
           const char_data = {
             labels: strikes,
@@ -54,7 +52,7 @@ const SmilePanel = React.forwardRef ((vols, ref) => {
               {
                 data : put_vols,
                 fill: true,
-                backgroundColor: 'rgba(75,192,192,0.2)',
+                backgroundColor: 'rgba(255, 99, 132,0.2)',
                 borderColor: 'rgb(255, 99, 132)',
                 label : 'Puts'
               }
@@ -63,10 +61,19 @@ const SmilePanel = React.forwardRef ((vols, ref) => {
 
           setData(char_data);
 
-  }, [vols.volData]);
+  }, [props.volData]);
 
 
-  return <Line data={data} ref={chartRef}/>;
+  return <Line data={data}
+  options={{
+         onClick: function(evt, element) {
+           if(element.length > 0)
+           {
+             var strike = props.volData[element[0].index]
+             props.strikeSelectedCallback(strike);
+            }
+         }}}
+  ref={chartRef}/>;
 });
 
 export default SmilePanel;

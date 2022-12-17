@@ -23,6 +23,7 @@
     SOFTWARE.
 */
 
+
 #include <iostream>
 #include <boost/beast.hpp>
 #include <boost/asio.hpp>
@@ -48,7 +49,7 @@
 //#include "swap_builder_helper.hpp"
 
 
-auto options_pricer_request_processor = [] (ql_rest::json_weak_ptr pricer_request)
+auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
     boost::property_tree::ptree pricer_results;
     auto request_id = pricer_request->get<std::string>("request_id");
@@ -65,7 +66,7 @@ auto options_pricer_request_processor = [] (ql_rest::json_weak_ptr pricer_reques
          QuantLibAddinCpp::qlSettingsSetEvaluationDate( (long) business_date.serialNumber(), OH_NULL);
          QuantLib::Calendar settlement_calendar = QuantLib::UnitedStates(QuantLib::UnitedStates::GovernmentBond);
          
-         auto settlement_date = settlement_calendar.advance(business_date, 1, QuantLib::Days);
+         auto settlement_date = settlement_calendar.advance(business_date, 0, QuantLib::Days);
          
          std::cout << "Business Date : " << business_date << "Settlement Date : " << QuantLib::detail::iso_date_holder(settlement_date) << std::endl;
          

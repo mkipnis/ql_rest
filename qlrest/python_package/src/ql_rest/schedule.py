@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlSchedule(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.EffectiveDate = "";
@@ -36,7 +35,6 @@ from json import JSONEncoder
 class qlScheduleFromDateVector(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.EffectiveDate = [];
@@ -53,7 +51,6 @@ from json import JSONEncoder
 class qlScheduleFullInterfaceFromDateVector(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Dates = [];
@@ -77,7 +74,6 @@ from json import JSONEncoder
 class qlScheduleTruncated(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.OriginalSchedule = "";

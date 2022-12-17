@@ -10,7 +10,6 @@ from json import JSONEncoder
 class ohLogSetConsole(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.Console = 0;
         self.LogLevel = 0;
@@ -25,7 +24,6 @@ from json import JSONEncoder
 class ohLogSetFile(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.LogFileName = "";
         self.LogLevel = 0;
@@ -40,7 +38,6 @@ from json import JSONEncoder
 class ohLogWriteMessage(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.LogMessage = "";
         self.LogLevel = 0;

@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlAmericanExercise(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.EarliestDate = "";
@@ -29,7 +28,6 @@ from json import JSONEncoder
 class qlBermudanExercise(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Dates = [];
@@ -47,7 +45,6 @@ from json import JSONEncoder
 class qlEuropeanExercise(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.ExpiryDate = "";

@@ -71,11 +71,11 @@ using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace ql_rest
 {
 
-using json_weak_ptr = boost::property_tree::ptree*;
-using json_ptr_pc_queue = boost::lockfree::queue< json_weak_ptr >;
+using json_raw_ptr = boost::property_tree::ptree*;
+using json_ptr_pc_queue = boost::lockfree::queue< json_raw_ptr >;
 using json_ptr_pc_queue_ptr = std::shared_ptr<json_ptr_pc_queue>;
 
-using pricing_function = std::function<std::tuple<std::string, boost::property_tree::ptree>( json_weak_ptr )>;
+using pricing_function = std::function<std::tuple<std::string, boost::property_tree::ptree>( json_raw_ptr )>;
 
 auto const print_json =
 [](boost::property_tree::ptree& pricer_request)
@@ -151,7 +151,7 @@ public:
         
         while (!this->_done.load())
         {
-            json_weak_ptr pricer_request;
+            json_raw_ptr pricer_request;
          
             while (_pricer_queue->pop(pricer_request))
             {
@@ -174,7 +174,7 @@ public:
     };
         
         
-    void enqueue_request(std::string request_id, json_weak_ptr request_ptr) {
+    void enqueue_request(std::string request_id, json_raw_ptr request_ptr) {
         
         _pricer_queue->push(request_ptr);
         boost::property_tree::ptree pending_request_state;
@@ -233,7 +233,7 @@ handle_request(
 
             boost::uuids::uuid uuid = boost::uuids::random_generator()();
               
-            json_weak_ptr request = new boost::property_tree::ptree();
+            json_raw_ptr request = new boost::property_tree::ptree();
             std::istringstream stream(req.body());
             boost::property_tree::read_json(stream, *request);
 

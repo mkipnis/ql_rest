@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlPiecewiseYieldCurve(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.NDays = 0;
@@ -35,7 +34,6 @@ from json import JSONEncoder
 class qlPiecewiseYieldCurveMixedInterpolation(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.NDays = 0;

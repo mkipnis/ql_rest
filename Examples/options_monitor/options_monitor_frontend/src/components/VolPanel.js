@@ -18,19 +18,41 @@ const VolPanel = React.forwardRef ((props, ref) => {
   const marketDataGridRef = React.useRef();
   const indexRef = React.useRef();
 
+  function compareCall(params) {
+    if (params.data.Strike <= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,1)'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(75,192,192,0.7)'};
+    }
+  }
+
+  function comparePut(params) {
+    if (params.data.Strike >= props.marketPrice.Price ){
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,1)'};
+    } else {
+      return {'textAlign': 'right', padding:'3px', color: 'rgba(255, 99, 132,0.7)'};
+    }
+  }
+
   const marketDataGridColumnDefs = [
     {
     getRowHeight: (params) => 25,
     headerName : 'Market Data - Vols',
     children: [
       { field: 'Strike', cellStyle: {'textAlign': 'right', padding:'3px'},  flex: 1,  sortable: false,  editable: true },
-      { field: 'call_vol', headerName:'Call Volatility',  cellStyle: {'textAlign': 'right', padding:'3px'},  flex: 1,  sortable: false,  editable: true,
+      { field: 'call_vol', headerName:'Call Volatility',
+        cellStyle: compareCall,
+        flex: 1,  sortable: false,  editable: true,
+
         cellRenderer: props => {
-          if (!isNaN(props.value)) return `${(props.value * 100)|0}%`;
+          if (!isNaN(props.value)) return `${(props.value)|0}%`;
         }},
-      { field: 'put_vol', headerName:'Put Volatility',  cellStyle: {'textAlign': 'right', padding:'3px'},  flex: 1,  sortable: false,  editable: true,
+
+      { field: 'put_vol', headerName:'Put Volatility',
+        cellStyle: comparePut,
+        flex: 1,  sortable: false,  editable: true,
         cellRenderer: props => {
-                if (!isNaN(props.value)) return `${(props.value * 100)|0}%`;
+                if (!isNaN(props.value)) return `${(props.value)|0}%`;
       }}
     ]}
   ];

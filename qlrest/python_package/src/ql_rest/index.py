@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlBMAIndex(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -27,7 +26,6 @@ from json import JSONEncoder
 class qlEonia(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -44,7 +42,6 @@ from json import JSONEncoder
 class qlEuribor(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Tenor = "";
@@ -62,7 +59,6 @@ from json import JSONEncoder
 class qlEuribor365(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Tenor = "";
@@ -80,7 +76,6 @@ from json import JSONEncoder
 class qlEuriborSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FixingType = "";
@@ -100,7 +95,6 @@ from json import JSONEncoder
 class qlEuriborSwapIsdaFixA(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Tenor = "";
@@ -119,7 +113,6 @@ from json import JSONEncoder
 class qlIborIndex(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FamilyName = "";
@@ -144,7 +137,6 @@ from json import JSONEncoder
 class qlIndexAddFixings(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FixingDates = [];
@@ -161,7 +153,6 @@ from json import JSONEncoder
 class qlLibor(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Currency = "";
@@ -180,7 +171,6 @@ from json import JSONEncoder
 class qlLiborSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Currency = "";
@@ -201,7 +191,6 @@ from json import JSONEncoder
 class qlOvernightIndex(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FamilyName = "";
@@ -223,7 +212,6 @@ from json import JSONEncoder
 class qlProxyIbor(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FamilyName = "";
@@ -250,7 +238,6 @@ from json import JSONEncoder
 class qlSonia(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -267,7 +254,6 @@ from json import JSONEncoder
 class qlSwapIndex(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.FamilyName = "";

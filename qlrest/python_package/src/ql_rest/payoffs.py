@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlDoubleStickyRatchetPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Type1 = 0.0;
@@ -37,7 +36,6 @@ from json import JSONEncoder
 class qlRatchetMaxPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -62,7 +60,6 @@ from json import JSONEncoder
 class qlRatchetMinPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -87,7 +84,6 @@ from json import JSONEncoder
 class qlRatchetPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -109,7 +105,6 @@ from json import JSONEncoder
 class qlStickyMaxPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -134,7 +129,6 @@ from json import JSONEncoder
 class qlStickyMinPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -159,7 +153,6 @@ from json import JSONEncoder
 class qlStickyPayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Gearing1 = 0.0;
@@ -181,7 +174,6 @@ from json import JSONEncoder
 class qlStrikedTypePayoff(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.PayoffID = "";

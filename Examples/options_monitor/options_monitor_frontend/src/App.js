@@ -1,6 +1,6 @@
 /*  This file is part of ql_rest, a free-software/open-source library
     for utilization of QuantLib over REST */
-    
+
 import BusinessDatePicker from './components/BusinessDatePicker'
 
 import StockPanel from './components/StockPanel'
@@ -31,6 +31,7 @@ function App() {
   const greeksPanelRef = useRef();
 
   const [valuationDate, setValuationDate] = useState(new Date());
+  const [defaultTicker, setDefaultTicker] = useState('AAPL');
   const [exerciseDates, setExerciseDates] = useState();
   const [exerciseDate, setExerciseDate] = useState();
   const [pricingToken, setPricingToken] = useState();
@@ -91,7 +92,11 @@ function App() {
    price_request['vols_and_payoffs'] = vols_and_payoffs
    price_request['exercise'] = {}
    price_request['exercise']['ObjectId'] = request_id + "/" + stockTicker.Symbol
-   price_request['exercise']['ExpiryDate'] = exerciseDate.value
+
+   var iso_date_components = exerciseDate.value.split('-')
+   var updated_date = parseInt(iso_date_components[2])+1
+
+   price_request['exercise']['ExpiryDate'] = iso_date_components[0] + '-' + iso_date_components[1] + '-' + updated_date
    price_request['exercise']['Permanent'] = false
    price_request['exercise']['Trigger'] = false
    price_request['exercise']['Overwrite'] = false
@@ -134,7 +139,7 @@ function App() {
     {
       var updated_vols = [];
       updated_vols = volData.slice();
-      updated_vols[volUpdate.rowIndex][volUpdate.colDef.field] = parseFloat(volUpdate.newValue)/100.0;
+      updated_vols[volUpdate.rowIndex][volUpdate.colDef.field] = parseFloat(volUpdate.newValue);
       setVolData(updated_vols);
       setVolUpdate(undefined);
     }
@@ -182,7 +187,7 @@ function App() {
                 </Row>
               <Row>
           <Col  style={{textAlign:'Left'}}>
-            <StockPanel symbols={stockPrices}
+            <StockPanel symbols={stockPrices} defaultTicker={defaultTicker}
 
               gridReadyCallback = { () =>
               {
@@ -234,8 +239,8 @@ function App() {
                           exercises.push(exercise);
                       });
 
+
                       var exercise_and_vols = Object.values(vols)[0] // First ticker
-                      //var vols_out = PricerHelper.get_vols(exercise_and_vols, 0) // get vols for the nearest expiration date [0]
 
                       setExerciseDates(exercises)
                       setExerciseDate(exercises[0])
@@ -257,8 +262,10 @@ function App() {
                 </Row>
                 <Row>
                   <Col style={{marginTop:'8px', textAlign:'Right'}}>
-                    <VolPanel volData={volData} setup={VolPanelSetup} workingPrice={workingPrice} ref={volPanelRef}
-                      strikeSelectedCallback={ (event) => { setSelectedStrike(event); } }
+                    <VolPanel volData={volData} setup={VolPanelSetup} marketPrice={stockTicker} workingPrice={workingPrice} ref={volPanelRef}
+                      strikeSelectedCallback={ (strike) => {
+                        setSelectedStrike(strike);
+                      } }
                       volChangeCallback={ ( updated_vol ) =>{
                         setWorkingPrice(updated_vol.Strike);
                         setVolUpdate(updated_vol);
@@ -266,6 +273,11 @@ function App() {
                   </Col>
                 </Row>
           </Col>
+        </Row>
+        <Row style={{textAlign:'center'}}>
+          <div className="main--sub--title">
+            (Double click to change the Price or Call/Put Volatility)
+          </div>
         </Row>
       </Col>
       <Col>
@@ -282,7 +294,12 @@ function App() {
         <Row>
         <Col>
         <div style={pricingDisabled ? {pointerEvents: "none", opacity: "0.4"} : {}}>
-          <SmilePanel stockTicker={stockTicker} volData={volData} ref={smileRef} />
+          <SmilePanel stockTicker={stockTicker}
+                      volData={volData}
+                      strikeSelectedCallback={ (strike) => {
+                        setWorkingPrice(strike.Strike);
+                      } }
+                      ref={smileRef} />
         </div>
         </Col>
         </Row>
@@ -295,7 +312,7 @@ function App() {
     </Row>
     <Row>
       <Col>
-        <GreeksPanel volData={volData} workingPrice={workingPrice} selectedStrike={selectedStrike} ref={greeksPanelRef}  />
+        <GreeksPanel volData={volData} workingPrice={workingPrice} marketPrice={stockTicker} selectedStrike={selectedStrike} ref={greeksPanelRef}  />
       </Col>
     </Row>
   </Container>

@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlBlackConstantVol(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SettlementDate = "";

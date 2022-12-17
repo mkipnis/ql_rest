@@ -10,7 +10,6 @@ from json import JSONEncoder
 class ohVersion(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.Trigger = False;
 

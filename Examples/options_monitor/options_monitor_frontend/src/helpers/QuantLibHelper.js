@@ -23,7 +23,6 @@ const QuantLibHelper = {
     option_ts['qlStrikedTypePayoff']['Trigger'] = false
     option_ts['qlStrikedTypePayoff']['Overwrite'] = false
 
-
     option_ts['qlBlackConstantVol']['DayCounter'] = 'Actual/365 (Fixed)'
     option_ts['qlBlackConstantVol']['Calendar'] = 'TARGET'
     option_ts['qlBlackConstantVol']['SettlementDate'] = ''
@@ -42,7 +41,7 @@ const QuantLibHelper = {
     option_ts['qlGeneralizedBlackScholesProcess']['Overwrite'] = false
 
     option_ts['qlBlackConstantVol']['ObjectId'] = request_id + '/qlBlackConstantVol/' + option_ts['qlStrikedTypePayoff']['Strike'] + '/' + option_ts['qlStrikedTypePayoff']['OptionType']
-    option_ts['qlBlackConstantVol']['Volatility'] = vol
+    option_ts['qlBlackConstantVol']['Volatility'] = vol/100.0
 
     option_ts['qlGeneralizedBlackScholesProcess']['ObjectId'] = request_id +'/qlGeneralizedBlackScholesProcess/' + option_ts['qlBlackConstantVol']['ObjectId']
     option_ts['qlGeneralizedBlackScholesProcess']['BlackVolID'] = option_ts['qlBlackConstantVol']['ObjectId']
