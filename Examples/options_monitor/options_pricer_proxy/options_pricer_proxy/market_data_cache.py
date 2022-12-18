@@ -1,3 +1,6 @@
+#  This file is part of ql_rest, a free-software/open-source library
+#    for utilization of QuantLib over REST
+
 import threading
 import time
 import copy

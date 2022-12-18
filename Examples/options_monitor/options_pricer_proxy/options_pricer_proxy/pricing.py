@@ -1,3 +1,6 @@
+#  This file is part of ql_rest, a free-software/open-source library
+#    for utilization of QuantLib over REST
+
 from django.http import HttpResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
