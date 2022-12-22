@@ -17,10 +17,13 @@
 Basic Microservice is a set of helper classes designed to simplify the construction of basic micro-services. It includes a socket listener class, Quantlib pricing thread management class, and a producer-consumer queue to facilitate the communication between the socket session class and the pricing thread.
 
 ### Data Flow
-The client connects to a microservice, submits a request via HTTP post, and receives back a token from the server(microservice).
-The server pushes request to the producer-consumer queue for the pricing thread to process
-After some time, client connects to the server to check the status of the request by providing a specified in step-one token.
-If a request is still in pending, the client must repeat the step number there, until the request is processed by the pricing thread.
+* The client connects to a microservice, submits a request via HTTP post, and receives back a token from the server(microservice).
+* The server pushes request to the producer-consumer queue for the pricing thread to process.
+* After some time, client connects to the server to check the status of the request by providing a specified in step-one token.
+* If a request is still in pending, the client must repeat the step number there, until the request is processed by the pricing thread.
+
+![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/basic_micro_service.png?raw=true)
+
 
 ### Examples
 
