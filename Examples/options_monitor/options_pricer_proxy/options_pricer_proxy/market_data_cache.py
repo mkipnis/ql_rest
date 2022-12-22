@@ -9,6 +9,7 @@ import pandas as pd
 from datetime import datetime
 from pytz import timezone
 import json
+import os.path
 
 from django.apps import AppConfig
 from django.conf import settings
@@ -20,6 +21,7 @@ class MarketDataCache(threading.Thread):
 
         self.store_demo_data = getattr(settings, "STORE_DEMO_DATA", None)
         self.use_demo_data = getattr(settings, "USE_DEMO_DATA", None)
+        self.base_dir = getattr(settings, "BASE_DIR", None)
 
         self.thread_lock = threading.Lock()
 
@@ -102,20 +104,20 @@ class MarketDataCache(threading.Thread):
         return yp_vols
 
     def store_data(self):
-        with open('demo_data/prices.json', 'w') as px_file:
+        with open(self.base_dir+'/demo_data/prices.json', 'w') as px_file:
             json.dump(self.stock_price_market_data, px_file)
             px_file.close()
 
-        with open('demo_data/vols.json', 'w') as vol_file:
+        with open(self.base_dir+'/demo_data/vols.json', 'w') as vol_file:
             json.dump(self.vol_cache, vol_file)
             vol_file.close()
 
     def load_data(self):
-        with open('demo_data/prices.json', 'r') as px_file:
+        with open(self.base_dir+'/demo_data/prices.json', 'r') as px_file:
             self.stock_price_market_data = json.load(px_file)
             px_file.close()
 
-        with open('demo_data/vols.json', 'r') as vol_file:
+        with open(self.base_dir+'/demo_data/vols.json', 'r') as vol_file:
             self.vol_cache = json.load(vol_file)
             vol_file.close()
 
