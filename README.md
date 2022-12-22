@@ -4,6 +4,54 @@
 
 `ql_rest` package includes conversion classes between JSON and QuantLibAddin/C++, Python classes to simplify serialization of JSON Objects to QuantLibAddin/C++, and Examples.
 
+Python
+```
+class qlVanillaSwap(JSONEncoder):
+
+    def __init__(self):
+        
+        self.ObjectId = "";
+        self.PayerReceiver = "";
+        self.Nominal = 0.0;
+        self.FixSchedule = "";
+        self.FixedRate = 0.0;
+        self.FixDayCounter = "";
+        self.FloatingLegSchedule = "";
+        self.IborIndex = "";
+        self.Spread = 0.0;
+        self.FloatingLegDayCounter = "";
+        self.PaymentConvention = "";
+        self.Permanent = False;
+        self.Trigger = False;
+        self.Overwrite = False;
+
+    def default(self, o):
+        return o.__dict__
+```
+
+C++
+```
+std::string vanillaswap::qlVanillaSwap(ptree const& pt)
+{
+    return QuantLibAddinCpp::qlVanillaSwap(
+              pt.get<std::string>("ObjectId"),
+              pt.get<std::string>("PayerReceiver"),
+              pt.get<double>("Nominal"),
+              pt.get<std::string>("FixSchedule"),
+              pt.get<double>("FixedRate"),
+              pt.get<std::string>("FixDayCounter"),
+              pt.get<std::string>("FloatingLegSchedule"),
+              pt.get<std::string>("IborIndex"),
+              pt.get<double>("Spread"),
+              pt.get<std::string>("FloatingLegDayCounter"),
+              pt.get<std::string>("PaymentConvention"),
+              pt.get<bool>("Permanent"),
+              pt.get<bool>("Trigger"),
+              pt.get<bool>("Overwrite")
+    );
+}
+```
+
 
 ## Dependencies
 
