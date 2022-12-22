@@ -4,7 +4,7 @@
 
 `ql_rest` package includes conversion classes between JSON and QuantLibAddin/C++, Python classes to simplify serialization of JSON Objects to QuantLibAddin/C++, and Examples.
 
-Python
+[Python](https://github.com/mkipnis/ql_rest/blob/master/qlrest/python_package/src/ql_rest/vanillaswap.py)
 ```
 class qlVanillaSwap(JSONEncoder):
 
@@ -29,7 +29,7 @@ class qlVanillaSwap(JSONEncoder):
         return o.__dict__
 ```
 
-C++
+[C++](https://github.com/mkipnis/ql_rest/blob/master/qlrest/vanillaswap_reader.cpp)
 ```
 std::string vanillaswap::qlVanillaSwap(ptree const& pt)
 {
@@ -61,8 +61,10 @@ std::string vanillaswap::qlVanillaSwap(ptree const& pt)
 | [QuantLib](https://github.com/lballabio/QuantLib/releases) | 1.22 |
 | [ObjectHandler/GenSrc/QuantLibAddinCpp](https://github.com/eehlers/QuantLibAddin-Old/releases/tag/QuantLibAddin-v1.22) | 1.22 |
 
+
 ## Basic Microservice 
 [Basic Microservice](https://github.com/mkipnis/ql_rest/blob/master/qlrest/basic_microservice.hpp) is a set of helper classes designed to simplify the construction of basic micro-services. It includes a socket listener class, Quantlib pricing thread management class, and a producer-consumer queue to facilitate the communication between the socket session class and the pricing thread.
+
 
 ### Data Flow
 * The client connects to a microservice, submits a request via HTTP post, and receives back a token from the server(microservice).
@@ -78,9 +80,15 @@ std::string vanillaswap::qlVanillaSwap(ptree const& pt)
 
 #### US Treasuries - [https://ustreasuries.online](https://ustreasuries.online)
 Python client posts market data and instrument term structures to two calculators.  Calculators build a discount curve from the provided market data, price bonds, and make results available for client to retrieve.  After 3 seconds, the client queries calculators by posting provided in step one token.
+![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/example_ustreasuries.png?raw=true)
+
  
 #### Libor Swaps [https://swap.ustreasuries.online](https://swap.ustreasuries.online)
 ReactJS client publishes market data and term structures to a calculator and display results
+![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/example_libor_swaps.png?raw=true)
+
 
 #### Vanilla Options [https://options.ustreasuries.online](https://options.ustreasuries.online)
 ReactJS front-end retrieves market data from the django server and posts results to a calculator through the same server that serves as a proxy.
+![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/example_options.png?raw=true)
+
