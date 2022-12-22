@@ -14,7 +14,7 @@
 | [ObjectHandler/GenSrc/QuantLibAddinCpp](https://github.com/eehlers/QuantLibAddin-Old/releases/tag/QuantLibAddin-v1.22) | 1.22 |
 
 ## Basic Microservice 
-Basic Microservice is a set of helper classes designed to simplify the construction of basic micro-services. It includes a socket listener class, Quantlib pricing thread management class, and a producer-consumer queue to facilitate the communication between the socket session class and the pricing thread.
+[Basic Microservice](https://github.com/mkipnis/ql_rest/blob/master/qlrest/basic_microservice.hpp) is a set of helper classes designed to simplify the construction of basic micro-services. It includes a socket listener class, Quantlib pricing thread management class, and a producer-consumer queue to facilitate the communication between the socket session class and the pricing thread.
 
 ### Data Flow
 * The client connects to a microservice, submits a request via HTTP post, and receives back a token from the server(microservice).
@@ -23,6 +23,7 @@ Basic Microservice is a set of helper classes designed to simplify the construct
 * If a request is still in pending, the client must repeat the step number there, until the request is processed by the pricing thread.
 
 ![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/basic_micro_service.png?raw=true)
+
 
 
 ### Examples
