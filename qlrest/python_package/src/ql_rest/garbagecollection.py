@@ -10,7 +10,6 @@ from json import JSONEncoder
 class ohRepositoryDeleteAllObjects(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.DeletePermanent = False;
         self.Trigger = False;
@@ -24,7 +23,6 @@ from json import JSONEncoder
 class ohRepositoryLogObject(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Trigger = False;

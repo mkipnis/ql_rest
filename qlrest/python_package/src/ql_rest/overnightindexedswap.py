@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlMakeDatedOIS(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.StartDate = "";
@@ -32,7 +31,6 @@ from json import JSONEncoder
 class qlMakeOIS(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SettlDays = 0;
@@ -56,7 +54,6 @@ from json import JSONEncoder
 class qlOvernightIndexedSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.PayerReceiver = "";
@@ -80,7 +77,6 @@ from json import JSONEncoder
 class qlOvernightIndexedSwapFromOISRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.OISRateHelper = "";

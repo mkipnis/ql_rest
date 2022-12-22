@@ -10,7 +10,6 @@ from json import JSONEncoder
 class ohObjectLoad(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.Directory = "";
         self.Pattern = "";
@@ -27,7 +26,6 @@ from json import JSONEncoder
 class ohObjectLoadString(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.Xml = "";
         self.Overwrite = False;
@@ -42,7 +40,6 @@ from json import JSONEncoder
 class ohObjectSave(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectList = [];
         self.Filename = "";
@@ -59,7 +56,6 @@ from json import JSONEncoder
 class ohObjectSaveString(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectList = [];
         self.Overwrite = False;

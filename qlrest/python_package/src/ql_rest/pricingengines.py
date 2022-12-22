@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlAnalyticCapFloorEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.HandleModel = "";
@@ -27,7 +26,6 @@ from json import JSONEncoder
 class qlBachelierCapFloorEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -45,7 +43,6 @@ from json import JSONEncoder
 class qlBachelierCapFloorEngine2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -64,7 +61,6 @@ from json import JSONEncoder
 class qlBinomialPricingEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.EngineID = "";
@@ -83,7 +79,6 @@ from json import JSONEncoder
 class qlBlackCalculator(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.OptionType = "";
@@ -104,7 +99,6 @@ from json import JSONEncoder
 class qlBlackCalculator2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.PayoffID = "";
@@ -124,7 +118,6 @@ from json import JSONEncoder
 class qlBlackCapFloorEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -143,7 +136,6 @@ from json import JSONEncoder
 class qlBlackCapFloorEngine2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -163,7 +155,6 @@ from json import JSONEncoder
 class qlBlackScholesCalculator(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.OptionType = "";
@@ -185,7 +176,6 @@ from json import JSONEncoder
 class qlBlackScholesCalculator2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.PayoffID = "";
@@ -206,7 +196,6 @@ from json import JSONEncoder
 class qlBlackSwaptionEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -224,7 +213,6 @@ from json import JSONEncoder
 class qlBlackSwaptionEngine2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -244,7 +232,6 @@ from json import JSONEncoder
 class qlBondEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -261,7 +248,6 @@ from json import JSONEncoder
 class qlDiscountingSwapEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.YieldCurve = "";
@@ -281,7 +267,6 @@ from json import JSONEncoder
 class qlJamshidianSwaptionEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Model = "";
@@ -299,7 +284,6 @@ from json import JSONEncoder
 class qlModelG2SwaptionEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Model = "";
@@ -318,7 +302,6 @@ from json import JSONEncoder
 class qlPricingEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.EngineID = "";
@@ -336,7 +319,6 @@ from json import JSONEncoder
 class qlTreeSwaptionEngine(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Model = "";

@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlMakeSwaption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SwapIndex = "";
@@ -30,7 +29,6 @@ from json import JSONEncoder
 class qlSwaption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.VanillaSwap = "";

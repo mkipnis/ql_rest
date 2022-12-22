@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlFRA(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.ValueDate = "";

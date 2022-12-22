@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlConstantSwaptionVolatility(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.NDays = 0;
@@ -31,7 +30,6 @@ from json import JSONEncoder
 class qlRelinkableHandleSwaptionVolatilityStructure(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.CurrentLink = "";
@@ -48,7 +46,6 @@ from json import JSONEncoder
 class qlSmileSectionByCube(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.VolCube = "";
@@ -67,7 +64,6 @@ from json import JSONEncoder
 class qlSmileSectionByCube2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.VolCube = "";
@@ -86,7 +82,6 @@ from json import JSONEncoder
 class qlSpreadedSwaptionVolatility(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.BaseVolStructure = "";
@@ -104,7 +99,6 @@ from json import JSONEncoder
 class qlSwaptionVTSMatrix(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Calendar = "";
@@ -126,7 +120,6 @@ from json import JSONEncoder
 class qlSwaptionVolCube1(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.AtmVolStructure = "";
@@ -156,7 +149,6 @@ from json import JSONEncoder
 class qlSwaptionVolCube2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.AtmVolStructure = "";

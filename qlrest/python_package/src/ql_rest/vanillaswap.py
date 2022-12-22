@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlMakeIMMSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SwapTenor = "";
@@ -33,7 +32,6 @@ from json import JSONEncoder
 class qlMakeVanillaSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SettlDays = 0;
@@ -57,7 +55,6 @@ from json import JSONEncoder
 class qlVanillaSwap(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.PayerReceiver = "";
@@ -83,7 +80,6 @@ from json import JSONEncoder
 class qlVanillaSwapFromSwapIndex(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SwapIndex = "";
@@ -101,7 +97,6 @@ from json import JSONEncoder
 class qlVanillaSwapFromSwapRateHelper(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.SwapRateHelper = "";

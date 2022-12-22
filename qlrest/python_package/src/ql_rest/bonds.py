@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlBond(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";
@@ -34,7 +33,6 @@ from json import JSONEncoder
 class qlCmsRateBond(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";
@@ -66,7 +64,6 @@ from json import JSONEncoder
 class qlFixedRateBond(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";
@@ -93,7 +90,6 @@ from json import JSONEncoder
 class qlFixedRateBond2(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";
@@ -119,7 +115,6 @@ from json import JSONEncoder
 class qlFloatingRateBond(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";
@@ -151,7 +146,6 @@ from json import JSONEncoder
 class qlZeroCouponBond(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Description = "";

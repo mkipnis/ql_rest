@@ -34,7 +34,7 @@
 #include "bond_pricer.hpp"
 
 
-auto bond_pricer_request_processor = [] (ql_rest::json_weak_ptr pricer_request)
+auto bond_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
     auto request_id = pricer_request->get<std::string>("request_id");
     std::cout << "Request : " << request_id << std::endl;

@@ -10,7 +10,6 @@ from json import JSONEncoder
 class qlBarrierOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.BarrierType = "";
@@ -31,7 +30,6 @@ from json import JSONEncoder
 class qlCaAsianOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.AverageType = "";
@@ -50,7 +48,6 @@ from json import JSONEncoder
 class qlDaAsianOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.AverageType = "";
@@ -72,7 +69,6 @@ from json import JSONEncoder
 class qlDividendVanillaOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Payoff = "";
@@ -92,7 +88,6 @@ from json import JSONEncoder
 class qlEuropeanOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Payoff = "";
@@ -110,7 +105,6 @@ from json import JSONEncoder
 class qlForwardVanillaOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Moneyness = 0.0;
@@ -130,7 +124,6 @@ from json import JSONEncoder
 class qlQuantoForwardVanillaOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Moneyness = 0.0;
@@ -150,7 +143,6 @@ from json import JSONEncoder
 class qlQuantoVanillaOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Payoff = "";
@@ -168,7 +160,6 @@ from json import JSONEncoder
 class qlVanillaOption(JSONEncoder):
 
     def __init__(self):
-        self.instanceID = ""
         
         self.ObjectId = "";
         self.Payoff = "";
