@@ -26,7 +26,10 @@ class MarketDataCache(threading.Thread):
         self.thread_lock = threading.Lock()
 
         if self.use_demo_data:
-            self.load_data()
+            try:
+                self.load_data()
+            finally:
+                pass
         else:
             self.stock_price_market_data = {}
             self.vol_cache = {}
