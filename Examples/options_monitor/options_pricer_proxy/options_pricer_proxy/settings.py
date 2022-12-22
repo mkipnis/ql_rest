@@ -131,3 +131,7 @@ STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static"), os.path.join(BASE_DIR,'fr
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+STORE_DEMO_DATA = False
+USE_DEMO_DATA = True
+

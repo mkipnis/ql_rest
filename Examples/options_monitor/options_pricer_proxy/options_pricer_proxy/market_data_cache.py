@@ -8,17 +8,26 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 from pytz import timezone
+import json
 
 from django.apps import AppConfig
+from django.conf import settings
 
 class MarketDataCache(threading.Thread):
 
     def __init__(self):
         super().__init__()
 
+        self.store_demo_data = getattr(settings, "STORE_DEMO_DATA", None)
+        self.use_demo_data = getattr(settings, "USE_DEMO_DATA", None)
+
         self.thread_lock = threading.Lock()
-        self.market_data = {}
-        self.vol_cache = {}
+
+        if self.use_demo_data:
+            self.load_data()
+        else:
+            self.stock_price_market_data = {}
+            self.vol_cache = {}
 
     # Get yahoo price
     def get_yp_market_price(self, ticker):
@@ -69,11 +78,11 @@ class MarketDataCache(threading.Thread):
         self.thread_lock.acquire()
 
         try:
-            if ticker not in self.market_data or force_reload == True:
+            if ticker not in self.stock_price_market_data or force_reload == True:
                 market_price = self.get_yp_market_price(ticker)
-                self.market_data[ticker] = market_price
+                self.stock_price_market_data[ticker] = market_price
 
-            yp_market_price = copy.deepcopy(self.market_data[ticker])
+            yp_market_price = copy.deepcopy(self.stock_price_market_data[ticker])
         finally:
             self.thread_lock.release()
 
@@ -92,6 +101,24 @@ class MarketDataCache(threading.Thread):
 
         return yp_vols
 
+    def store_data(self):
+        with open('demo_data/prices.json', 'w') as px_file:
+            json.dump(self.stock_price_market_data, px_file)
+            px_file.close()
+
+        with open('demo_data/vols.json', 'w') as vol_file:
+            json.dump(self.vol_cache, vol_file)
+            vol_file.close()
+
+    def load_data(self):
+        with open('demo_data/prices.json', 'r') as px_file:
+            self.stock_price_market_data = json.load(px_file)
+            px_file.close()
+
+        with open('demo_data/vols.json', 'r') as vol_file:
+            self.vol_cache = json.load(vol_file)
+            vol_file.close()
+
     def run(self):
 
         tz = timezone('EST')
@@ -100,7 +127,7 @@ class MarketDataCache(threading.Thread):
 
             current_est_time = datetime.now(tz)
 
-            if current_est_time.isoweekday() > 5:
+            if current_est_time.isoweekday() > 5 or self.use_demo_data:
                 time.sleep(60*60)
                 continue
 
@@ -115,7 +142,7 @@ class MarketDataCache(threading.Thread):
 
             self.thread_lock.acquire()
             try:
-                current_market_data_snapshot = copy.deepcopy(self.market_data)
+                current_market_data_snapshot = copy.deepcopy(self.stock_price_market_data)
             finally:
                 self.thread_lock.release()
 
@@ -124,6 +151,9 @@ class MarketDataCache(threading.Thread):
                     print('Lets reload : ' + ticker)
                     self.get_price(ticker, True)
                     self.get_vols(ticker, True)
+
+            if self.store_demo_data and len(current_market_data_snapshot) > 0:
+                self.store_data()
 
             time.sleep(60)
 
