@@ -21,7 +21,7 @@ class MarketDataCache(threading.Thread):
 
         self.store_demo_data = getattr(settings, "STORE_DEMO_DATA", None)
         self.use_demo_data = getattr(settings, "USE_DEMO_DATA", None)
-        self.base_dir = getattr(settings, "BASE_DIR", None)
+        self.base_dir = str(getattr(settings, "BASE_DIR", None))
 
         self.thread_lock = threading.Lock()
 
