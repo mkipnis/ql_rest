@@ -25,14 +25,16 @@ class MarketDataCache(threading.Thread):
 
         self.thread_lock = threading.Lock()
 
+        self.stock_price_market_data = {}
+        self.vol_cache = {}
+
         if self.use_demo_data:
             try:
                 self.load_data()
+            except OSError as e:
+                pass
             finally:
                 pass
-        else:
-            self.stock_price_market_data = {}
-            self.vol_cache = {}
 
     # Get yahoo price
     def get_yp_market_price(self, ticker):
@@ -137,7 +139,7 @@ class MarketDataCache(threading.Thread):
                 continue
 
             is_market_open_time = (((current_est_time.hour * 60 + current_est_time.minute) > 9 * 60 + 30) and
-                                   ((current_est_time.hour * 60 + current_est_time.minute) < 16 * 60 + 30))
+                                   ((current_est_time.hour * 60 + current_est_time.minute) < 17 * 60 + 30))
 
             if is_market_open_time == False:
                 time.sleep(60)
