@@ -126,7 +126,11 @@ function App() {
        greeksPanelRef.current.update_greeks(greeks);
        setError(pricingResults.error);
        setPricingDisabled(false);
-       greeksPanelRef.current.flash_stike(selectedStrike);
+       if (selectedStrike !== undefined )
+       {
+         greeksPanelRef.current.flash_stike(selectedStrike);
+       }
+       
        setPricingToken(undefined);
 
      }

@@ -24,7 +24,8 @@ const StockPanel = React.forwardRef ((props, ref) => {
         { field: 'Name',   sortable: true, width:200 },
         { field: 'Price',  sortable: false,width:30, flex:1,  cellStyle: {}, editable: true, cellStyle: { 'textAlign': 'right'},
           valueFormatter: params => {
-                if (!isNaN(params.value)) return params.value.toFixed(2);
+                if (!isNaN(params.value))
+                 return parseFloat(params.value).toFixed(2);
               } },
       ]}
   ];
