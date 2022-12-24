@@ -48,6 +48,8 @@ class MarketDataCache(threading.Thread):
             data = stock.history()
             yp_price['price'] = data['Close'].iloc[-1]
 
+        yp_price['price'] = round(yp_price['price'], 2)
+
         yp_price['timestamp'] = current_timestamp
 
         return yp_price
@@ -135,11 +137,11 @@ class MarketDataCache(threading.Thread):
             current_est_time = datetime.now(tz)
 
             if current_est_time.isoweekday() > 5 or self.use_demo_data:
-                time.sleep(60*60)
-                continue
+               time.sleep(60*60)
+               continue
 
             is_market_open_time = (((current_est_time.hour * 60 + current_est_time.minute) > 9 * 60 + 30) and
-                                   ((current_est_time.hour * 60 + current_est_time.minute) < 17 * 60 + 30))
+                                   ((current_est_time.hour * 60 + current_est_time.minute) < 16 * 60 + 30))
 
             if is_market_open_time == False:
                 time.sleep(60)
