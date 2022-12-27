@@ -1,6 +1,6 @@
 # ql_rest
 
-`ql_rest` is an experimental RESTful interface for QuantLib. This project aims to simplify the development of microservices for risk management and pricing various financial instruments in the distributed environment in real-time.
+`ql_rest` is an experimental RESTful interface for QuantLib. This project aims to simplify the development of microservices for risk management and pricing various of financial instruments in the distributed environment in real-time.
 
 `ql_rest` package includes conversion classes between JSON and QuantLibAddin/C++, Python classes to simplify serialization of JSON Objects to QuantLibAddin/C++, and Examples.
 
