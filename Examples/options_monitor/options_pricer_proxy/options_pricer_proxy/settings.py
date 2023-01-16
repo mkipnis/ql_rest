@@ -132,5 +132,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-STORE_DEMO_DATA = True
+STORE_DEMO_DATA = False
 USE_DEMO_DATA = True
