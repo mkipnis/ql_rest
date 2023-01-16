@@ -70,8 +70,8 @@ class MarketDataCache(threading.Thread):
         exps = stock.options
 
         provided_exps = len(exps)
-        if provided_exps > 3:  # Near, Far, FarFar
-            provided_exps = 3
+        if provided_exps > 9:
+            provided_exps = 9
 
         options_data = {}
 
@@ -125,8 +125,24 @@ class MarketDataCache(threading.Thread):
             px_file.close()
 
         with open(self.base_dir+'/demo_data/vols.json', 'r') as vol_file:
-            self.vol_cache = json.load(vol_file)
+            vols = json.load(vol_file)
             vol_file.close()
+
+            self.vol_cache = self.filter_out_expired_vol_data(vols)
+
+    def filter_out_expired_vol_data(self, vols):
+
+        vols_out = {}
+
+        for ticker, vol_dict in vols.items():
+
+            vols_out[ticker]={}
+            for expiration, vols in vol_dict.items():
+                expiration_date=datetime.strptime(expiration, '%Y-%m-%d').date()
+                if expiration_date > datetime.now().date():
+                    vols_out[ticker][expiration]=vols
+
+        return vols_out
 
     def run(self):
 
@@ -136,9 +152,9 @@ class MarketDataCache(threading.Thread):
 
             current_est_time = datetime.now(tz)
 
-            if current_est_time.isoweekday() > 5 or self.use_demo_data:
-               time.sleep(60*60)
-               continue
+            if current_est_time.isoweekday() > 5 or (self.use_demo_data == True and self.store_demo_data == False):
+                time.sleep(60*60)
+                continue
 
             is_market_open_time = (((current_est_time.hour * 60 + current_est_time.minute) > 9 * 60 + 30) and
                                    ((current_est_time.hour * 60 + current_est_time.minute) < 16 * 60 + 30))
