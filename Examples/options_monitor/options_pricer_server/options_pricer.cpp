@@ -72,7 +72,8 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
          
          auto vols_and_payoffs = pricer_request->get_child("vols_and_payoffs");
          
-         auto idExercise = ql_rest::exercise::qlEuropeanExercise(pricer_request->get_child("exercise"));
+         auto exercise = pricer_request->get_child("exercise");
+         auto idExercise = ql_rest::exercise::qlEuropeanExercise(exercise);
          
          
          auto pricer = [&]( std::string option_type )
@@ -111,6 +112,11 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
 
                  risk_and_npv.put("Strike",closest( ql_striked_type_payoff.get<double>("Strike") ) );
                  risk_and_npv.put(option_type + "_vol",black_constant_vol.get<double>("Volatility") );
+                 risk_and_npv.put("Underlying",closest( id_generalized_black_scholes_process.get<double>("Underlying") ) );
+                 risk_and_npv.put("RiskFreeRate", id_generalized_black_scholes_process.get<double>("RiskFreeRate") );
+                 risk_and_npv.put("valuation_date", QuantLib::detail::iso_date_holder(settlement_date));
+                 risk_and_npv.put("expiration_date", exercise.get<std::string>("ExpiryDate"));
+                 
                  risk_and_npv.put(option_type + "_npv",closest( ObjectIdLibObjPtr->NPV() ) );
                  risk_and_npv.put(option_type + "_delta", closest( ObjectIdLibObjPtr->delta() ) );
                  risk_and_npv.put(option_type + "_vega", closest( ObjectIdLibObjPtr->vega() ) );
@@ -119,7 +125,6 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
                  risk_and_npv.put(option_type + "_rho", closest( ObjectIdLibObjPtr->rho() ) );
         
                  options_risk_and_npv.push_back(std::make_pair("", risk_and_npv));
-                 
              });
              
              return options_risk_and_npv;

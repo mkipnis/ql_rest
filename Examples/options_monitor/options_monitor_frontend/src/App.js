@@ -7,6 +7,7 @@ import StockPanel from './components/StockPanel'
 import VolPanel from './components/VolPanel'
 import SmilePanel from './components/SmilePanel'
 import GreeksPanel from './components/GreeksPanel'
+import SingleStrikePricer from './components/SingleStrikePricer'
 import Dropdown from './components/Dropdown'
 
 
@@ -44,6 +45,7 @@ function App() {
   const [volUpdate, setVolUpdate] = useState();
   const [volData, setVolData] = useState();
   const [selectedStrike, setSelectedStrike] = useState();
+  const [selectedStrikeWithGreeks, setSelectedStrikeWithGreeks] = useState();
   const [riskFreeRate, setRiskFreeRate] = useState(0.0025);
   const [ratePlaceHolder, setRatePlaceHolder] = useState(riskFreeRate * 100.0 );
 
@@ -96,7 +98,7 @@ function App() {
    var iso_date_components = exerciseDate.value.split('-')
    var updated_date = parseInt(iso_date_components[2])+1
 
-   price_request['exercise']['ExpiryDate'] = iso_date_components[0] + '-' + iso_date_components[1] + '-' + updated_date
+   price_request['exercise']['ExpiryDate'] = iso_date_components[0] + '-' + iso_date_components[1] + '-' + updated_date.toString().padStart(2, '0')
    price_request['exercise']['Permanent'] = false
    price_request['exercise']['Trigger'] = false
    price_request['exercise']['Overwrite'] = false
@@ -130,7 +132,7 @@ function App() {
        {
          greeksPanelRef.current.flash_stike(selectedStrike);
        }
-       
+
        setPricingToken(undefined);
 
      }
@@ -187,7 +189,7 @@ function App() {
                 <Col style={{marginTop:'10px', textAlign:'Right'}}>
                 <Row>
                   <Col style={{marginLeft:'95px'}}> <h6>Risk Free Rate:</h6> </Col>
-                  <Col style={{marginRight:'10px'}}> <h6> <input type="number" value={ratePlaceHolder} style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25} onChange={(e)=> { setRatePlaceHolder(e.target.value);}} onKeyDown={(e)=> {
+                  <Col style={{marginRight:'10px'}}> <h6> <input type="number" value={ratePlaceHolder} style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25} onChanged={(e)=> { setRatePlaceHolder(e.target.value);}} onKeyDown={(e)=> {
                     if(e.key === 'Enter' || e.key === 'Tab') { var risk_free_rate = Number(ratePlaceHolder)/100.0; setRiskFreeRate(risk_free_rate); }
                   }} /> </h6> </Col>
                 </Row>
@@ -318,7 +320,14 @@ function App() {
     </Row>
     <Row>
       <Col>
-        <GreeksPanel volData={volData} workingPrice={workingPrice} marketPrice={stockTicker} selectedStrike={selectedStrike} ref={greeksPanelRef}  />
+        <GreeksPanel volData={volData} workingPrice={workingPrice} marketPrice={stockTicker}
+          selectedStrike={selectedStrike} ref={greeksPanelRef}
+          strikeSelectedCallback={ (strikeWithGreeks) => {
+            setSelectedStrikeWithGreeks(strikeWithGreeks);
+          } }/>
+      </Col>
+      <Col>
+        <SingleStrikePricer strikeWithGreeks = {selectedStrikeWithGreeks}/>
       </Col>
     </Row>
   </Container>

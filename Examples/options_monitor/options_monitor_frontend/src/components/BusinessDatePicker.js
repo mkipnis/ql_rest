@@ -22,31 +22,18 @@ const BusinessDatePicker = React.forwardRef ((props, ref) => {
   }, [props.selected_date]);
 
   return (
-    <Container style={{marginTop:'5px'}}>
-      <Row>
 
-      <Col style={{textAlign: 'right'}}>
+    <Container fluid="md">
+        <Row>
+
+      <Col style={{textAlign: 'right', opacity: '0.7'}}>
         <div className="text-nowrap">
           {props.label}
         </div>
       </Col>
 
       <Col>
-        <style>
-          {`.date-picker
-            font-size: 80px;
-             input { height: '40px',
-                        font-size: '25px',
-                        width: '100%'}`}
-        </style>
-        <DatePicker selected={selectedDate} onChange ={(date)=>
-          {
-            setSelectedDate(date);
-            props.onValueChange(props.elementName, date);
-          }
-        }
-
-          wrapperClassName="date-picker"/>
+        <DatePicker selected={selectedDate} onChange ={(date)=>{setSelectedDate(date);props.onValueChange(props.elementName, date);}}/>
       </Col>
 
       </Row>
