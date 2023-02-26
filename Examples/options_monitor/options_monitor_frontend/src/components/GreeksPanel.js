@@ -9,6 +9,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham-dark.css';
 
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+import { Container, Row, Col } from 'react-bootstrap/';
 
 const { forwardRef, useRef, useImperativeHandle } = React;
 
@@ -93,6 +94,14 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
 
     getRowHeight: (params) => 25,
 
+    onRowSelected(event) {
+
+      if (!event.node.selected || event.data.RiskFreeRate === undefined)
+        return;
+
+      props.strikeSelectedCallback(event);
+    },
+
   }
 
   useEffect(() => {
@@ -150,6 +159,10 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
           if ( strike_greeks != undefined )
           {
             node.setData(strike_greeks);
+            if (node.selected === true)
+            {
+              props.strikeSelectedCallback(node);
+            }
           }
       }
       );
@@ -182,7 +195,14 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
 
    return (
       <div>
-        <div className="App-Row">
+        <Row>
+        <Col style={{textAlign: 'center', marginTop:'10px'}}>
+        <h6>
+          <b>Straddle</b>
+        </h6>
+        </Col>
+        </Row>
+        <Row>
             <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"40vh", width: "100%", display: "inline-block", margin: "auto", padding:"10px"}}>
             <AgGridReact
                       rowData={props.volData}
@@ -191,7 +211,7 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
                       ref={greeksGridRef}>
             </AgGridReact>
             </div>
-          </div>
+          </Row>
       </div>
      )
   });
