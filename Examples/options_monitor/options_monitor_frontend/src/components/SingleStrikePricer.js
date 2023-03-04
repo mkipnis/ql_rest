@@ -20,6 +20,8 @@ import LabeledNumericInput from './LabeledNumericInput'
 
 import uuid from 'react-uuid'
 
+import '../App.css';
+
 const { forwardRef, useRef, useImperativeHandle } = React;
 
 const SingleStrikePricer = React.forwardRef ((props, ref) => {
@@ -70,7 +72,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
 
     var greeks = [];
 
-    var npv = {'name':'NPV',
+    var npv = {'name':'Price',
               'call':data.call_npv,
               'put':data.put_npv};
     greeks.push(npv);
@@ -280,7 +282,7 @@ return (
             </Col>
           </Row>
           <Row>
-          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"20vh", width: "80%", display: "inline-block", margin: "auto", padding:"10px"}}>
+          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"25vh", width: "80%", display: "inline-block", margin: "auto", padding:"10px"}}>
           <AgGridReact
                   rowData={greeksData}
                   columnDefs={greeksGridColumnDefs}

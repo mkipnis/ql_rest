@@ -20,17 +20,17 @@ const VolPanel = React.forwardRef ((props, ref) => {
 
   function compareCall(params) {
     if (params.data.Strike <= props.marketPrice.Price ){
-      return {'textAlign': 'right', paddingRight:'20px', color: 'rgba(75,192,192,1)'};
+      return {'textAlign': 'right', color: 'rgba(75,192,192,1)'};
     } else {
-      return {'textAlign': 'right', paddingRight:'20px', color: 'rgba(75,192,192,0.7)'};
+      return {'textAlign': 'right', color: 'rgba(75,192,192,0.7)'};
     }
   }
 
   function comparePut(params) {
     if (params.data.Strike >= props.marketPrice.Price ){
-      return {'textAlign': 'right', paddingRight:'20px', color: 'rgba(255, 99, 132,1)'};
+      return {'textAlign': 'right', color: 'rgba(255, 99, 132,1)'};
     } else {
-      return {'textAlign': 'right', paddingRight:'20px', color: 'rgba(255, 99, 132,0.7)'};
+      return {'textAlign': 'right', color: 'rgba(255, 99, 132,0.7)'};
     }
   }
 
