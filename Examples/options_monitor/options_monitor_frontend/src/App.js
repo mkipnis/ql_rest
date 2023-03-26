@@ -95,7 +95,7 @@ function App() {
    price_request['exercise'] = {}
    price_request['exercise']['ObjectId'] = request_id + "/" + stockTicker.Symbol
 
-   var expiry_date = new Date(exerciseDate.value.split('-'))
+   var expiry_date = new Date(Date.parse(exerciseDate.value))
    expiry_date.setDate(expiry_date.getDate() + 1)
 
    price_request['exercise']['ExpiryDate'] =  expiry_date.toLocaleString("default", { year: "numeric" }) + "-" +
