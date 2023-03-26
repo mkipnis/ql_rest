@@ -95,10 +95,13 @@ function App() {
    price_request['exercise'] = {}
    price_request['exercise']['ObjectId'] = request_id + "/" + stockTicker.Symbol
 
-   var iso_date_components = exerciseDate.value.split('-')
-   var updated_date = parseInt(iso_date_components[2])+1
+   var expiry_date = new Date(exerciseDate.value.split('-'))
+   expiry_date.setDate(expiry_date.getDate() + 1)
 
-   price_request['exercise']['ExpiryDate'] = iso_date_components[0] + '-' + iso_date_components[1] + '-' + updated_date.toString().padStart(2, '0')
+   price_request['exercise']['ExpiryDate'] =  expiry_date.toLocaleString("default", { year: "numeric" }) + "-" +
+      expiry_date.toLocaleString("default", { month: "2-digit" }) + "-" +
+      expiry_date.toLocaleString("default", { day: "2-digit" })
+
    price_request['exercise']['Permanent'] = false
    price_request['exercise']['Trigger'] = false
    price_request['exercise']['Overwrite'] = false

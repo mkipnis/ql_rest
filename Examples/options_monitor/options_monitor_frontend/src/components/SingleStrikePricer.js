@@ -282,7 +282,7 @@ return (
             </Col>
           </Row>
           <Row>
-          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"25vh", width: "80%", display: "inline-block", margin: "auto", padding:"10px"}}>
+          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"20vh", width: "80%", display: "inline-block", margin: "auto", padding:"10px"}}>
           <AgGridReact
                   rowData={greeksData}
                   columnDefs={greeksGridColumnDefs}
