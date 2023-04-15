@@ -8,3 +8,11 @@ services:
     ports:
       - 8000:8000
 
+  swap_designer:
+    image: ql_rest
+    command: ["bash", "-c", "cd /ql_rest_deps_build/ql_rest/Examples/swap_designer/; ./run_designer.sh"]
+    volumes:
+      - $PWD:/opt/workspace
+    ports:
+      - 3000:3000
+      - 7922:7922

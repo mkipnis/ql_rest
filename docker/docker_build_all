@@ -35,4 +35,5 @@ EXPOSE 8000
 WORKDIR /ql_rest_deps_build/ql_rest/Examples/swap_designer
 RUN ./build_frontend.sh
 
+EXPOSE 7922
 EXPOSE 3000
