@@ -10,8 +10,6 @@ swap_pricer/$PRICER &
 sleep 1
 
 cd swap_designer_front_end
-npm install
-npm run build
 npm start
 
 # Pricer 1 

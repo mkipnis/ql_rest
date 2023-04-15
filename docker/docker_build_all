@@ -1,0 +1,38 @@
+FROM ubuntu:20.04
+FROM gcc
+
+RUN apt-get update
+RUN apt-get install -y vim
+RUN apt-get install -y libtool
+RUN apt-get install -y curl wget
+RUN apt-get install -y npm
+RUN apt-get install -y python3-pip
+
+RUN mkdir -p /ql_rest_deps_build
+
+WORKDIR /ql_rest_deps_build
+
+ADD build_boost.sh .
+RUN ./build_boost.sh
+
+ADD build_quantlib.sh .
+RUN ./build_quantlib.sh
+
+ADD build_gensrc_obj_handler.sh .
+RUN ./build_gensrc_obj_handler.sh
+
+ADD build_quantlib_addin.sh .
+RUN ./build_quantlib_addin.sh
+
+ADD build_ql_rest.sh .
+RUN ./build_ql_rest.sh
+
+WORKDIR /ql_rest_deps_build/ql_rest/Examples/options_monitor/
+RUN ./setup_options_monitor.sh
+
+EXPOSE 8000
+
+WORKDIR /ql_rest_deps_build/ql_rest/Examples/swap_designer
+RUN ./build_frontend.sh
+
+EXPOSE 3000

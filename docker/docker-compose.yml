@@ -1,0 +1,10 @@
+version: '2'
+services:
+  options_monitor:
+    image: ql_rest
+    command: ["bash", "-c", "cd /ql_rest_deps_build/ql_rest/Examples/options_monitor/; ./start_options_monitor.sh"]
+    volumes:
+      - $PWD:/opt/workspace
+    ports:
+      - 8000:8000
+
