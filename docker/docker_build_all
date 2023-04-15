@@ -24,15 +24,18 @@ RUN ./build_gensrc_obj_handler.sh
 ADD build_quantlib_addin.sh .
 RUN ./build_quantlib_addin.sh
 
+WORKDIR /
+RUN rm -rf /ql_rest_deps_build
+
 ADD build_ql_rest.sh .
 RUN ./build_ql_rest.sh
 
-WORKDIR /ql_rest_deps_build/ql_rest/Examples/options_monitor/
+WORKDIR /ql_rest/Examples/options_monitor/
 RUN ./setup_options_monitor.sh
 
 EXPOSE 8000
 
-WORKDIR /ql_rest_deps_build/ql_rest/Examples/swap_designer
+WORKDIR /ql_rest/Examples/swap_designer
 RUN ./build_frontend.sh
 
 EXPOSE 7922

@@ -14,12 +14,12 @@ cd $DEPS_BUILD_DIR
 tar xvf $GENSRC_PKG.tar.gz
 tar xvf $GENSRC_PKG.tar.gz
 cd $GENSRC_PKG
-./configure --prefix=$INSTALL_DIR --exec-prefix=$INSTALL_DIR 
+./configure CXXFLAGS="-O2" --prefix=$INSTALL_DIR --exec-prefix=$INSTALL_DIR 
 make install
 
 
 cd $DEPS_BUILD_DIR
 tar xvf $OBJECTHANDLER_PKG.tar.gz
 cd $OBJECTHANDLER_PKG
-./configure --with-gensrc=$DEPS_BUILD_DIR/gensrc-1.22.0 --without-log4cxx
+./configure CXXFLAGS="-O2" --with-gensrc=$DEPS_BUILD_DIR/gensrc-1.22.0 --without-log4cxx
 make install

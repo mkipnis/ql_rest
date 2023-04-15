@@ -11,5 +11,5 @@ QUANTLIB_PKG=QuantLib-1.22
 cd $DEPS_BUILD_DIR
 tar xvf $QUANTLIB_PKG.tar.gz
 cd $QUANTLIB_PKG
-./configure
+./configure  CXXFLAGS="-O2"
 make install

@@ -11,5 +11,5 @@ QUANTLIBADDIN_PKG=QuantLibAddin-1.22.0
 cd $DEPS_BUILD_DIR
 tar xvf $QUANTLIBADDIN_PKG.tar.gz
 cd $QUANTLIBADDIN_PKG
-./configure CXXFLAGS="-DWAZOO_64_BIT"  --with-gensrc=$DEPS_BUILD_DIR/gensrc-1.22.0 --enable-addin-cpp --with-oh=$DEPS_BUILD_DIR/ObjectHandler-1.22.0
+./configure CXXFLAGS="-DWAZOO_64_BIT -O2"  --with-gensrc=$DEPS_BUILD_DIR/gensrc-1.22.0 --enable-addin-cpp --with-oh=$DEPS_BUILD_DIR/ObjectHandler-1.22.0
 make install -j 10
