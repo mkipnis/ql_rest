@@ -2,11 +2,7 @@ FROM ubuntu:20.04
 FROM gcc
 
 RUN apt-get update
-RUN apt-get install -y vim
-RUN apt-get install -y libtool
-RUN apt-get install -y curl wget
-RUN apt-get install -y npm
-RUN apt-get install -y python3-pip
+RUN apt-get install --no-install-recommends -y vim libtool curl wget npm python3-pip
 
 RUN mkdir -p /ql_rest_deps_build
 

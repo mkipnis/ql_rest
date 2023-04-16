@@ -1,7 +1,7 @@
 version: '2'
 services:
   options_monitor:
-    image: ql_rest
+    image: ghcr.io/mkipnis/ql_rest:latest
     command: ["bash", "-c", "cd /ql_rest/Examples/options_monitor/; ./start_options_monitor.sh"]
     volumes:
       - $PWD:/opt/workspace
@@ -9,7 +9,7 @@ services:
       - 8000:8000
 
   swap_designer:
-    image: ql_rest
+    image: ghcr.io/mkipnis/ql_rest:latest
     command: ["bash", "-c", "cd /ql_rest/Examples/swap_designer/; ./run_designer.sh"]
     volumes:
       - $PWD:/opt/workspace
