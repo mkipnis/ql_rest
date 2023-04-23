@@ -1,3 +1,5 @@
+#pragma once
+
 #include <qlo/qladdindefines.hpp>
 #include <qlo/handle.hpp>
 %(categoryIncludes)s
