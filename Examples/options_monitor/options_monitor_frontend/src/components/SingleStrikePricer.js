@@ -102,6 +102,11 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
               'put':data.put_rho};
     greeks.push(rho);
 
+    var vol = {'name':'Vol',
+              'call':data.call_vol*100.0,
+              'put':data.put_vol*100.0};
+    greeks.push(vol);
+
     return greeks;
   }
 
@@ -200,7 +205,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
 
 
 return (
-   <div  style={{marginTop:'20px'}}>
+   <div>
 
      <Row>
       <Col style={{textAlign: 'center'}}>
@@ -210,10 +215,9 @@ return (
       </Col>
      </Row>
       <Row>
-
         <Col>
 
-        <Row style={{margin: '10px'}}>
+        <Row>
           <Col style={{textAlign: 'center'}}>
           <h6>
             Term Structure
@@ -221,6 +225,7 @@ return (
           </Col>
         </Row>
 
+        <Col style={{padding:'20px',backgroundColor:'#21222A', border:'1px solid #404040'}}>
           <h6>
           <Row>
             <LabeledNumericInput label="Stock Price:" value={stockPrice} elementName="stockPrice"
@@ -266,23 +271,29 @@ return (
             step={0.5}/>
           </Row>
           </h6>
-          <Row style={{textAlign:'right'}}>
+
+          </Col>
+
+          <Row style={{textAlign:'center'}}>
             <div className="main--sub--title">
               (Change the term structure and press Tab or Enter to Re-Price)
             </div>
           </Row>
         </Col>
-
         <Col style={pricingDisabled ? {pointerEvents: "none", opacity: "0.5"} : {}}>
           <Row>
-            <Col style={{textAlign: 'center'}}>
+            <Col>
             <h6>
-              Results
+              <Row>
+                <Col style={{textAlign: 'center'}}>
+                  Results
+                </Col>
+              </Row>
             </h6>
             </Col>
           </Row>
           <Row>
-          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"20vh", width: "80%", display: "inline-block", margin: "auto", padding:"10px"}}>
+          <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"22vh", width: "80%", display: "inline-block", margin: "auto"}}>
           <AgGridReact
                   rowData={greeksData}
                   columnDefs={greeksGridColumnDefs}
@@ -290,6 +301,20 @@ return (
                   ref={greeksGridRef}>
             </AgGridReact>
         </div>
+          </Row>
+          <Row style={{width:'80%', margin: 'auto', padding:'10px'}}>
+            <Col>
+              Spot: {stockPrice}
+            </Col>
+            <Col>
+              Strike: {strikePrice}
+            </Col>
+            <Col>
+              CallVol: {callVol}
+            </Col>
+            <Col>
+              PutVol: {putVol}
+            </Col>
           </Row>
         </Col>
       </Row>

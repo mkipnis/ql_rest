@@ -321,14 +321,18 @@ function App() {
         {error}
       </Col>
     </Row>
-    <Row>
+    <Row style={{textAlign: 'center', marginTop:'20px'}}>
       <Col>
-        <GreeksPanel volData={volData} workingPrice={workingPrice} marketPrice={stockTicker}
-          selectedStrike={selectedStrike} ref={greeksPanelRef}
-          strikeSelectedCallback={ (strikeWithGreeks) => {
-            setSelectedStrikeWithGreeks(strikeWithGreeks);
-          } }/>
-      </Col>
+        <GreeksPanel volData={volData}
+                    workingPrice={workingPrice}
+                    marketPrice={stockTicker}
+                    selectedStrike={selectedStrike}
+                    ref={greeksPanelRef}
+
+                    strikeSelectedCallback={ (strikeWithGreeks) => {
+                      setSelectedStrikeWithGreeks(strikeWithGreeks);
+                    } }/>
+          </Col>
       <Col>
         <SingleStrikePricer strikeWithGreeks = {selectedStrikeWithGreeks}/>
       </Col>

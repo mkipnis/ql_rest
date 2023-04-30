@@ -196,7 +196,7 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
    return (
       <div>
         <Row>
-        <Col style={{textAlign: 'center', marginTop:'10px'}}>
+        <Col>
         <h6>
           <b>Straddle</b>
         </h6>

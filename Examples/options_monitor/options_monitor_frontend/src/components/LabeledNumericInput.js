@@ -25,7 +25,7 @@ const LabeledNumericInput = React.forwardRef ((props, ref) => {
         <Col xs={6} style={{textAlign: 'right', opacity: '0.7'}}>
           {props.label}
         </Col>
-      <Col xs={6}>
+      <Col xs={6}  style={{textAlign: 'left'}}>
 
 
               <input type="number" value={currentValue} style={{width: '100px', paddingLeft:'5px'} } step={props.step}
