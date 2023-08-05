@@ -2,7 +2,6 @@
 
 pip3 install django
 pip3 install yfinance
-pip3 install corsheaders
 pip3 install django-cors-headers
 pip3 install djangorestframework
 
