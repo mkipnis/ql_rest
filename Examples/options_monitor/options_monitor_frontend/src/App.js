@@ -192,9 +192,17 @@ function App() {
                 <Col style={{marginTop:'10px', textAlign:'Right'}}>
                 <Row>
                   <Col style={{marginLeft:'95px'}}> <h6>Risk Free Rate:</h6> </Col>
-                  <Col style={{marginRight:'10px'}}> <h6> <input type="number" value={ratePlaceHolder} style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25} onChanged={(e)=> { setRatePlaceHolder(e.target.value);}} onKeyDown={(e)=> {
-                    if(e.key === 'Enter' || e.key === 'Tab') { var risk_free_rate = Number(ratePlaceHolder)/100.0; setRiskFreeRate(risk_free_rate); }
-                  }} /> </h6> </Col>
+                  <Col style={{marginRight:'10px'}}> <h6>
+                  <input type="number" value={ratePlaceHolder}
+                  style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25}
+                  onChange={(e)=> { 
+                    setRatePlaceHolder(e.target.value);
+                  }}
+                  onKeyDown={(e)=> {
+                    if(e.key === 'Enter' || e.key === 'Tab')
+                    { var risk_free_rate = Number(ratePlaceHolder)/100.0;
+                      setRiskFreeRate(risk_free_rate); }
+                    }} /> </h6> </Col>
                 </Row>
               <Row>
           <Col  style={{textAlign:'Left'}}>
