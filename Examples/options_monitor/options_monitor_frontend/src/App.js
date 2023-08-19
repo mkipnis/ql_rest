@@ -95,7 +95,12 @@ function App() {
    price_request['exercise'] = {}
    price_request['exercise']['ObjectId'] = request_id + "/" + stockTicker.Symbol
 
-   var expiry_date = new Date(Date.parse(exerciseDate.value))
+   var exerciseDateStr = exerciseDate.value;
+   var y = exerciseDateStr.substring(0,4),
+       m = parseInt(exerciseDateStr.substring(5,7)-1),
+       d = exerciseDateStr.substring(8,10);
+
+   var expiry_date = new Date(y,m,d);
    expiry_date.setDate(expiry_date.getDate() + 1)
 
    price_request['exercise']['ExpiryDate'] =  expiry_date.toLocaleString("default", { year: "numeric" }) + "-" +
@@ -195,7 +200,7 @@ function App() {
                   <Col style={{marginRight:'10px'}}> <h6>
                   <input type="number" value={ratePlaceHolder}
                   style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25}
-                  onChange={(e)=> { 
+                  onChange={(e)=> {
                     setRatePlaceHolder(e.target.value);
                   }}
                   onKeyDown={(e)=> {
