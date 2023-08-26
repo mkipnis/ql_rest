@@ -8,10 +8,14 @@ def get_yp_market_price(ticker):
 
     current_timestamp = int(time.time())
     stock = yf.Ticker(ticker)
-    stock.info
+    #print(stock.info)
 
     yp_price = {}
-    yp_price['price'] = stock.info['regularMarketPrice']
+    if 'regularMarketPrice' in stock.info:
+        yp_price['price'] = stock.info['regularMarketPrice']
+    else:
+        yp_price['price'] = stock.info['regularMarketPreviousClose']
+
     if yp_price['price'] == None:
         data = stock.history()
         yp_price['price'] = data['Close'].iloc[-1]
@@ -56,7 +60,7 @@ def store_prices(base_dir, stock_price_market_data):
         json.dump(stock_price_market_data, px_file)
         px_file.close()
 
-def store_prices(base_dir, vol_data):
+def store_vols(base_dir, vol_data):
     with open(base_dir+'/demo_data/vols.json', 'w') as vol_file:
         json.dump(vol_data, vol_file)
         vol_file.close()
@@ -65,9 +69,12 @@ if __name__ == '__main__':
 
     tickers = 'MMM,AXP,AMGN,AAPL,BA,CAT,CVX,CSCO,KO,DIS,DOW,GS,HD,HON,IBM,INTC,JNJ,JPM,MCD,MRK,MSFT,NKE,PG,CRM,TRV,UNH,VZ,V,WBA,WMT'
 
+    price_data = {}
     vol_data = {}
     for ticker in tickers.split(','):
-        print("Retrieving Vols:" + ticker)
+        print("Retrieving Prices and Vols:" + ticker)
+        price_data[ticker] = get_yp_market_price(ticker)
         vol_data[ticker] = get_yp_vols(ticker)
 
-    store_prices('../',vol_data)
+    store_prices('../', price_data)
+    store_vols('../', vol_data)
