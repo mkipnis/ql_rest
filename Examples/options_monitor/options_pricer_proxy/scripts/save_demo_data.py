@@ -11,10 +11,15 @@ def get_yp_market_price(ticker):
     #print(stock.info)
 
     yp_price = {}
-    if 'regularMarketPrice' in stock.info:
-        yp_price['price'] = stock.info['regularMarketPrice']
-    else:
-        yp_price['price'] = stock.info['regularMarketPreviousClose']
+
+    if stock.info is not None:
+        if 'regularMarketPrice' in stock.info:
+            yp_price['price'] = stock.info['regularMarketPrice']
+        else:
+            yp_price['price'] = stock.info['regularMarketPreviousClose']
+
+        if 'dividendRate' in stock.info:
+            yp_price['dividendRate'] = stock.info['dividendRate']
 
     if yp_price['price'] == None:
         data = stock.history()
@@ -71,6 +76,7 @@ if __name__ == '__main__':
 
     price_data = {}
     vol_data = {}
+    div_data = {}
     for ticker in tickers.split(','):
         print("Retrieving Prices and Vols:" + ticker)
         price_data[ticker] = get_yp_market_price(ticker)

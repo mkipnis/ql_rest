@@ -130,8 +130,11 @@ class MarketDataCache(threading.Thread):
 
             self.vol_cache = self.filter_out_expired_vol_data(vols)
 
-    def filter_out_expired_vol_data(self, vols):
+        with open(self.base_dir+'/demo_data/risk_free_rates.json', 'r') as risk_free_rates_file:
+            self.stock_price_market_data['risk_free_rates'] = json.load(risk_free_rates_file)
+            risk_free_rates_file.close()
 
+    def filter_out_expired_vol_data(self, vols):
         vols_out = {}
 
         for ticker, vol_dict in vols.items():

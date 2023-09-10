@@ -21,12 +21,27 @@ const StockPanel = React.forwardRef ((props, ref) => {
       headerName : 'Stock Tickers',
       children: [
         { field: 'Symbol',  sortable: true, width:70, cellStyle: { 'fontWeight': 'bold' }},
-        { field: 'Name',   sortable: true, width:200 },
+        { field: 'Name',   sortable: true, width:175 },
         { field: 'Price',  sortable: false,width:30, flex:1,  cellStyle: {}, editable: true, cellStyle: { 'textAlign': 'right'},
           valueFormatter: params => {
                 if (!isNaN(params.value))
                  return parseFloat(params.value).toFixed(2);
               } },
+        { field: 'dividendRate', headerName:'Dividend',  sortable: false,width:30, flex:1,  cellStyle: {}, editable: true, cellStyle: { 'textAlign': 'right'},
+
+                cellRenderer: props => {
+                  if (!isNaN(props.value))
+                  {
+                    return `${(props.value)}`;
+                  };
+                },
+
+                valueFormatter: params => {
+                      if (!isNaN(params.value))
+                       return parseFloat(params.value).toFixed(2);
+                    } },
+
+
       ]}
   ];
 

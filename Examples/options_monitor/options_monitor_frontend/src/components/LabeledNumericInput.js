@@ -42,7 +42,7 @@ const LabeledNumericInput = React.forwardRef ((props, ref) => {
                                   }}
 
                       ref = {input_ref}
-              />
+              /> {props.postfix}
 
 
       </Col>
