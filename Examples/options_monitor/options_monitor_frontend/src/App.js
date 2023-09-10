@@ -38,6 +38,7 @@ function App() {
   const [pricingToken, setPricingToken] = useState();
   const [stockTicker, setStockTicker] = useState();
   const [workingPrice, setWorkingPrice] = useState();
+  const [workingDividendRate, setWorkingDividendRate] = useState();
   const [volPricingData, setVolPricingData] = useState();
   const [pricingDisabled, setPricingDisabled] = useState();
   const [error, setError] = useState();
@@ -76,13 +77,15 @@ function App() {
    {
      if ( volData[vol].call_vol != undefined )
      {
-       var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockTicker.Price, volData[vol].Strike, volData[vol].call_vol, 0.0, riskFreeRate )
+       var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockTicker.Price,
+        volData[vol].Strike, volData[vol].call_vol, stockTicker.dividendRate, riskFreeRate )
        vols_and_payoffs['call'].push(call)
      }
 
      if ( volData[vol].put_vol  != undefined )
      {
-       var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockTicker.Price, volData[vol].Strike, volData[vol].put_vol, 0.0, riskFreeRate )
+       var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockTicker.Price,
+        volData[vol].Strike, volData[vol].put_vol, stockTicker.dividendRate, riskFreeRate )
        vols_and_payoffs['put'].push(put)
      }
    }
@@ -115,7 +118,7 @@ function App() {
    setPricingDisabled(true);
    PricerHelper.submit_request(price_request, (pricingToken) => { setPricingToken(pricingToken); });
 
- }, [exerciseDate, volData, valuationDate, stockTicker, riskFreeRate]);
+ }, [exerciseDate, volData, valuationDate, stockTicker, riskFreeRate, workingDividendRate]);
 
  useEffect(() => {
 
@@ -184,12 +187,18 @@ function App() {
   return (
     <div className="ag-theme-balham-dark">
          <nav>
-            <h3 className="nav--logo_text">Vanilla Options</h3>
+            <h3 className="nav--logo_text">
+              <div>
+                Vanilla Options
+              </div>
+              <div className="nav--logo_text_sub">
+                European
+              </div>
+            </h3>
             <h6>
             <div> <BusinessDatePicker label='Valuation Date' elementName='business_date' selected_date={valuationDate} onValueChange={ (elementName, date) => { setValuationDate(date); } }/> </div>
             </h6>
           </nav>
-
           <Container fluid  style={pricingDisabled ? {pointerEvents: "none", opacity: "0.4"} : {}}>
           <Row>
             <Col>
@@ -218,15 +227,22 @@ function App() {
                 var ticker_request = {};
                 ticker_request['tickers'] = [];
                 Symbols.forEach(symbol => ticker_request['tickers'].push(symbol['Symbol']));
+                ticker_request['tickers'].push('risk_free_rates');
 
                 var results = PricerHelper.get_data('get_latest_prices', ticker_request, (tickers) => {
                       var updated_market_data = [];
 
                       Symbols.forEach(symbol => {
                         symbol['Price'] = tickers[symbol['Symbol']].price;
+                        symbol['dividendRate'] = tickers[symbol['Symbol']].dividendRate;
                         updated_market_data.push(symbol);
 
                       } );
+
+                      var risk_free_rate = tickers['risk_free_rates']['1Y'];
+
+                      setRiskFreeRate(risk_free_rate/100.0);
+                      setRatePlaceHolder(risk_free_rate)
 
                       setStockPrices(updated_market_data);
 
@@ -237,6 +253,7 @@ function App() {
               {
                 var updated_stock_price =  Object.assign({}, updatePrice.data);
                 setWorkingPrice(updated_stock_price.Price);
+                setWorkingDividendRate(updated_stock_price.dividendRate);
                 setStockTicker(updated_stock_price);
               } }
 

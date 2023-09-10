@@ -46,8 +46,6 @@
 #include <qlo/qladdin.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 
-//#include "swap_builder_helper.hpp"
-
 
 auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
@@ -114,6 +112,7 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
                  risk_and_npv.put(option_type + "_vol",black_constant_vol.get<double>("Volatility") );
                  risk_and_npv.put("Underlying",closest( id_generalized_black_scholes_process.get<double>("Underlying") ) );
                  risk_and_npv.put("RiskFreeRate", id_generalized_black_scholes_process.get<double>("RiskFreeRate") );
+                 risk_and_npv.put("DividendYield", id_generalized_black_scholes_process.get<double>("DividendYield") );
                  risk_and_npv.put("valuation_date", QuantLib::detail::iso_date_holder(settlement_date));
                  risk_and_npv.put("expiration_date", exercise.get<std::string>("ExpiryDate"));
                  

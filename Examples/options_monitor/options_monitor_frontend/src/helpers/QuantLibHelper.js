@@ -3,7 +3,7 @@
 
 const QuantLibHelper = {
 
-  get_option_termstructure: function(request_id, type, underlying_price, strike, vol, div_yield, risk_free_rate)
+  get_option_termstructure: function(request_id, type, underlying_price, strike, vol, div_rate, risk_free_rate)
   {
 
     var option_ts = {}
@@ -35,7 +35,12 @@ const QuantLibHelper = {
     option_ts['qlGeneralizedBlackScholesProcess']['SettlementDate'] = ''
     option_ts['qlGeneralizedBlackScholesProcess']['Underlying'] = underlying_price
     option_ts['qlGeneralizedBlackScholesProcess']['RiskFreeRate'] = risk_free_rate
-    option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = 0.0
+
+    if (div_rate != undefined)
+      option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = div_rate/underlying_price;
+    else
+      option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = 0.0
+
     option_ts['qlGeneralizedBlackScholesProcess']['Permanent'] = false
     option_ts['qlGeneralizedBlackScholesProcess']['Trigger'] = false
     option_ts['qlGeneralizedBlackScholesProcess']['Overwrite'] = false
