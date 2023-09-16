@@ -24,16 +24,15 @@ const BusinessDatePicker = React.forwardRef ((props, ref) => {
 
   return (
 
-    <Container fluid="md">
+    <div>
         <Row>
-
       <Col style={{textAlign: 'right', opacity: '0.7'}}>
         <div className="text-nowrap">
           {props.label}
         </div>
       </Col>
 
-      <Col style={{textAlign: 'left'}}>
+      <Col>
         <DatePicker selected={selectedDate}
         onChange ={(date)=>{setSelectedDate(date);props.onValueChange(props.elementName, date);}}
         calendarClassName="red-border"
@@ -41,7 +40,7 @@ const BusinessDatePicker = React.forwardRef ((props, ref) => {
       </Col>
 
       </Row>
-      </Container>
+      </div>
     )
  });
 

@@ -133,13 +133,22 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
 
     price_request["request_id"] = request_id
     price_request["portal"] = "OPTIONS_PORTAL"
+    price_request["exercise_type"] = props.exerciseType.value;
     price_request["business_date"] = format(valuationDate, "yyyy-MM-dd")
 
     price_request['vols_and_payoffs'] = vols_and_payoffs
     price_request['exercise'] = {}
     price_request['exercise']['ObjectId'] = request_id // + "/" + stockTicker.Symbol
 
-    price_request['exercise']['ExpiryDate'] = format(expirationDate, "yyyy-MM-dd")
+    if ( props.exerciseType.value == 'American' )
+    {
+      price_request['exercise']['EarliestDate'] = format(valuationDate, "yyyy-MM-dd")
+      price_request['exercise']['LatestDate'] = format(expirationDate, "yyyy-MM-dd")
+      price_request['exercise']['PayoffAtExpiry'] = false;
+    }
+    else
+      price_request['exercise']['ExpiryDate'] = format(expirationDate, "yyyy-MM-dd")
+
     price_request['exercise']['Permanent'] = false
     price_request['exercise']['Trigger'] = false
     price_request['exercise']['Overwrite'] = false
@@ -148,7 +157,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
     setPricingDisabled(true);
     PricerHelper.submit_request(price_request, (pricingToken) => { setPricingToken(pricingToken); });
 
-  }, [valuationDate,expirationDate,stockPrice,strikePrice,riskFreeRate,callVol,putVol, dividendRate]);
+  }, [valuationDate, expirationDate, stockPrice, strikePrice, riskFreeRate, callVol, putVol, dividendRate]);
 
   useEffect(() => {
 
@@ -243,14 +252,32 @@ return (
             step={1.0}/>
           </Row>
 
-          <Row>
-                <BusinessDatePicker label='Valuation Date:' elementName='valuation_date' selected_date={valuationDate}
-                onValueChange={(elementName, date) => {setValuationDate(date);} }/>
-            </Row>
-            <Row>
-                <BusinessDatePicker label='Expiration Date:' elementName='expiration_date' selected_date={expirationDate}
-                onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
-          </Row>
+          {
+          ( props.exerciseType!== undefined && props.exerciseType.value == 'American' ) ?
+          (
+            <div>
+                <Row>
+                  <BusinessDatePicker label='Earliest Date:' elementName='valuation_date' selected_date={valuationDate}
+                  onValueChange={(elementName, date) => {setValuationDate(date);} }/>
+                </Row>
+                <Row>
+                  <BusinessDatePicker label='Latest Date:' elementName='expiration_date' selected_date={expirationDate}
+                  onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
+                </Row>
+              </div>
+            ) : (
+              <div>
+                  <Row>
+                    <BusinessDatePicker label='Settlement Date:' elementName='valuation_date' selected_date={valuationDate}
+                    onValueChange={(elementName, date) => {setValuationDate(date);} }/>
+                  </Row>
+                  <Row>
+                    <BusinessDatePicker label='Expiration Date:' elementName='expiration_date' selected_date={expirationDate}
+                    onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
+                  </Row>
+                </div>
+            )
+          }
 
           <Row>
             <LabeledNumericInput label="Risk Free Rate:" value={riskFreeRate} elementName="riskFreeRate"
