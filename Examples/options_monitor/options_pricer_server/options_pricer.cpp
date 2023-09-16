@@ -46,6 +46,9 @@
 #include <qlo/qladdin.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 
+#include "european_option_helper.h"
+#include "american_option_helper.h"
+
 
 auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
@@ -62,83 +65,24 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
                              ObjectHandler::Create<QuantLib::BusinessDayConvention>() ( ObjectHandler::property_t("Modified Following") ) );
          
          QuantLibAddinCpp::qlSettingsSetEvaluationDate( (long) business_date.serialNumber(), OH_NULL);
-         QuantLib::Calendar settlement_calendar = QuantLib::UnitedStates(QuantLib::UnitedStates::GovernmentBond);
-         
+         QuantLib::Calendar settlement_calendar = QuantLib::TARGET();
          auto settlement_date = settlement_calendar.advance(business_date, 0, QuantLib::Days);
          
          std::cout << "Business Date : " << business_date << "Settlement Date : " << QuantLib::detail::iso_date_holder(settlement_date) << std::endl;
          
-         auto vols_and_payoffs = pricer_request->get_child("vols_and_payoffs");
+         auto exercise_type = pricer_request->get<std::string>("exercise_type");
          
-         auto exercise = pricer_request->get_child("exercise");
-         auto idExercise = ql_rest::exercise::qlEuropeanExercise(exercise);
-         
-         
-         auto pricer = [&]( std::string option_type )
-         {
-             
-             auto options = vols_and_payoffs.get_child(option_type);
-             
-             
-             boost::property_tree::ptree options_risk_and_npv;
-        
-             std::for_each(options.begin(), options.end(), [&]( ptree::value_type& pt ) {
-             
-                 auto black_constant_vol = pt.second.get_child("qlBlackConstantVol");
-                 black_constant_vol.put("SettlementDate", QuantLib::detail::iso_date_holder(settlement_date));
-             
-                 auto id_generalized_black_scholes_process = pt.second.get_child("qlGeneralizedBlackScholesProcess");
-                 id_generalized_black_scholes_process.put("SettlementDate", QuantLib::detail::iso_date_holder(settlement_date));
-             
-                 auto ql_striked_type_payoff = pt.second.get_child("qlStrikedTypePayoff");
-                 auto idStrikedTypePayoff = ql_rest::payoffs::qlStrikedTypePayoff(ql_striked_type_payoff);
-             
-                 ql_rest::volatilities::qlBlackConstantVol(black_constant_vol);
-                 auto idGeneralizedBlackScholesProcess = ql_rest::processes::qlGeneralizedBlackScholesProcess(id_generalized_black_scholes_process);
-             
-                 std::string idPricingEngine = QuantLibAddinCpp::qlPricingEngine("engine", "AE", idGeneralizedBlackScholesProcess, OH_NULL, OH_NULL, true );
-                 std::string idVanillaOption = QuantLibAddinCpp::qlVanillaOption("option", idStrikedTypePayoff, idExercise, OH_NULL,OH_NULL,true);
-
-                 QuantLibAddinCpp::qlInstrumentSetPricingEngine(idVanillaOption, idPricingEngine, OH_NULL);
-
-                 OH_GET_REFERENCE(ObjectIdLibObjPtr, idVanillaOption, QuantLibAddin::VanillaOption, QuantLib::VanillaOption);
-
-                 std::cout << option_type << "_NPV : " << ql_striked_type_payoff.get<std::string>("Strike") << " : " <<  ObjectIdLibObjPtr->NPV()  << ":" << ObjectIdLibObjPtr->delta() << std::endl;
-                 
-                 QuantLib::ClosestRounding closest(3);
-                 boost::property_tree::ptree risk_and_npv;
-
-                 risk_and_npv.put("Strike",closest( ql_striked_type_payoff.get<double>("Strike") ) );
-                 risk_and_npv.put(option_type + "_vol",black_constant_vol.get<double>("Volatility") );
-                 risk_and_npv.put("Underlying",closest( id_generalized_black_scholes_process.get<double>("Underlying") ) );
-                 risk_and_npv.put("RiskFreeRate", id_generalized_black_scholes_process.get<double>("RiskFreeRate") );
-                 risk_and_npv.put("DividendYield", id_generalized_black_scholes_process.get<double>("DividendYield") );
-                 risk_and_npv.put("valuation_date", QuantLib::detail::iso_date_holder(settlement_date));
-                 risk_and_npv.put("expiration_date", exercise.get<std::string>("ExpiryDate"));
-                 
-                 risk_and_npv.put(option_type + "_npv",closest( ObjectIdLibObjPtr->NPV() ) );
-                 risk_and_npv.put(option_type + "_delta", closest( ObjectIdLibObjPtr->delta() ) );
-                 risk_and_npv.put(option_type + "_vega", closest( ObjectIdLibObjPtr->vega() ) );
-                 risk_and_npv.put(option_type + "_gamma", closest( ObjectIdLibObjPtr->gamma() ) );
-                 risk_and_npv.put(option_type + "_theta", closest( ObjectIdLibObjPtr->thetaPerDay() ) );
-                 risk_and_npv.put(option_type + "_rho", closest( ObjectIdLibObjPtr->rho() ) );
-        
-                 options_risk_and_npv.push_back(std::make_pair("", risk_and_npv));
-             });
-             
-             return options_risk_and_npv;
-         };
-
-         
-         pricer_results.add_child("call", pricer("call"));
-         pricer_results.add_child("put", pricer("put"));
-
-         std::ostringstream oss;
-         boost::property_tree::json_parser::write_json(oss, pricer_results);
-         
-         std::cout << "Pricer Results : " << oss.str() << std::endl;
-         
-         pricer_results.put("error_code", 0);
+        if ( exercise_type == "American" )
+        {
+            pricer_results = american_option_helper::options_pricer(pricer_request, settlement_date);
+        } else if ( exercise_type == "European" )
+        {
+            pricer_results = european_option_helper::options_pricer(pricer_request, settlement_date);
+        }  else {
+            pricer_results.put("error_code", -9);
+            pricer_results.put("error", "Unsupported Exercise Type");
+        }
+            
                   
      } catch (const boost::property_tree::ptree_error& e )
      {

@@ -52,9 +52,9 @@ const Dropdown = React.forwardRef ((props, ref) => {
 
          valueContainer: (provided, state) => ({
            ...provided,
-           height: '20px',
-           color: 'white',
-           padding: '2px 6px'
+           height: '25px',
+           color: 'red',
+           padding: '5px 5px 5px 5px'
          }),
 
          singleValue: (provided, state) => ({
@@ -76,13 +76,22 @@ const Dropdown = React.forwardRef ((props, ref) => {
          indicatorsContainer: (provided, state) => ({
            ...provided,
            height: '20px',
+         }),
+         menu: base => ({
+           ...base,
+           borderRadius: 0,
+           marginTop: 0
+         }),
+         menuList: base => ({
+           ...base,
+           padding: 0
          })
        };
 
   return (
-    <Container style={{marginTop:'5px'}}>
+    <Container>
       <Row>
-      <Col style={{textAlign: 'right'}}>
+      <Col style={{textAlign: 'right', marginTop:'5px'}}>
       <h6>
       {props.label}
       </h6>

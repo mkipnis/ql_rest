@@ -196,13 +196,6 @@ const GreeksPanel = React.forwardRef ((props, ref) => {
    return (
       <div>
         <Row>
-        <Col>
-        <h6>
-          <b>Straddle</b>
-        </h6>
-        </Col>
-        </Row>
-        <Row>
             <div className="ag-theme-balham-dark" style={{verticalAlign:"top",height:"40vh", width: "100%", display: "inline-block", margin: "auto", padding:"10px"}}>
             <AgGridReact
                       rowData={props.volData}
