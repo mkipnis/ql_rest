@@ -32,7 +32,7 @@ const BusinessDatePicker = React.forwardRef ((props, ref) => {
         </div>
       </Col>
 
-      <Col>
+      <Col style={{display:'flex', alignItems: 'flex-start', justifyContent:'flex-start'}}>
         <DatePicker selected={selectedDate}
         onChange ={(date)=>{setSelectedDate(date);props.onValueChange(props.elementName, date);}}
         calendarClassName="red-border"
