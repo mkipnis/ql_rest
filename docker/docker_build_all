@@ -34,5 +34,7 @@ EXPOSE 8000
 WORKDIR /ql_rest/Examples/swap_designer
 RUN ./build_frontend.sh
 
+RUN pip3 install django yfinance django-cors-headers djangorestframework --break-system-packages
+
 EXPOSE 7922
 EXPOSE 3000

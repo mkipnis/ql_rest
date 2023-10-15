@@ -38,6 +38,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
   const [stockPrice, setStockPrice] = useState();
   const [strikePrice, setStrikePrice] = useState();
   const [riskFreeRate, setRiskFreeRate] = useState();
+  const [dividendRate, setDividendRate] = useState();
   const [callVol, setCallVol] = useState();
   const [putVol, setPutVol] = useState();
   const [error, setError] = useState();
@@ -124,21 +125,30 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
     var request_id = uuid();
 
 
-    var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockPrice, strikePrice, callVol, 0.0, riskFreeRate/100.0 )
+    var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockPrice, strikePrice, callVol, dividendRate, riskFreeRate/100.0 )
     vols_and_payoffs['call'].push(call)
 
-    var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockPrice, strikePrice, putVol, 0.0, riskFreeRate/100.0 )
+    var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockPrice, strikePrice, putVol, dividendRate, riskFreeRate/100.0 )
     vols_and_payoffs['put'].push(put)
 
     price_request["request_id"] = request_id
     price_request["portal"] = "OPTIONS_PORTAL"
+    price_request["exercise_type"] = props.exerciseType.value;
     price_request["business_date"] = format(valuationDate, "yyyy-MM-dd")
 
     price_request['vols_and_payoffs'] = vols_and_payoffs
     price_request['exercise'] = {}
     price_request['exercise']['ObjectId'] = request_id // + "/" + stockTicker.Symbol
 
-    price_request['exercise']['ExpiryDate'] = format(expirationDate, "yyyy-MM-dd")
+    if ( props.exerciseType.value == 'American' )
+    {
+      price_request['exercise']['EarliestDate'] = format(valuationDate, "yyyy-MM-dd")
+      price_request['exercise']['LatestDate'] = format(expirationDate, "yyyy-MM-dd")
+      price_request['exercise']['PayoffAtExpiry'] = false;
+    }
+    else
+      price_request['exercise']['ExpiryDate'] = format(expirationDate, "yyyy-MM-dd")
+
     price_request['exercise']['Permanent'] = false
     price_request['exercise']['Trigger'] = false
     price_request['exercise']['Overwrite'] = false
@@ -147,7 +157,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
     setPricingDisabled(true);
     PricerHelper.submit_request(price_request, (pricingToken) => { setPricingToken(pricingToken); });
 
-  }, [valuationDate,expirationDate,stockPrice,strikePrice,riskFreeRate,callVol,putVol]);
+  }, [valuationDate, expirationDate, stockPrice, strikePrice, riskFreeRate, callVol, putVol, dividendRate]);
 
   useEffect(() => {
 
@@ -158,6 +168,7 @@ const SingleStrikePricer = React.forwardRef ((props, ref) => {
       setCallVol(parseFloat(props.strikeWithGreeks.data.call_vol*100.0).toFixed(1));
       setPutVol(parseFloat(props.strikeWithGreeks.data.put_vol*100.0).toFixed(1));
       setRiskFreeRate(parseFloat(props.strikeWithGreeks.data.RiskFreeRate*100.0).toFixed(2));
+      setDividendRate(parseFloat(props.strikeWithGreeks.data.DividendYield*props.strikeWithGreeks.data.Underlying).toFixed(2));
 
       if ( props.strikeWithGreeks.data.valuation_date != undefined &&
         props.strikeWithGreeks.data.expiration_date != undefined )
@@ -220,7 +231,7 @@ return (
         <Row>
           <Col style={{textAlign: 'center'}}>
           <h6>
-            Term Structure
+            Option Input
           </h6>
           </Col>
         </Row>
@@ -241,26 +252,53 @@ return (
             step={1.0}/>
           </Row>
 
-          <Row>
-                <BusinessDatePicker label='Valuation Date:' elementName='valuation_date' selected_date={valuationDate}
-                onValueChange={(elementName, date) => {setValuationDate(date);} }/>
-            </Row>
-            <Row>
-                <BusinessDatePicker label='Expiration Date:' elementName='expiration_date' selected_date={expirationDate}
-                onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
-          </Row>
+          {
+          ( props.exerciseType!== undefined && props.exerciseType.value == 'American' ) ?
+          (
+            <div>
+                <Row>
+                  <BusinessDatePicker label='Earliest Date:' elementName='valuation_date' selected_date={valuationDate}
+                  onValueChange={(elementName, date) => {setValuationDate(date);} }/>
+                </Row>
+                <Row>
+                  <BusinessDatePicker label='Latest Date:' elementName='expiration_date' selected_date={expirationDate}
+                  onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
+                </Row>
+              </div>
+            ) : (
+              <div>
+                  <Row>
+                    <BusinessDatePicker label='Settlement Date:' elementName='valuation_date' selected_date={valuationDate}
+                    onValueChange={(elementName, date) => {setValuationDate(date);} }/>
+                  </Row>
+                  <Row>
+                    <BusinessDatePicker label='Expiration Date:' elementName='expiration_date' selected_date={expirationDate}
+                    onValueChange={(elementName, date) => { setExpirationDate(date);} }/>
+                  </Row>
+                </div>
+            )
+          }
 
           <Row>
             <LabeledNumericInput label="Risk Free Rate:" value={riskFreeRate} elementName="riskFreeRate"
               onChanged={(elementName, new_value)=>{setRiskFreeRate(new_value);}}
               onChange= {(elementName, new_value)=>{setPricingDisabled(true);}}
-            step={0.025}/>
+              postfix='%'
+              step={0.025}/>
+          </Row>
+
+          <Row>
+            <LabeledNumericInput label="Dividend:" value={dividendRate} elementName="dividendRate"
+              onChanged={(elementName, new_value)=>{setDividendRate(new_value);}}
+              onChange= {(elementName, new_value)=>{setPricingDisabled(true);}}
+              step={0.25}/>
           </Row>
 
           <Row>
             <LabeledNumericInput label="Call Volatility:" value={callVol} elementName="callVol"
               onChanged={(elementName, new_value)=>{setCallVol(new_value);}}
               onChange= {(elementName, new_value)=>{setPricingDisabled(true);}}
+              postfix='%'
             step={0.5}/>
           </Row>
 
@@ -268,7 +306,8 @@ return (
             <LabeledNumericInput label="Put Volatility:" value={putVol} elementName="putVol"
               onChanged={(elementName, new_value)=>{setPutVol(new_value);}}
               onChange= {(elementName, new_value)=>{setPricingDisabled(true);}}
-            step={0.5}/>
+              postfix='%'
+              step={0.5}/>
           </Row>
           </h6>
 

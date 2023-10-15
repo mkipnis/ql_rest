@@ -2,8 +2,8 @@ version: '2'
 services:
   options_monitor:
     image: ghcr.io/mkipnis/ql_rest:latest
-    # command: ["bash", "-c", "cd /ql_rest/Examples/options_monitor/; ./start_options_monitor.sh"] # no ypfinance options market data update on startup
-    command: ["bash", "-c", "cd /ql_rest/Examples/options_monitor/options_pricer_proxy/scripts; python3 save_demo_data.py; cd /ql_rest/Examples/options_monitor/; ./start_options_monitor.sh"]
+    #image: ql_rest
+    command: ["bash", "-c", "cd /ql_rest/Examples/options_monitor/options_pricer_proxy/scripts; ./update_yfinance_and_save_demo_data.sh; cd /ql_rest/Examples/options_monitor/; ./start_options_monitor.sh"]
     ports:
       - 8000:8000
 

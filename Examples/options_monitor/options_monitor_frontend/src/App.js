@@ -2,6 +2,7 @@
     for utilization of QuantLib over REST */
 
 import BusinessDatePicker from './components/BusinessDatePicker'
+import LabeledNumericInput from './components/LabeledNumericInput'
 
 import StockPanel from './components/StockPanel'
 import VolPanel from './components/VolPanel'
@@ -35,23 +36,42 @@ function App() {
   const [defaultTicker, setDefaultTicker] = useState('AAPL');
   const [exerciseDates, setExerciseDates] = useState();
   const [exerciseDate, setExerciseDate] = useState();
+
+  const [exerciseTypes, setExerciseTypes] = useState();
+  const [exerciseType, setExerciseType] = useState();
+
   const [pricingToken, setPricingToken] = useState();
   const [stockTicker, setStockTicker] = useState();
   const [workingPrice, setWorkingPrice] = useState();
+  const [workingDividendRate, setWorkingDividendRate] = useState();
   const [volPricingData, setVolPricingData] = useState();
   const [pricingDisabled, setPricingDisabled] = useState();
+  const [greeksDisabled, setGreeksDisabled] = useState();
   const [error, setError] = useState();
   const [stockPrices, setStockPrices] = useState([]);
   const [volUpdate, setVolUpdate] = useState();
   const [volData, setVolData] = useState();
   const [selectedStrike, setSelectedStrike] = useState();
   const [selectedStrikeWithGreeks, setSelectedStrikeWithGreeks] = useState();
-  const [riskFreeRate, setRiskFreeRate] = useState(0.0025);
-  const [ratePlaceHolder, setRatePlaceHolder] = useState(riskFreeRate * 100.0 );
-
+  const [riskFreeRate, setRiskFreeRate] = useState(0.25);
   useEffect(() => {
 
     setStockPrices(Symbols);
+
+    var exercises = [];
+
+    var exercise_american = {};
+    exercise_american['value'] = 'American';
+    exercise_american['label'] = 'American';
+    exercises.push(exercise_american);
+
+    var exercise_european = {};
+    exercise_european['value'] = 'European';
+    exercise_european['label'] = 'European';
+    exercises.push(exercise_european);
+
+    setExerciseTypes(exercises);
+    setExerciseType(exercises[0]);
 
   }, []);
 
@@ -76,31 +96,51 @@ function App() {
    {
      if ( volData[vol].call_vol != undefined )
      {
-       var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockTicker.Price, volData[vol].Strike, volData[vol].call_vol, 0.0, riskFreeRate )
+       var call = QuantLibHelper.get_option_termstructure(request_id, 'Call', stockTicker.Price,
+        volData[vol].Strike, volData[vol].call_vol, stockTicker.dividendRate, riskFreeRate/100.0 )
        vols_and_payoffs['call'].push(call)
      }
 
      if ( volData[vol].put_vol  != undefined )
      {
-       var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockTicker.Price, volData[vol].Strike, volData[vol].put_vol, 0.0, riskFreeRate )
+       var put = QuantLibHelper.get_option_termstructure(request_id, 'Put', stockTicker.Price,
+        volData[vol].Strike, volData[vol].put_vol, stockTicker.dividendRate, riskFreeRate/100.0 )
        vols_and_payoffs['put'].push(put)
      }
    }
 
    price_request["request_id"] = request_id
    price_request["portal"] = "OPTIONS_PORTAL"
+   price_request["exercise_type"] = exerciseType.value;
    price_request["business_date"] = format(valuationDate, "yyyy-MM-dd")
 
    price_request['vols_and_payoffs'] = vols_and_payoffs
    price_request['exercise'] = {}
    price_request['exercise']['ObjectId'] = request_id + "/" + stockTicker.Symbol
 
-   var expiry_date = new Date(Date.parse(exerciseDate.value))
+   var exerciseDateStr = exerciseDate.value;
+   var y = exerciseDateStr.substring(0,4),
+       m = parseInt(exerciseDateStr.substring(5,7)-1),
+       d = exerciseDateStr.substring(8,10);
+
+   // Add one day(Inconsistency between yahoo and quantlib expirations)
+   var expiry_date = new Date(y,m,d);
    expiry_date.setDate(expiry_date.getDate() + 1)
 
-   price_request['exercise']['ExpiryDate'] =  expiry_date.toLocaleString("default", { year: "numeric" }) + "-" +
-      expiry_date.toLocaleString("default", { month: "2-digit" }) + "-" +
-      expiry_date.toLocaleString("default", { day: "2-digit" })
+   var expiry_date_iso = price_request['exercise']['ExpiryDate'] =  expiry_date.toLocaleString("default", { year: "numeric" }) + "-" +
+    expiry_date.toLocaleString("default", { month: "2-digit" }) + "-" +
+    expiry_date.toLocaleString("default", { day: "2-digit" })
+
+   if (exerciseType.value == 'American')
+   {
+      price_request['exercise']['EarliestDate'] = format(valuationDate, "yyyy-MM-dd");
+      price_request['exercise']['LatestDate'] = expiry_date_iso;
+      price_request['exercise']['PayoffAtExpiry'] = false;
+   }
+   else
+   {
+     price_request['exercise']['ExpiryDate'] = expiry_date_iso;
+   }
 
    price_request['exercise']['Permanent'] = false
    price_request['exercise']['Trigger'] = false
@@ -108,9 +148,12 @@ function App() {
 
 
    setPricingDisabled(true);
+   setSelectedStrikeWithGreeks(undefined);
    PricerHelper.submit_request(price_request, (pricingToken) => { setPricingToken(pricingToken); });
 
- }, [exerciseDate, volData, valuationDate, stockTicker, riskFreeRate]);
+
+
+ }, [exerciseDate, volData, valuationDate, stockTicker, riskFreeRate, workingDividendRate, exerciseType]);
 
  useEffect(() => {
 
@@ -131,6 +174,7 @@ function App() {
        greeksPanelRef.current.update_greeks(greeks);
        setError(pricingResults.error);
        setPricingDisabled(false);
+       setGreeksDisabled(false);
        if (selectedStrike !== undefined )
        {
          greeksPanelRef.current.flash_stike(selectedStrike);
@@ -179,23 +223,33 @@ function App() {
   return (
     <div className="ag-theme-balham-dark">
          <nav>
-            <h3 className="nav--logo_text">Vanilla Options</h3>
+            <h3 className="nav--logo_text">
+              <div>
+                Vanilla Options
+              </div>
+              <div className="nav--logo_text_sub">
+               <a href="https://github.com/mkipnis/ql_rest/tree/master/Examples/options_monitor">Support and Source Code</a>
+              </div>
+            </h3>
             <h6>
-            <div> <BusinessDatePicker label='Valuation Date' elementName='business_date' selected_date={valuationDate} onValueChange={ (elementName, date) => { setValuationDate(date); } }/> </div>
             </h6>
           </nav>
-
           <Container fluid  style={pricingDisabled ? {pointerEvents: "none", opacity: "0.4"} : {}}>
           <Row>
-            <Col>
+            <Col  style={{marginTop:'10px', textAlign:'Right', marginLeft:'auto', marginRight:0 }}>
               <Row>
-                <Col style={{marginTop:'10px', textAlign:'Right'}}>
-                <Row>
-                  <Col style={{marginLeft:'95px'}}> <h6>Risk Free Rate:</h6> </Col>
-                  <Col style={{marginRight:'10px'}}> <h6> <input type="number" value={ratePlaceHolder} style={{width: '100px', height:'30px', textAlign:'right'}} step={0.25} onChanged={(e)=> { setRatePlaceHolder(e.target.value);}} onKeyDown={(e)=> {
-                    if(e.key === 'Enter' || e.key === 'Tab') { var risk_free_rate = Number(ratePlaceHolder)/100.0; setRiskFreeRate(risk_free_rate); }
-                  }} /> </h6> </Col>
-                </Row>
+                <Col>
+                {
+                  <div style={{margin :'10px', display:'flex', alignItems: 'flex-end', justifyContent:'flex-end', marginRight:10, fontSize:'15px'}}>
+                    <BusinessDatePicker label='Valuation Date:'
+                      elementName='business_date'
+                      selected_date={valuationDate}
+                      onValueChange={ (elementName, date) => {
+                        setValuationDate(date);
+                      } }/>
+                    </div>
+
+              }
               <Row>
           <Col  style={{textAlign:'Left'}}>
             <StockPanel symbols={stockPrices} defaultTicker={defaultTicker}
@@ -205,16 +259,21 @@ function App() {
                 var ticker_request = {};
                 ticker_request['tickers'] = [];
                 Symbols.forEach(symbol => ticker_request['tickers'].push(symbol['Symbol']));
+                ticker_request['tickers'].push('risk_free_rates');
 
                 var results = PricerHelper.get_data('get_latest_prices', ticker_request, (tickers) => {
                       var updated_market_data = [];
 
                       Symbols.forEach(symbol => {
                         symbol['Price'] = tickers[symbol['Symbol']].price;
+                        symbol['dividendRate'] = tickers[symbol['Symbol']].dividendRate;
                         updated_market_data.push(symbol);
 
                       } );
 
+                      var risk_free_rate = tickers['risk_free_rates']['1Y'];
+
+                      setRiskFreeRate(risk_free_rate);
                       setStockPrices(updated_market_data);
 
                     });
@@ -224,6 +283,7 @@ function App() {
               {
                 var updated_stock_price =  Object.assign({}, updatePrice.data);
                 setWorkingPrice(updated_stock_price.Price);
+                setWorkingDividendRate(updated_stock_price.dividendRate);
                 setStockTicker(updated_stock_price);
               } }
 
@@ -293,7 +353,7 @@ function App() {
       </Col>
       <Col>
       <Row>
-      <Col style={{textAlign: 'center'}}>
+      <Col style={{textAlign: 'center', marginTop:'5px'}}>
             <h6>
               {
                 stockTicker != undefined && exerciseDate != undefined ? stockTicker.Name + " : " + exerciseDate.label : ""
@@ -316,6 +376,7 @@ function App() {
         </Row>
       </Col>
     </Row>
+
     <Row>
       <Col>
         {error}
@@ -323,7 +384,43 @@ function App() {
     </Row>
     <Row style={{textAlign: 'center', marginTop:'20px'}}>
       <Col>
-        <GreeksPanel volData={volData}
+        <Row>
+        <Col>
+
+        <Row>
+          <Col>
+          <Row>
+          {
+            <div style={{margin :'10px', display:'flex', alignItems: 'flex-end', justifyContent:'flex-end', marginRight:10, fontSize:'15px'}}>
+            <LabeledNumericInput label="Risk Free Rate:" value={riskFreeRate} elementName="riskFreeRate"
+              onChanged={(elementName, new_value)=>{
+                setRiskFreeRate(new_value);
+              }}
+              onChange= {(elementName, new_value)=>{
+                setGreeksDisabled(true);
+              }}
+              postfix='%'
+              step={0.025}/>
+            </div>
+            }
+          </Row>
+          </Col>
+          <Col style={{marginTop:'5px'}}>
+          <Dropdown label='Exercise:' elementName='ExerciseType'
+              options={exerciseTypes} selected_value={exerciseType}
+              onValueChange={ ( element, selected_option ) =>
+                {
+                  setExerciseType(selected_option);
+                } }/>
+          </Col>
+        </Row>
+
+        </Col>
+        </Row>
+        <div style={greeksDisabled ? {pointerEvents: "none", opacity: "0.4"} : {}}>
+        <Row>
+          <Col>
+            <GreeksPanel volData={volData}
                     workingPrice={workingPrice}
                     marketPrice={stockTicker}
                     selectedStrike={selectedStrike}
@@ -332,9 +429,12 @@ function App() {
                     strikeSelectedCallback={ (strikeWithGreeks) => {
                       setSelectedStrikeWithGreeks(strikeWithGreeks);
                     } }/>
-          </Col>
+            </Col>
+          </Row>
+        </div>
+        </Col>
       <Col>
-        <SingleStrikePricer strikeWithGreeks = {selectedStrikeWithGreeks}/>
+        <SingleStrikePricer strikeWithGreeks = {selectedStrikeWithGreeks} exerciseType = {exerciseType} />
       </Col>
     </Row>
   </Container>
