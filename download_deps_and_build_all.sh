@@ -87,5 +87,6 @@ make -j 10 install
 fi
 
 cd $CURRENT_DIR
-./configure --prefix=$INSTALL_DIR --exec-prefix=$INSTALL_DIR  CXXFLAGS="$CXXFLAGS -I$INSTALL_DIR/include"
+#./configure --prefix=$INSTALL_DIR --exec-prefix=$INSTALL_DIR  CXXFLAGS="$CXXFLAGS -I$INSTALL_DIR/include"
+./configure --prefix=$INSTALL_DIR --exec-prefix=$INSTALL_DIR --with-deps-include=$INSTALL_DIR/include --with-deps-lib=$INSTALL_DIR/lib
 make install
