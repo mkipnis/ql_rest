@@ -20,6 +20,7 @@
     <categoryName>vanillaswap</categoryName>
     <categoryName>forwardrateagreement</categoryName>
     <categoryName>overnightindexedswap</categoryName>
+    <categoryName>interpolation</categoryName>
 
     <!-- <categoryName>abcd</categoryName>
     <categoryName>accountingengines</categoryName>
