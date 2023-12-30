@@ -33,11 +33,11 @@ const QuantLibHelper = {
 
     option_ts['qlGeneralizedBlackScholesProcess']['DayCounter'] = option_ts['qlBlackConstantVol']['DayCounter']
     option_ts['qlGeneralizedBlackScholesProcess']['SettlementDate'] = ''
-    option_ts['qlGeneralizedBlackScholesProcess']['Underlying'] = underlying_price
-    option_ts['qlGeneralizedBlackScholesProcess']['RiskFreeRate'] = risk_free_rate
+    option_ts['qlGeneralizedBlackScholesProcess']['Underlying'] = parseFloat(underlying_price)
+    option_ts['qlGeneralizedBlackScholesProcess']['RiskFreeRate'] = parseFloat(risk_free_rate)
 
     if (div_rate != undefined)
-      option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = div_rate/underlying_price;
+      option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = parseFloat(div_rate/underlying_price)
     else
       option_ts['qlGeneralizedBlackScholesProcess']['DividendYield'] = 0.0
 
@@ -46,7 +46,7 @@ const QuantLibHelper = {
     option_ts['qlGeneralizedBlackScholesProcess']['Overwrite'] = false
 
     option_ts['qlBlackConstantVol']['ObjectId'] = request_id + '/qlBlackConstantVol/' + option_ts['qlStrikedTypePayoff']['Strike'] + '/' + option_ts['qlStrikedTypePayoff']['OptionType']
-    option_ts['qlBlackConstantVol']['Volatility'] = vol/100.0
+    option_ts['qlBlackConstantVol']['Volatility'] = parseFloat(vol)/100.0
 
     option_ts['qlGeneralizedBlackScholesProcess']['ObjectId'] = request_id +'/qlGeneralizedBlackScholesProcess/' + option_ts['qlBlackConstantVol']['ObjectId']
     option_ts['qlGeneralizedBlackScholesProcess']['BlackVolID'] = option_ts['qlBlackConstantVol']['ObjectId']

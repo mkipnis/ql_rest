@@ -51,7 +51,7 @@ namespace ql_rest
     struct piecewiseyieldcurve
     {
       
-        static std::string qlPiecewiseYieldCurve(ptree const& pt);  
-        static std::string qlPiecewiseYieldCurveMixedInterpolation(ptree const& pt);
+        static std::string qlPiecewiseYieldCurve(boost::json::object& json_obj);  
+        static std::string qlPiecewiseYieldCurveMixedInterpolation(boost::json::object& json_obj);
     };
 };

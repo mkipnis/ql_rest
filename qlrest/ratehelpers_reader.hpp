@@ -56,24 +56,24 @@ namespace ql_rest
     struct ratehelpers
     {
       
-        static std::string qlBondHelper(ptree const& pt);  
-        static std::string qlDatedOISRateHelper(ptree const& pt);  
-        static std::string qlDepositRateHelper(ptree const& pt);  
-        static std::string qlDepositRateHelper2(ptree const& pt);  
-        static std::string qlFixedRateBondHelper(ptree const& pt);  
-        static std::string qlFraRateHelper(ptree const& pt);  
-        static std::string qlFraRateHelper2(ptree const& pt);  
-        static std::string qlFuturesRateHelper(ptree const& pt);  
-        static std::string qlFuturesRateHelper2(ptree const& pt);  
-        static std::string qlFuturesRateHelper3(ptree const& pt);  
-        static std::string qlFxSwapRateHelper(ptree const& pt);  
-        static std::string qlOISRateHelper(ptree const& pt);  
-        static double qlRateHelperImpliedQuote(ptree const& pt);  
-        static double qlRateHelperQuoteError(ptree const& pt);  
-        static double qlRateHelperQuoteIsValid(ptree const& pt);  
-        static std::string qlRateHelperQuoteName(ptree const& pt);  
-        static double qlRateHelperQuoteValue(ptree const& pt);  
-        static std::string qlSwapRateHelper(ptree const& pt);  
-        static std::string qlSwapRateHelper2(ptree const& pt);
+        static std::string qlBondHelper(boost::json::object& json_obj);  
+        static std::string qlDatedOISRateHelper(boost::json::object& json_obj);  
+        static std::string qlDepositRateHelper(boost::json::object& json_obj);  
+        static std::string qlDepositRateHelper2(boost::json::object& json_obj);  
+        static std::string qlFixedRateBondHelper(boost::json::object& json_obj);  
+        static std::string qlFraRateHelper(boost::json::object& json_obj);  
+        static std::string qlFraRateHelper2(boost::json::object& json_obj);  
+        static std::string qlFuturesRateHelper(boost::json::object& json_obj);  
+        static std::string qlFuturesRateHelper2(boost::json::object& json_obj);  
+        static std::string qlFuturesRateHelper3(boost::json::object& json_obj);  
+        static std::string qlFxSwapRateHelper(boost::json::object& json_obj);  
+        static std::string qlOISRateHelper(boost::json::object& json_obj);  
+        static double qlRateHelperImpliedQuote(boost::json::object& json_obj);  
+        static double qlRateHelperQuoteError(boost::json::object& json_obj);  
+        static double qlRateHelperQuoteIsValid(boost::json::object& json_obj);  
+        static std::string qlRateHelperQuoteName(boost::json::object& json_obj);  
+        static double qlRateHelperQuoteValue(boost::json::object& json_obj);  
+        static std::string qlSwapRateHelper(boost::json::object& json_obj);  
+        static std::string qlSwapRateHelper2(boost::json::object& json_obj);
     };
 };

@@ -34,19 +34,19 @@ using namespace ql_rest;
 
 
 
-std::string processes::qlGeneralizedBlackScholesProcess(ptree const& pt)
+std::string processes::qlGeneralizedBlackScholesProcess(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlGeneralizedBlackScholesProcess(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("BlackVolID"),
-              pt.get<double>("Underlying"),
-              pt.get<std::string>("DayCounter"),
-              ql_rest::from_iso_string(pt.get<std::string>("SettlementDate") ),
-              pt.get<double>("RiskFreeRate"),
-              pt.get<double>("DividendYield"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["BlackVolID"]),
+              json_obj["Underlying"].is_double() ? boost::json::value_to<double>(json_obj["Underlying"]) : boost::json::value_to<long>(json_obj["Underlying"]),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["SettlementDate"])),
+              json_obj["RiskFreeRate"].is_double() ? boost::json::value_to<double>(json_obj["RiskFreeRate"]) : boost::json::value_to<long>(json_obj["RiskFreeRate"]),
+              json_obj["DividendYield"].is_double() ? boost::json::value_to<double>(json_obj["DividendYield"]) : boost::json::value_to<long>(json_obj["DividendYield"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

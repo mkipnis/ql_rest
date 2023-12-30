@@ -34,41 +34,41 @@ using namespace ql_rest;
 
 
 
-std::string exercise::qlAmericanExercise(ptree const& pt)
+std::string exercise::qlAmericanExercise(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlAmericanExercise(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string(pt.get<std::string>("EarliestDate") ),
-              ql_rest::from_iso_string(pt.get<std::string>("LatestDate") ),
-              pt.get<bool>("PayoffAtExpiry"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["EarliestDate"])),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["LatestDate"])),
+              json_obj["PayoffAtExpiry"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string exercise::qlBermudanExercise(ptree const& pt)
+std::string exercise::qlBermudanExercise(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBermudanExercise(
          
-              pt.get<std::string>("ObjectId"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("Dates")),
-              pt.get<bool>("PayoffAtExpiry"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["Dates"].as_array()),
+              json_obj["PayoffAtExpiry"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string exercise::qlEuropeanExercise(ptree const& pt)
+std::string exercise::qlEuropeanExercise(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuropeanExercise(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string(pt.get<std::string>("ExpiryDate") ),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["ExpiryDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

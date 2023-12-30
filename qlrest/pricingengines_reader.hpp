@@ -58,23 +58,23 @@ namespace ql_rest
     struct pricingengines
     {
       
-        static std::string qlAnalyticCapFloorEngine(ptree const& pt);  
-        static std::string qlBachelierCapFloorEngine(ptree const& pt);  
-        static std::string qlBachelierCapFloorEngine2(ptree const& pt);  
-        static std::string qlBinomialPricingEngine(ptree const& pt);  
-        static std::string qlBlackCalculator(ptree const& pt);  
-        static std::string qlBlackCalculator2(ptree const& pt);  
-        static std::string qlBlackCapFloorEngine(ptree const& pt);  
-        static std::string qlBlackCapFloorEngine2(ptree const& pt);  
-        static std::string qlBlackScholesCalculator(ptree const& pt);  
-        static std::string qlBlackScholesCalculator2(ptree const& pt);  
-        static std::string qlBlackSwaptionEngine(ptree const& pt);  
-        static std::string qlBlackSwaptionEngine2(ptree const& pt);  
-        static std::string qlBondEngine(ptree const& pt);  
-        static std::string qlDiscountingSwapEngine(ptree const& pt);  
-        static std::string qlJamshidianSwaptionEngine(ptree const& pt);  
-        static std::string qlModelG2SwaptionEngine(ptree const& pt);  
-        static std::string qlPricingEngine(ptree const& pt);  
-        static std::string qlTreeSwaptionEngine(ptree const& pt);
+        static std::string qlAnalyticCapFloorEngine(boost::json::object& json_obj);  
+        static std::string qlBachelierCapFloorEngine(boost::json::object& json_obj);  
+        static std::string qlBachelierCapFloorEngine2(boost::json::object& json_obj);  
+        static std::string qlBinomialPricingEngine(boost::json::object& json_obj);  
+        static std::string qlBlackCalculator(boost::json::object& json_obj);  
+        static std::string qlBlackCalculator2(boost::json::object& json_obj);  
+        static std::string qlBlackCapFloorEngine(boost::json::object& json_obj);  
+        static std::string qlBlackCapFloorEngine2(boost::json::object& json_obj);  
+        static std::string qlBlackScholesCalculator(boost::json::object& json_obj);  
+        static std::string qlBlackScholesCalculator2(boost::json::object& json_obj);  
+        static std::string qlBlackSwaptionEngine(boost::json::object& json_obj);  
+        static std::string qlBlackSwaptionEngine2(boost::json::object& json_obj);  
+        static std::string qlBondEngine(boost::json::object& json_obj);  
+        static std::string qlDiscountingSwapEngine(boost::json::object& json_obj);  
+        static std::string qlJamshidianSwaptionEngine(boost::json::object& json_obj);  
+        static std::string qlModelG2SwaptionEngine(boost::json::object& json_obj);  
+        static std::string qlPricingEngine(boost::json::object& json_obj);  
+        static std::string qlTreeSwaptionEngine(boost::json::object& json_obj);
     };
 };

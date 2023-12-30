@@ -48,9 +48,9 @@ namespace ql_rest
     struct schedule
     {
       
-        static std::string qlSchedule(ptree const& pt);  
-        static std::string qlScheduleFromDateVector(ptree const& pt);  
-        static std::string qlScheduleFullInterfaceFromDateVector(ptree const& pt);  
-        static std::string qlScheduleTruncated(ptree const& pt);
+        static std::string qlSchedule(boost::json::object& json_obj);  
+        static std::string qlScheduleFromDateVector(boost::json::object& json_obj);  
+        static std::string qlScheduleFullInterfaceFromDateVector(boost::json::object& json_obj);  
+        static std::string qlScheduleTruncated(boost::json::object& json_obj);
     };
 };

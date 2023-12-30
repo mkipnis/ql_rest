@@ -50,6 +50,6 @@ namespace ql_rest
     struct forwardrateagreement
     {
       
-        static std::string qlFRA(ptree const& pt);
+        static std::string qlFRA(boost::json::object& json_obj);
     };
 };

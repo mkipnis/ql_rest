@@ -46,9 +46,9 @@ namespace ql_rest
     struct serialization
     {
       
-        static std::vector<std::string> ohObjectLoad(ptree const& pt);  
-        static std::vector<std::string> ohObjectLoadString(ptree const& pt);  
-        static long ohObjectSave(ptree const& pt);  
-        static std::string ohObjectSaveString(ptree const& pt);
+        static std::vector<std::string> ohObjectLoad(boost::json::object& json_obj);  
+        static std::vector<std::string> ohObjectLoadString(boost::json::object& json_obj);  
+        static long ohObjectSave(boost::json::object& json_obj);  
+        static std::string ohObjectSaveString(boost::json::object& json_obj);
     };
 };

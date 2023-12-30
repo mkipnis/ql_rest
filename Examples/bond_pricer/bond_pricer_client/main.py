@@ -61,7 +61,7 @@ def publish_request( end_point, pricing_request):
     price_request_out_json = json.dumps(pricing_request, indent=4, cls=CurveEncoder)
 
     response = requests.get(end_point, data=price_request_out_json, headers={"Content-Type": "application/json"})
-    print(response.json())
+    #print(response.json())
 
     return response.json()
 

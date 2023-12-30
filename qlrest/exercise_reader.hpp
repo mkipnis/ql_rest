@@ -48,8 +48,8 @@ namespace ql_rest
     struct exercise
     {
       
-        static std::string qlAmericanExercise(ptree const& pt);  
-        static std::string qlBermudanExercise(ptree const& pt);  
-        static std::string qlEuropeanExercise(ptree const& pt);
+        static std::string qlAmericanExercise(boost::json::object& json_obj);  
+        static std::string qlBermudanExercise(boost::json::object& json_obj);  
+        static std::string qlEuropeanExercise(boost::json::object& json_obj);
     };
 };

@@ -23,31 +23,27 @@
     <RuleGroup name='functionDeclaration' indent='3' delimiter=',&#10;'>
       <Wrap>&#10;%s</Wrap>
       <Rules>
-        <Rule tensorRank='vector' nativeType='double'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Period'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Date'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt; ( pt.get_child("%(name)s") )</Rule>
-        <!-- <Rule tensorRank='vector' nativeType='long'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;( pt.get_child("%(name)s"))</Rule> -->
-        <Rule tensorRank='vector'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(pt.get_child("%(name)s"))</Rule>
-        <!-- <Rule tensorRank='vector'> %(indent)s pt.get&lt;std::vector&lt;%(nativeType)s&gt; &gt;(%(name)s) </Rule> -->
-        <Rule tensorRank='matrix' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::matrix_cast&lt;ObjectHandler::property_t,std::string&gt;(pt.get_child("%(name)s"))</Rule>
-        <Rule tensorRank='matrix' type='QuantLib::Period'>%(indent)s ql_rest::matrix_cast&lt;ObjectHandler::property_t,std::string&gt;(obj.%(name)s)</Rule>
-        <Rule tensorRank='matrix' nativeType='string'>%(indent)s ql_rest::matrix_cast&lt;std::string&gt;( pt.get&lt;%(nativeType)s&gt;("%(name)s" )</Rule>
-        <Rule tensorRank='matrix' nativeType='double'>%(indent)s ql_rest::matrix_cast&lt;%(nativeType)s&gt;( pt.get&lt;%(nativeType)s&gt;("%(name)s" )</Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Real'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Natural'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Date' default='true'> %(indent)s ql_rest::from_iso_string_to_oh_property(pt.get&lt;std::string&gt;("%(name)s"))</Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Date'> %(indent)s ql_rest::from_iso_string(pt.get&lt;std::string&gt;("%(name)s") )</Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Quote' nativeType='string'> %(indent)s ObjectHandler::property_t(pt.get&lt;std::string&gt;("%(name)s")) </Rule>
-        <Rule tensorRank='scalar' type='QuantLib::Quote'> %(indent)s ObjectHandler::property_t(pt.get&lt;%(nativeType)s&gt;("%(name)s")) </Rule>
-        <Rule tensorRank='scalar' nativeType='string'> %(indent)s pt.get&lt;std::string&gt;("%(name)s")</Rule>
-        <Rule tensorRank='scalar' nativeType='any'> %(indent)s pt.get&lt;bool&gt;("%(name)s")</Rule>
-        <!-- <Rule tensorRank='scalar' nativeType='any'> %(indent)s obj.%(name)s</Rule> -->
-        <Rule tensorRank='scalar'> %(indent)s pt.get&lt;%(nativeType)s&gt;("%(name)s")</Rule>
-        <!-- <Rule tensorRank='scalar' nativeType='any'>%(indent)s obj.%(name)s</Rule> -->
+        <Rule tensorRank='vector' nativeType='double'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Period'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' type='QuantLib::Date'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt; ( json_obj["%(name)s"].as_array() )</Rule>
+        <Rule tensorRank='vector'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <Rule tensorRank='matrix' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::matrix_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_object())</Rule>
+        <Rule tensorRank='matrix' nativeType='string'>%(indent)s ql_rest::matrix_cast&lt;std::string&gt;( json_obj["%(name)s"].as_object() )</Rule>
+        <Rule tensorRank='matrix' nativeType='double'>%(indent)s ql_rest::matrix_cast&lt;%(nativeType)s&gt;( json_obj["%(name)s"].as_object() )</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Real'> %(indent)s json_obj["%(name)s"].is_double() ? json_obj["%(name)s"].as_double() : json_obj["%(name)s"].as_int64() </Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Natural'> %(indent)s boost::json::value_to&lt;long&gt;(json_obj["%(name)s"])</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Date' default='true'> %(indent)s ql_rest::from_iso_string_to_oh_property(boost::json::value_to&lt;std::string&gt;(json_obj["%(name)s"]))</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Date'> %(indent)s ql_rest::from_iso_string(boost::json::value_to&lt;std::string&gt;(json_obj["%(name)s"]))</Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Quote'> %(indent)s json_obj["%(name)s"].is_double() ? boost::json::value_to&lt;double&gt;(json_obj["%(name)s"]) : boost::json::value_to&lt;long&gt;(json_obj["%(name)s"]) </Rule>
+        <Rule tensorRank='scalar' type='QuantLib::Size'> %(indent)s long(json_obj["%(name)s"].as_int64())</Rule>
+        <Rule tensorRank='scalar' nativeType='string'> %(indent)s boost::json::value_to&lt;std::string&gt;(json_obj["%(name)s"])</Rule>
+        <Rule tensorRank='scalar' nativeType='double'> %(indent)s json_obj["%(name)s"].is_double() ? boost::json::value_to&lt;double&gt;(json_obj["%(name)s"]) : boost::json::value_to&lt;long&gt;(json_obj["%(name)s"])</Rule>
+        <Rule tensorRank='scalar' nativeType='any'> %(indent)s json_obj["%(name)s"].as_bool()</Rule>
+        <Rule tensorRank='scalar'> %(indent)s json_obj["%(name)s"].as_bool()</Rule>
         <Rule tensorRank='scalar' nativeType='string'>%(indent)s static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s)</Rule>
         <Rule tensorRank='scalar' superType='libraryClass' type='QuantLib::Quote'>%(indent)s ObjectHandler::property_t (static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s))</Rule>
         <Rule tensorRank='scalar' nativeType='any'>%(indent)s ObjectHandler::property_t ( static_cast&lt;bool&gt;(obj.%(name)s) )</Rule>

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-pip3 install django
-pip3 install yfinance
-pip3 install django-cors-headers
-pip3 install djangorestframework
+pip3 install django --break-system-packages
+pip3 install yfinance --break-system-packages
+pip3 install django-cors-headers --break-system-packages
+pip3 install djangorestframework --break-system-packages
 
 cd options_monitor_frontend
 npm install

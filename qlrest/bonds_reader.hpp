@@ -58,11 +58,11 @@ namespace ql_rest
     struct bonds
     {
       
-        static std::string qlBond(ptree const& pt);  
-        static std::string qlCmsRateBond(ptree const& pt);  
-        static std::string qlFixedRateBond(ptree const& pt);  
-        static std::string qlFixedRateBond2(ptree const& pt);  
-        static std::string qlFloatingRateBond(ptree const& pt);  
-        static std::string qlZeroCouponBond(ptree const& pt);
+        static std::string qlBond(boost::json::object& json_obj);  
+        static std::string qlCmsRateBond(boost::json::object& json_obj);  
+        static std::string qlFixedRateBond(boost::json::object& json_obj);  
+        static std::string qlFixedRateBond2(boost::json::object& json_obj);  
+        static std::string qlFloatingRateBond(boost::json::object& json_obj);  
+        static std::string qlZeroCouponBond(boost::json::object& json_obj);
     };
 };

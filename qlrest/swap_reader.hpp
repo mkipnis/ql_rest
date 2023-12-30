@@ -55,7 +55,7 @@ namespace ql_rest
     struct swap
     {
       
-        static std::string qlMakeCms(ptree const& pt);  
-        static std::string qlSwap(ptree const& pt);
+        static std::string qlMakeCms(boost::json::object& json_obj);  
+        static std::string qlSwap(boost::json::object& json_obj);
     };
 };

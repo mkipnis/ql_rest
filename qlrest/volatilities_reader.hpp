@@ -53,6 +53,6 @@ namespace ql_rest
     struct volatilities
     {
       
-        static std::string qlBlackConstantVol(ptree const& pt);
+        static std::string qlBlackConstantVol(boost::json::object& json_obj);
     };
 };

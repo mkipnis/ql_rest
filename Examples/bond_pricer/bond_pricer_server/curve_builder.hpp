@@ -29,20 +29,19 @@
 #include <stdio.h>
 #include <string>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <boost/json.hpp>
 
 class curve_builder
 {
 public:
     curve_builder( std::string request_id,
-                  const boost::property_tree::ptree& curve_points,
-                  boost::property_tree::ptree& bond_template);
+                  const boost::json::object& curve_points,
+                  boost::json::object& bond_template);
     
     std::string get_curve_object() { return _piecewise_curve;};
     std::string get_bond_engine() { return _bond_engine;};
     
-    boost::property_tree::ptree get_yield_curve()
+    boost::json::object get_yield_curve()
     {
         return _yield_curve_out;
     }
@@ -52,7 +51,7 @@ private:
     std::string _piecewise_curve;
     std::string _bond_engine;
     
-    boost::property_tree::ptree _yield_curve_out;
+    boost::json::object _yield_curve_out;
 };
 
 

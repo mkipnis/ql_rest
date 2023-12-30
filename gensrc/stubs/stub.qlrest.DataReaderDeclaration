@@ -1,2 +1,2 @@
   
-        static %(qlCallResultType)s %(functionName)s(ptree const& pt);
+        static %(qlCallResultType)s %(functionName)s(boost::json::object& json_obj);

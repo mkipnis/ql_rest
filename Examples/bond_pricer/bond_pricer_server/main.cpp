@@ -36,64 +36,59 @@
 
 auto bond_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
-    auto request_id = pricer_request->get<std::string>("request_id");
-    std::cout << "Request : " << request_id << std::endl;
+    auto request_id = boost::json::value_to<std::string>(pricer_request->at("request_id"));
+    // std::cout << "Request : " << request_id << std::endl;
     
-    boost::property_tree::ptree pricer_results;
-    pricer_results.put("request_id", request_id);
+    boost::json::object pricer_results;
+    pricer_results["request_id"] = request_id;
     
     try
     {
-        auto business_date_in = pricer_request->get<std::string>("business_date");
+        auto business_date_in = boost::json::value_to<std::string>(pricer_request->at("business_date"));
         auto business_date = ql_rest::from_iso_string(business_date_in);
 
         QuantLibAddinCpp::qlSettingsSetEvaluationDate( QuantLib::BigInteger(business_date), OH_NULL );
         
-        auto curve = pricer_request->get_child("curve");
-        auto bond_template = curve.get_child("bond_template");
-        auto curve_points = curve.get_child("curve_points");
+        auto curve = pricer_request->at("curve").as_object();
+        auto bond_template = curve["bond_template"].as_object();
+        auto curve_points = curve["curve_points"].as_object();
     
-        curve_builder cb( pricer_request->get<std::string>("request_id"), curve_points, bond_template);
+        curve_builder cb( request_id, curve_points, bond_template);
         
-        pricer_results.add_child("yield_curve", cb.get_yield_curve());
+        pricer_results["yield_curve"] = cb.get_yield_curve();
         
         auto curve_object = cb.get_curve_object();
         auto bond_engine = cb.get_bond_engine();
         
-        auto instruments = pricer_request->get_child("instruments");
+        auto instruments = (*pricer_request)["instruments"].as_object();
             
-        for (auto it = instruments.begin(); it != instruments.end(); ++it)
+        for (auto instrument = instruments.begin(); instrument != instruments.end(); ++instrument)
         {
-            auto instrument = it->first;
+            auto cusip = std::string(instrument->key());
+            auto bond_object = instrument->value().as_object();
             
-            auto bond_schedule = it->second.get_child("ust_bond_schedule");
-            auto fixed_date_bond = it->second.get_child("ust_fixed_rate_bond");
+            auto bond_schedule = bond_object["ust_bond_schedule"].as_object();
+            auto fixed_date_bond = bond_object["ust_fixed_rate_bond"].as_object();
          
             try
             {
                 bond_pricer bp(bond_schedule, fixed_date_bond, bond_engine);
                 
-                boost::property_tree::ptree bond_pricer_results;
+                boost::json::object bond_pricer_results;
                 bp.populate_pricing_results(bond_pricer_results);
                                         
-                pricer_results.add_child(instrument, bond_pricer_results);
+                pricer_results[cusip] = bond_pricer_results;
                 
             } catch ( std::exception& exp )
             {
-                std::cout << "Exception in bond setup Schedule : " << bond_schedule.get<std::string>("ObjectId")
-                << " Fixed Rate Bond : " << fixed_date_bond.get<std::string>("ObjectId") << " : " << exp.what() << std::endl;
+                std::cout << "Exception in bond setup Schedule : " << bond_schedule["ObjectId"].as_string()
+                << " Fixed Rate Bond : " << fixed_date_bond["ObjectId"].as_string() << " : " << exp.what() << std::endl;
             }
         }
-    }  catch (const boost::property_tree::ptree_error& e )
-    {
-        std::cout << "Exception : " << e.what() << std::endl;
-        pricer_results.put("error_code", -1);
-        pricer_results.put("error", e.what());
-        
     } catch ( const std::exception& exp )
     {
-        pricer_results.put("error_code", -2);
-        pricer_results.put("error", exp.what());
+        pricer_results["error_code"] = -2;
+        pricer_results["error"] = exp.what();
         std::cout << "Exception : " << exp.what() << std::endl;
     }
     

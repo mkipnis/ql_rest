@@ -48,6 +48,6 @@ namespace ql_rest
     struct processes
     {
       
-        static std::string qlGeneralizedBlackScholesProcess(ptree const& pt);
+        static std::string qlGeneralizedBlackScholesProcess(boost::json::object& json_obj);
     };
 };

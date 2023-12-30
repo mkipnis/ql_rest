@@ -34,304 +34,304 @@ using namespace ql_rest;
 
 
 
-std::string ratehelpers::qlBondHelper(ptree const& pt)
+std::string ratehelpers::qlBondHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBondHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Price")) ,
-              pt.get<std::string>("Bond"),
-              pt.get<bool>("UseCleanPrice"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
+              boost::json::value_to<std::string>(json_obj["Bond"]),
+              json_obj["UseCleanPrice"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlDatedOISRateHelper(ptree const& pt)
+std::string ratehelpers::qlDatedOISRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDatedOISRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string(pt.get<std::string>("StartDate") ),
-              ql_rest::from_iso_string(pt.get<std::string>("EndDate") ),
-              ObjectHandler::property_t(pt.get<std::string>("FixedRate")) ,
-              pt.get<std::string>("ONIndex"),
-              pt.get<std::string>("DiscountingCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["StartDate"])),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["EndDate"])),
+              json_obj["FixedRate"].is_double() ? boost::json::value_to<double>(json_obj["FixedRate"]) : boost::json::value_to<long>(json_obj["FixedRate"]) ,
+              boost::json::value_to<std::string>(json_obj["ONIndex"]),
+              boost::json::value_to<std::string>(json_obj["DiscountingCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlDepositRateHelper(ptree const& pt)
+std::string ratehelpers::qlDepositRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDepositRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<std::string>("IborIndex"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlDepositRateHelper2(ptree const& pt)
+std::string ratehelpers::qlDepositRateHelper2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDepositRateHelper2(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<std::string>("Tenor"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFixedRateBondHelper(ptree const& pt)
+std::string ratehelpers::qlFixedRateBondHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFixedRateBondHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Price")) ,
-              pt.get<long>("SettlementDays"),
-              pt.get<double>("FaceAmount"),
-              pt.get<std::string>("ScheduleID"),
-              ql_rest::vector_cast<double>(pt.get_child("Coupons")),
-              pt.get<std::string>("DayCounter"),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<std::string>("PaymentCalendar"),
-              pt.get<std::string>("ExCouponPeriod"),
-              pt.get<std::string>("ExCouponCalendar"),
-              pt.get<std::string>("ExCouponBDC"),
-              pt.get<bool>("ExCouponEndOfMonth"),
-              pt.get<bool>("UseCleanPrice"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
+              long(json_obj["SettlementDays"].as_int64()),
+              json_obj["FaceAmount"].is_double() ? boost::json::value_to<double>(json_obj["FaceAmount"]) : boost::json::value_to<long>(json_obj["FaceAmount"]),
+              boost::json::value_to<std::string>(json_obj["ScheduleID"]),
+              ql_rest::vector_cast<double>(json_obj["Coupons"].as_array()),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["Redemption"].is_double() ? boost::json::value_to<double>(json_obj["Redemption"]) : boost::json::value_to<long>(json_obj["Redemption"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              boost::json::value_to<std::string>(json_obj["PaymentCalendar"]),
+              boost::json::value_to<std::string>(json_obj["ExCouponPeriod"]),
+              boost::json::value_to<std::string>(json_obj["ExCouponCalendar"]),
+              boost::json::value_to<std::string>(json_obj["ExCouponBDC"]),
+              json_obj["ExCouponEndOfMonth"].as_bool(),
+              json_obj["UseCleanPrice"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFraRateHelper(ptree const& pt)
+std::string ratehelpers::qlFraRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFraRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<std::string>("PeriodToStart"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<std::string>("PillarDate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("CustomPillarDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<std::string>(json_obj["PeriodToStart"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              boost::json::value_to<std::string>(json_obj["PillarDate"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["CustomPillarDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFraRateHelper2(ptree const& pt)
+std::string ratehelpers::qlFraRateHelper2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFraRateHelper2(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<std::string>("PeriodToStart"),
-              pt.get<long>("LengthInMonths"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<std::string>("PillarDate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("CustomPillarDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<std::string>(json_obj["PeriodToStart"]),
+              boost::json::value_to<long>(json_obj["LengthInMonths"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              boost::json::value_to<std::string>(json_obj["PillarDate"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["CustomPillarDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFuturesRateHelper(ptree const& pt)
+std::string ratehelpers::qlFuturesRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFuturesRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Price")) ,
-              pt.get<std::string>("FuturesType"),
-              ql_rest::from_iso_string(pt.get<std::string>("FuturesDate") ),
-              pt.get<std::string>("IborIndex"),
-              ObjectHandler::property_t(pt.get<std::string>("ConvexityAdjQuote")) ,
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
+              boost::json::value_to<std::string>(json_obj["FuturesType"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["FuturesDate"])),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["ConvexityAdjQuote"].is_double() ? boost::json::value_to<double>(json_obj["ConvexityAdjQuote"]) : boost::json::value_to<long>(json_obj["ConvexityAdjQuote"]) ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFuturesRateHelper2(ptree const& pt)
+std::string ratehelpers::qlFuturesRateHelper2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFuturesRateHelper2(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Price")) ,
-              pt.get<std::string>("FuturesType"),
-              ql_rest::from_iso_string(pt.get<std::string>("FuturesDate") ),
-              pt.get<long>("LengthInMonths"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<std::string>("DayCounter"),
-              ObjectHandler::property_t(pt.get<std::string>("ConvexityAdjQuote")) ,
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
+              boost::json::value_to<std::string>(json_obj["FuturesType"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["FuturesDate"])),
+              json_obj["LengthInMonths"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["ConvexityAdjQuote"].is_double() ? boost::json::value_to<double>(json_obj["ConvexityAdjQuote"]) : boost::json::value_to<long>(json_obj["ConvexityAdjQuote"]) ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFuturesRateHelper3(ptree const& pt)
+std::string ratehelpers::qlFuturesRateHelper3(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFuturesRateHelper3(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Price")) ,
-              pt.get<std::string>("FuturesType"),
-              ql_rest::from_iso_string(pt.get<std::string>("FuturesDate") ),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("EndDate")),
-              pt.get<std::string>("DayCounter"),
-              ObjectHandler::property_t(pt.get<std::string>("ConvexityAdjQuote")) ,
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
+              boost::json::value_to<std::string>(json_obj["FuturesType"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["FuturesDate"])),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["EndDate"])),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["ConvexityAdjQuote"].is_double() ? boost::json::value_to<double>(json_obj["ConvexityAdjQuote"]) : boost::json::value_to<long>(json_obj["ConvexityAdjQuote"]) ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlFxSwapRateHelper(ptree const& pt)
+std::string ratehelpers::qlFxSwapRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFxSwapRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("FwdPoint")) ,
-              ObjectHandler::property_t(pt.get<std::string>("SpotFx")) ,
-              pt.get<std::string>("Tenor"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<bool>("IsFxBaseCurrencyCollateralCurrency"),
-              pt.get<std::string>("CollateralCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["FwdPoint"].is_double() ? boost::json::value_to<double>(json_obj["FwdPoint"]) : boost::json::value_to<long>(json_obj["FwdPoint"]) ,
+              json_obj["SpotFx"].is_double() ? boost::json::value_to<double>(json_obj["SpotFx"]) : boost::json::value_to<long>(json_obj["SpotFx"]) ,
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              json_obj["IsFxBaseCurrencyCollateralCurrency"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["CollateralCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlOISRateHelper(ptree const& pt)
+std::string ratehelpers::qlOISRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlOISRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<long>("SettlDays"),
-              pt.get<std::string>("Tenor"),
-              ObjectHandler::property_t(pt.get<std::string>("FixedRate")) ,
-              pt.get<std::string>("ONIndex"),
-              pt.get<std::string>("DiscountingCurve"),
-              pt.get<bool>("TelescopicValueDates"),
-              pt.get<long>("PaymentLag"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<long>(json_obj["SettlDays"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              json_obj["FixedRate"].is_double() ? boost::json::value_to<double>(json_obj["FixedRate"]) : boost::json::value_to<long>(json_obj["FixedRate"]) ,
+              boost::json::value_to<std::string>(json_obj["ONIndex"]),
+              boost::json::value_to<std::string>(json_obj["DiscountingCurve"]),
+              json_obj["TelescopicValueDates"].as_bool(),
+              boost::json::value_to<long>(json_obj["PaymentLag"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-double ratehelpers::qlRateHelperImpliedQuote(ptree const& pt)
+double ratehelpers::qlRateHelperImpliedQuote(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRateHelperImpliedQuote(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-double ratehelpers::qlRateHelperQuoteError(ptree const& pt)
+double ratehelpers::qlRateHelperQuoteError(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRateHelperQuoteError(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-double ratehelpers::qlRateHelperQuoteIsValid(ptree const& pt)
+double ratehelpers::qlRateHelperQuoteIsValid(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRateHelperQuoteIsValid(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::string ratehelpers::qlRateHelperQuoteName(ptree const& pt)
+std::string ratehelpers::qlRateHelperQuoteName(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRateHelperQuoteName(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-double ratehelpers::qlRateHelperQuoteValue(ptree const& pt)
+double ratehelpers::qlRateHelperQuoteValue(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRateHelperQuoteValue(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::string ratehelpers::qlSwapRateHelper(ptree const& pt)
+std::string ratehelpers::qlSwapRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwapRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<std::string>("SwapIndex"),
-              ObjectHandler::property_t(pt.get<std::string>("Spread")) ,
-              pt.get<std::string>("ForwardStart"),
-              pt.get<std::string>("DiscountingCurve"),
-              pt.get<std::string>("PillarDate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("CustomPillarDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<std::string>(json_obj["SwapIndex"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]) ,
+              boost::json::value_to<std::string>(json_obj["ForwardStart"]),
+              boost::json::value_to<std::string>(json_obj["DiscountingCurve"]),
+              boost::json::value_to<std::string>(json_obj["PillarDate"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["CustomPillarDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string ratehelpers::qlSwapRateHelper2(ptree const& pt)
+std::string ratehelpers::qlSwapRateHelper2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwapRateHelper2(
          
-              pt.get<std::string>("ObjectId"),
-              ObjectHandler::property_t(pt.get<std::string>("Rate")) ,
-              pt.get<long>("SettlDays"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("FixedLegFrequency"),
-              pt.get<std::string>("FixedLegConvention"),
-              pt.get<std::string>("FixedLegDayCounter"),
-              pt.get<std::string>("IborIndex"),
-              ObjectHandler::property_t(pt.get<std::string>("Spread")) ,
-              pt.get<std::string>("ForwardStart"),
-              pt.get<std::string>("DiscountingCurve"),
-              pt.get<std::string>("PillarDate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("CustomPillarDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Rate"].is_double() ? boost::json::value_to<double>(json_obj["Rate"]) : boost::json::value_to<long>(json_obj["Rate"]) ,
+              boost::json::value_to<long>(json_obj["SettlDays"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegFrequency"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegConvention"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegDayCounter"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]) ,
+              boost::json::value_to<std::string>(json_obj["ForwardStart"]),
+              boost::json::value_to<std::string>(json_obj["DiscountingCurve"]),
+              boost::json::value_to<std::string>(json_obj["PillarDate"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["CustomPillarDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

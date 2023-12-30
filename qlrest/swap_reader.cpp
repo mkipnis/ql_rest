@@ -34,32 +34,32 @@ using namespace ql_rest;
 
 
 
-std::string swap::qlMakeCms(ptree const& pt)
+std::string swap::qlMakeCms(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlMakeCms(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("SwapTenor"),
-              pt.get<std::string>("SwapIndex"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<double>("IborSpread"),
-              pt.get<std::string>("ForwardStart"),
-              pt.get<std::string>("CmsCouponPricer"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["SwapTenor"]),
+              boost::json::value_to<std::string>(json_obj["SwapIndex"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["IborSpread"].is_double() ? boost::json::value_to<double>(json_obj["IborSpread"]) : boost::json::value_to<long>(json_obj["IborSpread"]),
+              boost::json::value_to<std::string>(json_obj["ForwardStart"]),
+              boost::json::value_to<std::string>(json_obj["CmsCouponPricer"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swap::qlSwap(ptree const& pt)
+std::string swap::qlSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwap(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::vector_cast<std::string>(pt.get_child("LegIDs")),
-              ql_rest::vector_cast<bool>(pt.get_child("Payer")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::vector_cast<std::string>(json_obj["LegIDs"].as_array()),
+              ql_rest::vector_cast<bool>(json_obj["Payer"].as_array()),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

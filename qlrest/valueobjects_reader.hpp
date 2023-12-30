@@ -45,6 +45,6 @@ namespace ql_rest
     struct valueobjects
     {
       
-        static ObjectHandler::property_t ohObjectPropertyValues2(ptree const& pt);
+        static ObjectHandler::property_t ohObjectPropertyValues2(boost::json::object& json_obj);
     };
 };

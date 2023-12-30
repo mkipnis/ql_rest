@@ -56,10 +56,10 @@ namespace ql_rest
     struct vanillaswap
     {
       
-        static std::string qlMakeIMMSwap(ptree const& pt);  
-        static std::string qlMakeVanillaSwap(ptree const& pt);  
-        static std::string qlVanillaSwap(ptree const& pt);  
-        static std::string qlVanillaSwapFromSwapIndex(ptree const& pt);  
-        static std::string qlVanillaSwapFromSwapRateHelper(ptree const& pt);
+        static std::string qlMakeIMMSwap(boost::json::object& json_obj);  
+        static std::string qlMakeVanillaSwap(boost::json::object& json_obj);  
+        static std::string qlVanillaSwap(boost::json::object& json_obj);  
+        static std::string qlVanillaSwapFromSwapIndex(boost::json::object& json_obj);  
+        static std::string qlVanillaSwapFromSwapRateHelper(boost::json::object& json_obj);
     };
 };
