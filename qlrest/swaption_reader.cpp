@@ -34,31 +34,31 @@ using namespace ql_rest;
 
 
 
-std::string swaption::qlMakeSwaption(ptree const& pt)
+std::string swaption::qlMakeSwaption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlMakeSwaption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("SwapIndex"),
-              pt.get<std::string>("OptionTenor"),
-              pt.get<double>("Strike"),
-              pt.get<std::string>("PricingEngineID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["SwapIndex"]),
+              boost::json::value_to<std::string>(json_obj["OptionTenor"]),
+              json_obj["Strike"].is_double() ? boost::json::value_to<double>(json_obj["Strike"]) : boost::json::value_to<long>(json_obj["Strike"]),
+              boost::json::value_to<std::string>(json_obj["PricingEngineID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaption::qlSwaption(ptree const& pt)
+std::string swaption::qlSwaption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwaption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("VanillaSwap"),
-              pt.get<std::string>("Exercise"),
-              pt.get<std::string>("SettlementType"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["VanillaSwap"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              boost::json::value_to<std::string>(json_obj["SettlementType"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

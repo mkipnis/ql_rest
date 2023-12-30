@@ -34,138 +34,138 @@ using namespace ql_rest;
 
 
 
-std::string bonds::qlBond(ptree const& pt)
+std::string bonds::qlBond(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBond(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<double>("FaceAmount"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("MaturityDate")),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<std::string>("LegID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["MaturityDate"])),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              boost::json::value_to<std::string>(json_obj["LegID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string bonds::qlCmsRateBond(ptree const& pt)
+std::string bonds::qlCmsRateBond(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlCmsRateBond(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("FaceAmount"),
-              pt.get<std::string>("ScheduleID"),
-              pt.get<long>("FixingDays"),
-              pt.get<bool>("IsInArrears"),
-              pt.get<std::string>("DayCounter"),
-              ql_rest::vector_cast<double>(pt.get_child("Floors")),
-              ql_rest::vector_cast<double>(pt.get_child("Gearings")),
-              pt.get<std::string>("SwapIndex"),
-              ql_rest::vector_cast<double>(pt.get_child("Spreads")),
-              ql_rest::vector_cast<double>(pt.get_child("Caps")),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["ScheduleID"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              json_obj["IsInArrears"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              ql_rest::vector_cast<double>(json_obj["Floors"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["Gearings"].as_array()),
+              boost::json::value_to<std::string>(json_obj["SwapIndex"]),
+              ql_rest::vector_cast<double>(json_obj["Spreads"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["Caps"].as_array()),
+              json_obj["Redemption"].is_double() ? json_obj["Redemption"].as_double() : json_obj["Redemption"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string bonds::qlFixedRateBond(ptree const& pt)
+std::string bonds::qlFixedRateBond(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFixedRateBond(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<double>("FaceAmount"),
-              pt.get<std::string>("ScheduleID"),
-              ql_rest::vector_cast<double>(pt.get_child("Coupons")),
-              pt.get<std::string>("DayCounter"),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<std::string>("PaymentCalendar"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["ScheduleID"]),
+              ql_rest::vector_cast<double>(json_obj["Coupons"].as_array()),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["Redemption"].is_double() ? json_obj["Redemption"].as_double() : json_obj["Redemption"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              boost::json::value_to<std::string>(json_obj["PaymentCalendar"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string bonds::qlFixedRateBond2(ptree const& pt)
+std::string bonds::qlFixedRateBond2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFixedRateBond2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<double>("FaceAmount"),
-              pt.get<std::string>("ScheduleID"),
-              ql_rest::vector_cast<std::string>(pt.get_child("Coupons")),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<std::string>("PaymentCalendar"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["ScheduleID"]),
+              ql_rest::vector_cast<std::string>(json_obj["Coupons"].as_array()),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["Redemption"].is_double() ? json_obj["Redemption"].as_double() : json_obj["Redemption"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              boost::json::value_to<std::string>(json_obj["PaymentCalendar"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string bonds::qlFloatingRateBond(ptree const& pt)
+std::string bonds::qlFloatingRateBond(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFloatingRateBond(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("FaceAmount"),
-              pt.get<std::string>("ScheduleID"),
-              pt.get<long>("FixingDays"),
-              pt.get<bool>("IsInArrears"),
-              pt.get<std::string>("DayCounter"),
-              ql_rest::vector_cast<double>(pt.get_child("Floors")),
-              ql_rest::vector_cast<double>(pt.get_child("Gearings")),
-              pt.get<std::string>("IborIndex"),
-              ql_rest::vector_cast<double>(pt.get_child("Spreads")),
-              ql_rest::vector_cast<double>(pt.get_child("Caps")),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["ScheduleID"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              json_obj["IsInArrears"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              ql_rest::vector_cast<double>(json_obj["Floors"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["Gearings"].as_array()),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              ql_rest::vector_cast<double>(json_obj["Spreads"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["Caps"].as_array()),
+              json_obj["Redemption"].is_double() ? json_obj["Redemption"].as_double() : json_obj["Redemption"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string bonds::qlZeroCouponBond(ptree const& pt)
+std::string bonds::qlZeroCouponBond(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlZeroCouponBond(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Description"),
-              pt.get<std::string>("Currency"),
-              pt.get<long>("SettlementDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<double>("FaceAmount"),
-              ql_rest::from_iso_string(pt.get<std::string>("Maturity") ),
-              pt.get<std::string>("PaymentBDC"),
-              pt.get<double>("Redemption"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("IssueDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Description"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              long(json_obj["SettlementDays"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              json_obj["FaceAmount"].is_double() ? json_obj["FaceAmount"].as_double() : json_obj["FaceAmount"].as_int64() ,
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["Maturity"])),
+              boost::json::value_to<std::string>(json_obj["PaymentBDC"]),
+              json_obj["Redemption"].is_double() ? json_obj["Redemption"].as_double() : json_obj["Redemption"].as_int64() ,
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["IssueDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

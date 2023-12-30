@@ -23,11 +23,11 @@
     SOFTWARE.
 */
 
-#include <iostream>
 #include <boost/beast.hpp>
 #include <boost/asio.hpp>
 #include <thread>
 #include <boost/lockfree/queue.hpp>
+#include <qlrest/qlrest_common.h>
 #include <qlrest/basic_microservice.hpp>
 
 #include <iostream>
@@ -45,114 +45,117 @@
 #include <qlo/qladdin.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 
+#include <boost/json/src.hpp>
+
 #include "swap_builder_helper.hpp"
 
 
 auto swap_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
-    boost::property_tree::ptree pricer_results;
-    auto request_id = pricer_request->get<std::string>("request_id");
+    boost::json::object pricer_results;
+    auto request_id = boost::json::value_to<std::string>(pricer_request->at("request_id"));
     
     try
      {
-         auto operation = pricer_request->get<std::string>("operation");
+         auto operation = pricer_request->at("operation");
                
-               // return indicatives
-        pricer_results.put("request_id", request_id);
-        pricer_results.put("operation", operation);
+        // return indicatives
+        pricer_results["request_id"] = request_id;
+        pricer_results["operation"] = operation;
          
          // Let's adjust business date to a valid valuation date
          auto fixing_date = ObjectHandler::Create<QuantLib::Calendar>() ( "London Stock Exchange" ).adjust(
-                             QuantLib::DateParser::parseFormatted( pricer_request->get<std::string>("business_date"),"%Y-%m-%d"),
+                             QuantLib::DateParser::parseFormatted(
+                                                                  boost::json::value_to<std::string>( pricer_request->at("business_date") ),
+                                                                  "%Y-%m-%d"),
                              ObjectHandler::Create<QuantLib::BusinessDayConvention>() ( ObjectHandler::property_t("Modified Following") ) );
          
          QuantLibAddinCpp::qlSettingsSetEvaluationDate( (long) fixing_date.serialNumber(), OH_NULL);
          
          //
          // Swap Curve Construction - Begin
-         auto libor_index = ql_rest::index::qlLibor(pricer_request->get_child("index"));
+         auto libor_index = ql_rest::index::qlLibor(pricer_request->at("index").as_object());
          
-         auto swap_indexes = pricer_request->get_child("swap_indexes");
-         std::for_each(swap_indexes.begin(), swap_indexes.end(), []( ptree::value_type& pt){ ql_rest::index::qlLiborSwap(pt.second); });
+         auto swap_indexes = pricer_request->at("swap_indexes").as_array();
+         std::for_each(swap_indexes.begin(), swap_indexes.end(), []( boost::json::value& json_val){
+             ql_rest::index::qlLiborSwap(json_val.as_object());
+         });
          
-         auto swap_rate_helpers = pricer_request->get_child("swap_rate_helpers");
-         std::for_each(swap_rate_helpers.begin(), swap_rate_helpers.end(), []( ptree::value_type& pt ){ ql_rest::ratehelpers::qlSwapRateHelper(pt.second); });
+         auto swap_rate_helpers = pricer_request->at("swap_rate_helpers").as_array();
+         std::for_each(swap_rate_helpers.begin(), swap_rate_helpers.end(), []( boost::json::value& json_val ){ ql_rest::ratehelpers::qlSwapRateHelper(json_val.as_object());
+         });
  
-         auto piecewise_yield_curve  = ql_rest::piecewiseyieldcurve::qlPiecewiseYieldCurve( pricer_request->get_child("piecewise_yield_curve") );
+         auto piecewise_yield_curve  = ql_rest::piecewiseyieldcurve::qlPiecewiseYieldCurve( pricer_request->at("piecewise_yield_curve").as_object() );
          
-         auto index_with_curve = ql_rest::index::qlLibor(pricer_request->get_child("index_with_curve"));
+         auto index_with_curve = ql_rest::index::qlLibor(pricer_request->at("index_with_curve").as_object());
          
-         auto discouning_engine = ql_rest::pricingengines::qlDiscountingSwapEngine(pricer_request->get_child("discounting_swap_engine"));
+         auto discouning_engine = ql_rest::pricingengines::qlDiscountingSwapEngine(pricer_request->at("discounting_swap_engine").as_object());
          
-         auto currency = pricer_request->get_child("index").get<std::string>("Currency");
+         auto currency = boost::json::value_to<std::string>(pricer_request->at("index").as_object()["Currency"]);
          
-         auto fixing_type = pricer_request->get<std::string>("fixing_type");
+         auto fixing_type = pricer_request->at("fixing_type");
          // Swap Curve Construction - End
          
          auto const get_libor_swap = [&]( const std::string& name, const std::string& tenor )
          {
              OH_GET_REFERENCE(swap_ptr,
-                              QuantLibAddinCpp::qlLiborSwap(name, currency, fixing_type, tenor, piecewise_yield_curve, piecewise_yield_curve, false, false, false),
+                              QuantLibAddinCpp::qlLiborSwap(name, currency,
+                                                            boost::json::value_to<std::string>(fixing_type),
+                                                            tenor, piecewise_yield_curve,
+                                                            piecewise_yield_curve, false, false, false),
                               QuantLibAddin::LiborSwap, QuantLib::SwapIndex);
              return swap_ptr->underlyingSwap(fixing_date);
          };
 
          if ( operation == "PRICE_CURVE")
          {
-             auto swap_curve_point_request = pricer_request->get_child("swap_curve_point_request");
-             boost::property_tree::ptree curve_points;
+             auto swap_curve_point_request = pricer_request->at("swap_curve_point_request").as_array();
+             boost::json::object curve_points;
                                              
              QuantLib::ClosestRounding closest_rate(3);
              
              for (auto it = swap_curve_point_request.begin(); it!=swap_curve_point_request.end(); ++it )
              {
-                 auto tenor = it->second.data();
+                 auto tenor = boost::json::value_to<std::string>(*it);
                  auto swap_ptr = get_libor_swap("my_swap" + tenor, tenor);
-                 curve_points.put(tenor, closest_rate(swap_ptr->fairRate()));
+                 curve_points[tenor] = closest_rate(swap_ptr->fairRate());
              }
              
-             pricer_results.add_child("curve_points", curve_points);
+             pricer_results["curve_points"] = curve_points;
          
          } else if ( operation == "PRICE_SWAP_AT_PAR")
          {
-             auto tenor = pricer_request->get<std::string>("tenor");
+             auto tenor = boost::json::value_to<std::string>(pricer_request->at("tenor"));
              auto swap_ptr = get_libor_swap("my_swap" + tenor, tenor);
              auto swap_out = swap_designer::swap_to_json(swap_ptr);
-             swap_out.put("pay_or_recieve", pricer_request->get<std::string>("pay_or_recieve"));
-             swap_out.put("notional", pricer_request->get<double>("notional"));
-             swap_out.put("fixed_rate", swap_ptr->fairRate());
-             swap_out.put("spread", 0.0);
-             swap_out.put("engine",  discouning_engine);
-             swap_out.put("index", index_with_curve);
+             swap_out["pay_or_recieve"] = pricer_request->at("pay_or_recieve").as_string();
+             swap_out["notional"] = pricer_request->at("notional").as_int64();
+             swap_out["fixed_rate"] = swap_ptr->fairRate();
+             swap_out["spread"] = 0.0;
+             swap_out["engine"] = discouning_engine;
+             swap_out["index"] = index_with_curve;
              auto test_swap = swap_designer::json_to_swap(swap_out, index_with_curve, discouning_engine );
              swap_out = swap_designer::swap_to_json(test_swap);
-             pricer_results.add_child("my_swap", swap_out);
+             pricer_results["my_swap"] = swap_out;
              
          } else if ( operation ==  "RE_PRICE_SWAP" )
          {
-             auto swap_in = pricer_request->get_child("swap");
-             auto swap_in_with_curve = swap_designer::json_to_swap(swap_in, index_with_curve, discouning_engine );
-             auto swap_out = swap_designer::swap_to_json(swap_designer::json_to_swap(pricer_request->get_child("swap"), index_with_curve, discouning_engine ));
+             auto swap_in = pricer_request->at("swap").as_object();
+             auto swap_out = swap_designer::swap_to_json(swap_designer::json_to_swap(pricer_request->at("swap").as_object(), index_with_curve, discouning_engine ));
  
-             pricer_results.add_child("my_swap", swap_out);
+             pricer_results["my_swap"] = swap_out;
          }
      
-         std::ostringstream oss;
-         boost::property_tree::json_parser::write_json(oss, pricer_results);
-         pricer_results.put("error_code", 0);
-         
-     } catch (const boost::property_tree::ptree_error& e )
-     {
-         std::cout << "Exception : " << e.what() << std::endl;
-         pricer_results.put("error_code", -1);
-         pricer_results.put("error", e.what());
+         pricer_results["error_code"] = 0;
          
      } catch ( const std::exception& exp )
      {
-         pricer_results.put("error_code", -2);
-         pricer_results.put("error", exp.what());
+         pricer_results["error_code"] = -2;
+         pricer_results["error"] = exp.what();
          std::cout << "Exception : " << exp.what() << std::endl;
      }
+    
+    // std::cout << pricer_results << std::endl;
     
     return std::make_tuple( request_id, pricer_results );
 };
@@ -173,11 +176,9 @@ int main(int argc, const char * argv[]) {
     
     boost::asio::io_context ioc;
     
-    
     try
     {
         std::make_shared<ql_rest::listener>( ioc, tcp::endpoint{address, port}, swap_pricer_request_processor)->run();
-        
     } catch (std::exception& exp)
     {
         std::cerr << exp.what() << std::endl;

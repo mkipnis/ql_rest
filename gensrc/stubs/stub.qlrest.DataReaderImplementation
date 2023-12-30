@@ -1,6 +1,6 @@
 
 
-%(qlCallResultType)s %(categoryName)s::%(functionName)s(ptree const& pt)
+%(qlCallResultType)s %(categoryName)s::%(functionName)s(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::%(functionName)s(
          %(functionDeclaration)s

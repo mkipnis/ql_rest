@@ -34,215 +34,215 @@ using namespace ql_rest;
 
 
 
-std::string index::qlBMAIndex(ptree const& pt)
+std::string index::qlBMAIndex(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBMAIndex(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlEonia(ptree const& pt)
+std::string index::qlEonia(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEonia(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlEuribor(ptree const& pt)
+std::string index::qlEuribor(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuribor(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlEuribor365(ptree const& pt)
+std::string index::qlEuribor365(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuribor365(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlEuriborSwap(ptree const& pt)
+std::string index::qlEuriborSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuriborSwap(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("FixingType"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("FwdCurve"),
-              pt.get<std::string>("DiscCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["FixingType"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["FwdCurve"]),
+              boost::json::value_to<std::string>(json_obj["DiscCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlEuriborSwapIsdaFixA(ptree const& pt)
+std::string index::qlEuriborSwapIsdaFixA(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuriborSwapIsdaFixA(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("FwdCurve"),
-              pt.get<std::string>("DiscCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["FwdCurve"]),
+              boost::json::value_to<std::string>(json_obj["DiscCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlIborIndex(ptree const& pt)
+std::string index::qlIborIndex(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlIborIndex(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("FamilyName"),
-              pt.get<std::string>("Tenor"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("BDayConvention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<std::string>("FwdCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["FamilyName"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["BDayConvention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              boost::json::value_to<std::string>(json_obj["FwdCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-bool index::qlIndexAddFixings(ptree const& pt)
+bool index::qlIndexAddFixings(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlIndexAddFixings(
          
-              pt.get<std::string>("ObjectId"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("FixingDates")),
-              ql_rest::vector_cast<double>(pt.get_child("FixingValues")),
-              pt.get<bool>("ForceOverwrite"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["FixingDates"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["FixingValues"].as_array()),
+              json_obj["ForceOverwrite"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::string index::qlLibor(ptree const& pt)
+std::string index::qlLibor(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlLibor(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlLiborSwap(ptree const& pt)
+std::string index::qlLiborSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlLiborSwap(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("FixingType"),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("FwdCurve"),
-              pt.get<std::string>("DiscCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["FixingType"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["FwdCurve"]),
+              boost::json::value_to<std::string>(json_obj["DiscCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlOvernightIndex(ptree const& pt)
+std::string index::qlOvernightIndex(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlOvernightIndex(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("FamilyName"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["FamilyName"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlProxyIbor(ptree const& pt)
+std::string index::qlProxyIbor(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlProxyIbor(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("FamilyName"),
-              pt.get<std::string>("Tenor"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("BDayConvention"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<std::string>("DayCounter"),
-              ObjectHandler::property_t(pt.get<std::string>("Gearing")) ,
-              pt.get<std::string>("IborIndex"),
-              ObjectHandler::property_t(pt.get<std::string>("Spread")) ,
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["FamilyName"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["BDayConvention"]),
+              json_obj["EndOfMonth"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Gearing"].is_double() ? boost::json::value_to<double>(json_obj["Gearing"]) : boost::json::value_to<long>(json_obj["Gearing"]) ,
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]) ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlSonia(ptree const& pt)
+std::string index::qlSonia(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSonia(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string index::qlSwapIndex(ptree const& pt)
+std::string index::qlSwapIndex(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwapIndex(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("FamilyName"),
-              pt.get<std::string>("Tenor"),
-              pt.get<long>("FixingDays"),
-              pt.get<std::string>("Currency"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("FixedLegTenor"),
-              pt.get<std::string>("FixedLegBDC"),
-              pt.get<std::string>("FixedLegDayCounter"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<std::string>("DiscCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["FamilyName"]),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<long>(json_obj["FixingDays"]),
+              boost::json::value_to<std::string>(json_obj["Currency"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegTenor"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegBDC"]),
+              boost::json::value_to<std::string>(json_obj["FixedLegDayCounter"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              boost::json::value_to<std::string>(json_obj["DiscCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

@@ -3,6 +3,7 @@
 using namespace boost::unit_test;
 
 #include <qlrest/qlrest_common.h>
+#include <boost/json/src.hpp>
 
 
 void test_iso_date()
@@ -16,25 +17,22 @@ void test_iso_date()
 void test_vector()
 {
     auto json_vector = "[1.1,2.2,3.3,4.4,5.5,6.6]";
-    
-    boost::property_tree::ptree request;
-    std::istringstream stream(json_vector);
-    boost::property_tree::read_json(stream, request);
-    
+    auto request = boost::json::parse(json_vector).as_array();
     auto float_vector = ql_rest::vector_cast<float>(request);
     
     std::cout << float_vector[1] << std::endl;
-
 }
+
 void test_matrix()
 {
     auto json_matrix = "[[1.1,2.2,3.3,4.4,5.5,6.6], " \
                        " [10.1,20.2,30.3,40.40,50.5,60.6], " \
                        " [100.1,200.2,300.3,400.40,500.5,600.6]]";
     
-    boost::property_tree::ptree request;
+    /*boost::property_tree::ptree request;
     std::istringstream stream(json_matrix);
-    boost::property_tree::read_json(stream, request);
+    boost::property_tree::read_json(stream, request);*/
+    auto request = boost::json::parse(json_matrix);
     
     auto float_matrix = ql_rest::matrix_cast<float>(request);
 }

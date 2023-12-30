@@ -34,68 +34,68 @@ using namespace ql_rest;
 
 
 
-std::string schedule::qlSchedule(ptree const& pt)
+std::string schedule::qlSchedule(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSchedule(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("EffectiveDate")),
-              ql_rest::from_iso_string(pt.get<std::string>("TerminationDate") ),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<std::string>("TermDateConv"),
-              pt.get<std::string>("GenRule"),
-              pt.get<bool>("EndOfMonth"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("FirstDate")),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("NextToLastDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["EffectiveDate"])),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["TerminationDate"])),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              boost::json::value_to<std::string>(json_obj["TermDateConv"]),
+              boost::json::value_to<std::string>(json_obj["GenRule"]),
+              json_obj["EndOfMonth"].as_bool(),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["FirstDate"])),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["NextToLastDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string schedule::qlScheduleFromDateVector(ptree const& pt)
+std::string schedule::qlScheduleFromDateVector(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlScheduleFromDateVector(
          
-              pt.get<std::string>("ObjectId"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("EffectiveDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["EffectiveDate"].as_array()),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string schedule::qlScheduleFullInterfaceFromDateVector(ptree const& pt)
+std::string schedule::qlScheduleFullInterfaceFromDateVector(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlScheduleFullInterfaceFromDateVector(
          
-              pt.get<std::string>("ObjectId"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("Dates")),
-              ql_rest::vector_cast<bool>(pt.get_child("IsRegular")),
-              pt.get<std::string>("Tenor"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("Convention"),
-              pt.get<std::string>("TermDateConv"),
-              pt.get<std::string>("GenRule"),
-              pt.get<bool>("EndOfMonth"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["Dates"].as_array()),
+              ql_rest::vector_cast<bool>(json_obj["IsRegular"].as_array()),
+              boost::json::value_to<std::string>(json_obj["Tenor"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["Convention"]),
+              boost::json::value_to<std::string>(json_obj["TermDateConv"]),
+              boost::json::value_to<std::string>(json_obj["GenRule"]),
+              json_obj["EndOfMonth"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string schedule::qlScheduleTruncated(ptree const& pt)
+std::string schedule::qlScheduleTruncated(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlScheduleTruncated(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("OriginalSchedule"),
-              ql_rest::from_iso_string(pt.get<std::string>("TruncationDate") ),
-              pt.get<bool>("ReturnDatesBefore"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["OriginalSchedule"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["TruncationDate"])),
+              json_obj["ReturnDatesBefore"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

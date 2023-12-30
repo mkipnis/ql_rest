@@ -34,10 +34,10 @@ using namespace ql_rest;
 
 
 
-std::string ohutils::ohVersion(ptree const& pt)
+std::string ohutils::ohVersion(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohVersion(
          
-              pt.get<bool>("Trigger")
+              json_obj["Trigger"].as_bool()
     );
 }

@@ -25,21 +25,36 @@ const PricerHelper = {
         .then(pricingToken => {
 
 
-          setTimeout(() => {
-
-            var check_results = {};
-            check_results["request_id"] = pricingToken.request_id;
-            const requestOptionsResults = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(check_results) };
-            fetch(url + '/check_request/', requestOptionsResults) .then(res => res.json())
-            .then(check_result => callback(check_result));
-
-          }, 1000);
+          PricerHelper.check_result(pricingToken, callback);
 
 
         } );
 
       return result_out;
   },
+
+  check_result: function(pricingToken, callback )
+ {
+   setTimeout(() => {
+
+     var check_results = {};
+     check_results["request_id"] = pricingToken.request_id;
+     check_results["url"] = pricingToken.url;
+     const requestOptionsResults = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(check_results) };
+     fetch(url + '/check_request/', requestOptionsResults) .then(res => res.json())
+     .then(check_result =>
+       {
+         if ( check_result["state"] == 2 )
+         {
+           console.log(check_result["state"]);
+           callback(check_result);
+         } else
+           PricerHelper.check_result(pricingToken, callback);
+       }
+     );
+
+   }, 300);
+ },
 
   get_market_data: function( callback )
   {

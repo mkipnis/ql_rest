@@ -36,10 +36,10 @@ namespace european_option_helper {
 
 auto options_pricer = [] (ql_rest::json_raw_ptr pricer_request, QuantLib::Date& settlement_date)
 {
-    boost::property_tree::ptree pricer_results;
-    
-    auto vols_and_payoffs = pricer_request->get_child("vols_and_payoffs");
-    auto exercise = pricer_request->get_child("exercise");
+    boost::json::object pricer_results;
+        
+    auto vols_and_payoffs = pricer_request->at("vols_and_payoffs").as_object();
+    auto exercise = pricer_request->at("exercise").as_object();
     auto idExercise = ql_rest::exercise::qlEuropeanExercise(exercise);
     
     auto settlement_date_spot = settlement_date;
@@ -48,47 +48,49 @@ auto options_pricer = [] (ql_rest::json_raw_ptr pricer_request, QuantLib::Date& 
     
     auto pricer = [&]( std::string option_type )
     {
-        auto options = vols_and_payoffs.get_child(option_type);
+        auto options = vols_and_payoffs.at(option_type).as_array();
         
-        boost::property_tree::ptree options_risk_and_npv;
+        boost::json::array options_risk_and_npv;
    
-        std::for_each(options.begin(), options.end(), [&]( ptree::value_type& pt ) {
+        std::for_each(options.begin(), options.end(), [&]( boost::json::value& json_vol ) {
         
-            auto black_constant_vol = pt.second.get_child("qlBlackConstantVol");
-            auto ql_striked_type_payoff = pt.second.get_child("qlStrikedTypePayoff");
-            auto id_generalized_black_scholes_process = pt.second.get_child("qlGeneralizedBlackScholesProcess");
+            auto option_obj = json_vol.as_object();
+            auto black_constant_vol = option_obj["qlBlackConstantVol"].as_object();
+            auto ql_striked_type_payoff = option_obj["qlStrikedTypePayoff"].as_object();
+            auto id_generalized_black_scholes_process = option_obj["qlGeneralizedBlackScholesProcess"].as_object();
             
             QuantLib::ClosestRounding closest(3);
-            boost::property_tree::ptree risk_and_npv;
+            boost::json::object risk_and_npv;
     
-            auto risk_free_rate = id_generalized_black_scholes_process.get<double>("RiskFreeRate");
+            auto risk_free_rate = boost::json::value_to<double>(id_generalized_black_scholes_process["RiskFreeRate"]);
             auto risk_free_rate_plus_1 = risk_free_rate + 1/100.0;
             
-            auto volatility = black_constant_vol.get<double>("Volatility");
+            auto volatility = boost::json::value_to<double>(black_constant_vol["Volatility"]);
             auto volatility_plus_1 = volatility + 1/100.0;
             
-            risk_and_npv.put("Strike",closest( ql_striked_type_payoff.get<double>("Strike") ) );
-            risk_and_npv.put(option_type + "_vol", volatility);
-            risk_and_npv.put("Underlying",closest( id_generalized_black_scholes_process.get<double>("Underlying") ) );
-            risk_and_npv.put("RiskFreeRate", risk_free_rate);
-            risk_and_npv.put("DividendYield", id_generalized_black_scholes_process.get<double>("DividendYield"));
-            risk_and_npv.put("valuation_date", QuantLib::detail::iso_date_holder(settlement_date));
-            risk_and_npv.put("expiration_date", exercise.get<std::string>("ExpiryDate"));
-            
-            
+            risk_and_npv["Strike"] = closest( boost::json::value_to<double>(ql_striked_type_payoff["Strike"]) );
+            risk_and_npv[option_type + "_vol"] = volatility;
+            risk_and_npv["Underlying"] = closest( boost::json::value_to<double>(id_generalized_black_scholes_process["Underlying"]) );
+            risk_and_npv["RiskFreeRate"] = risk_free_rate;
+            risk_and_npv["DividendYield"] = boost::json::value_to<double>(id_generalized_black_scholes_process["DividendYield"]);
+            risk_and_npv["valuation_date"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(settlement_date));
+            risk_and_npv["expiration_date"] = exercise["ExpiryDate"].as_string();
+                        
             auto option_setup = [&] (const std::string& object_id_prefix)
             {
-                black_constant_vol.put("SettlementDate", QuantLib::detail::iso_date_holder(settlement_date));
-                id_generalized_black_scholes_process.put("SettlementDate", QuantLib::detail::iso_date_holder(settlement_date));
+                black_constant_vol["SettlementDate"] =  ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(settlement_date));
                 
-                ql_striked_type_payoff.put("ObjectId", object_id_prefix + ql_striked_type_payoff.get<std::string>("ObjectId"));
+                id_generalized_black_scholes_process["SettlementDate"] = ql_rest::from_ql_type_to_string( QuantLib::detail::iso_date_holder(settlement_date));
+                
+                ql_striked_type_payoff["ObjectId"] = object_id_prefix + boost::json::value_to<std::string>(ql_striked_type_payoff["ObjectId"]);
                 auto idStrikedTypePayoff = ql_rest::payoffs::qlStrikedTypePayoff(ql_striked_type_payoff);
             
-                black_constant_vol.put("ObjectId", object_id_prefix + black_constant_vol.get<std::string>("ObjectId"));
+                black_constant_vol["ObjectId"] = object_id_prefix + boost::json::value_to<std::string>(black_constant_vol["ObjectId"]);
                 auto idBlackVol = ql_rest::volatilities::qlBlackConstantVol(black_constant_vol);
                 
-                id_generalized_black_scholes_process.put("ObjectId", object_id_prefix + id_generalized_black_scholes_process.get<std::string>("ObjectId"));
-                id_generalized_black_scholes_process.put("BlackVolID", idBlackVol);
+                id_generalized_black_scholes_process["ObjectId"] = object_id_prefix + boost::json::value_to<std::string>(id_generalized_black_scholes_process["ObjectId"]);
+                
+                id_generalized_black_scholes_process["BlackVolID"] = idBlackVol;
                 auto idGeneralizedBlackScholesProcess = ql_rest::processes::qlGeneralizedBlackScholesProcess(id_generalized_black_scholes_process);
             
                 std::string idPricingEngine = QuantLibAddinCpp::qlPricingEngine("engine", "AE", idGeneralizedBlackScholesProcess, OH_NULL, OH_NULL, true );
@@ -107,14 +109,14 @@ auto options_pricer = [] (ql_rest::json_raw_ptr pricer_request, QuantLib::Date& 
             settlement_date = settlement_date_spot;
             
             // rho
-            id_generalized_black_scholes_process.put("RiskFreeRate", risk_free_rate_plus_1);
+            id_generalized_black_scholes_process["RiskFreeRate"] = risk_free_rate_plus_1;
             auto vanilla_option_rho = option_setup("rho");
-            id_generalized_black_scholes_process.put("RiskFreeRate", risk_free_rate);
+            id_generalized_black_scholes_process["RiskFreeRate"] = risk_free_rate;
             
             // vega
-            black_constant_vol.put("Volatility", volatility_plus_1);
+            black_constant_vol["Volatility"] = volatility_plus_1;
             auto vanilla_option_vega = option_setup("vega");
-            black_constant_vol.put("Volatility", volatility);
+            black_constant_vol["Volatility"] = volatility;
 
             OH_GET_REFERENCE(ObjectIdLibObjPtr, vanilla_option_spot, QuantLibAddin::VanillaOption, QuantLib::VanillaOption);
             OH_GET_REFERENCE(ObjectIdLibObjThetaPtr, vanilla_option_theta, QuantLibAddin::VanillaOption, QuantLib::VanillaOption);
@@ -122,49 +124,51 @@ auto options_pricer = [] (ql_rest::json_raw_ptr pricer_request, QuantLib::Date& 
             OH_GET_REFERENCE(ObjectIdLibObjVegaPtr, vanilla_option_vega, QuantLibAddin::VanillaOption, QuantLib::VanillaOption);
             
             try {
-                risk_and_npv.put(option_type + "_npv",closest( ObjectIdLibObjPtr->NPV() ) );
-                risk_and_npv.put(option_type + "_delta", closest( ObjectIdLibObjPtr->delta() ) );
-                risk_and_npv.put(option_type + "_gamma", closest( ObjectIdLibObjPtr->gamma() ) );
+                risk_and_npv[option_type + "_npv"] = closest( ObjectIdLibObjPtr->NPV() );
+                
+                if ( !isnan(ObjectIdLibObjPtr->delta()) )
+                {
+                    risk_and_npv[option_type + "_delta"] = closest( ObjectIdLibObjPtr->delta() );
+                    risk_and_npv[option_type + "_gamma"] = closest( ObjectIdLibObjPtr->gamma() );
+                }
             } catch ( ... )
             {
             }
             
             try {
-                risk_and_npv.put(option_type + "_theta", closest( ObjectIdLibObjThetaPtr->NPV() - ObjectIdLibObjPtr->NPV() ) );
+                risk_and_npv[option_type + "_theta"] = closest( ObjectIdLibObjThetaPtr->NPV() - ObjectIdLibObjPtr->NPV() );
             } catch (...)
             {
             }
             
             try {
-                risk_and_npv.put(option_type + "_rho", closest( ObjectIdLibObjRhoPtr->NPV() - ObjectIdLibObjPtr->NPV() ) );
+                risk_and_npv[option_type + "_rho"] = closest( ObjectIdLibObjRhoPtr->NPV() - ObjectIdLibObjPtr->NPV() );
             }
             catch (...)
             {
             }
             
             try {
-                risk_and_npv.put(option_type + "_vega", closest( ObjectIdLibObjVegaPtr->NPV() - ObjectIdLibObjPtr->NPV() ) );
+                risk_and_npv[option_type + "_vega"] = closest( ObjectIdLibObjVegaPtr->NPV() - ObjectIdLibObjPtr->NPV() );
             }
             catch (...)
             {
             }
                 
-            options_risk_and_npv.push_back(std::make_pair("", risk_and_npv));
+            options_risk_and_npv.emplace_back(risk_and_npv);
         });
         
         return options_risk_and_npv;
     };
 
     
-    pricer_results.add_child("call", pricer("call"));
-    pricer_results.add_child("put", pricer("put"));
-
-    std::ostringstream oss;
-    boost::property_tree::json_parser::write_json(oss, pricer_results);
+    pricer_results["call"] = pricer("call");
+    pricer_results["put"] = pricer("put");
     
-    std::cout << "Pricer Results : " << oss.str() << std::endl;
     
-    pricer_results.put("error_code", 0);
+    pricer_results["error_code"] = 0;
+    
+    std::cout << "Response Out: " << pricer_results << std::endl;
     
     return pricer_results;
 };

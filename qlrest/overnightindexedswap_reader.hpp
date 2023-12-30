@@ -52,9 +52,9 @@ namespace ql_rest
     struct overnightindexedswap
     {
       
-        static std::string qlMakeDatedOIS(ptree const& pt);  
-        static std::string qlMakeOIS(ptree const& pt);  
-        static std::string qlOvernightIndexedSwap(ptree const& pt);  
-        static std::string qlOvernightIndexedSwapFromOISRateHelper(ptree const& pt);
+        static std::string qlMakeDatedOIS(boost::json::object& json_obj);  
+        static std::string qlMakeOIS(boost::json::object& json_obj);  
+        static std::string qlOvernightIndexedSwap(boost::json::object& json_obj);  
+        static std::string qlOvernightIndexedSwapFromOISRateHelper(boost::json::object& json_obj);
     };
 };

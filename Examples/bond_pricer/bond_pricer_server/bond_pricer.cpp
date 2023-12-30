@@ -38,8 +38,8 @@
 #include <Addins/Cpp/addincpp.hpp>
 
 
-bond_pricer::bond_pricer( const boost::property_tree::ptree& schedule,
-                         const boost::property_tree::ptree& fixed_rate_bond,
+bond_pricer::bond_pricer(  boost::json::object& schedule,
+                          boost::json::object& fixed_rate_bond,
                          std::string& pricing_engine ) :
                         _pricing_engine(pricing_engine)
 {
@@ -47,7 +47,7 @@ bond_pricer::bond_pricer( const boost::property_tree::ptree& schedule,
     _bond_object = ql_rest::bonds::qlFixedRateBond(fixed_rate_bond);
 };
 
-bool bond_pricer::populate_pricing_results(boost::property_tree::ptree& results)
+bool bond_pricer::populate_pricing_results(boost::json::object& results)
 {
     try
     {
@@ -67,15 +67,15 @@ bool bond_pricer::populate_pricing_results(boost::property_tree::ptree& results)
         auto modified_duration = QuantLib::BondFunctions::duration(*fixed_rate_bond_lib_obj_ptr, yield_rate);
         auto convexity =  QuantLib::BondFunctions::convexity(*fixed_rate_bond_lib_obj_ptr, yield_rate);
         
-        results.put("BondName", _bond_object);
-        results.put<float>("CleanPrice", clean_price);
-        results.put<float>("DirtyPrice", dirty_price);
-        results.put<float>("AI", ai);
-        results.put<float>("AI(Days)", ai_days);
-        results.put<float>("modified_duration", modified_duration);
-        results.put<float>("convexity", convexity);
-        results.put<float>("Yield", yield);
-        results.put<float>("DV01", dv01);
+        results["BondName"] = _bond_object;
+        results["CleanPrice"] = clean_price;
+        results["DirtyPrice"] = dirty_price;
+        results["AI"] = ai;
+        results["AI(Days)"] = ai_days;
+        results["modified_duration"] = modified_duration;
+        results["convexity"] = convexity;
+        results["Yield"] = yield;
+        results["DV01"] = dv01;
         
     } catch ( std::exception& exp )
     {

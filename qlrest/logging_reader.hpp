@@ -46,8 +46,8 @@ namespace ql_rest
     struct logging
     {
       
-        static bool ohLogSetConsole(ptree const& pt);  
-        static std::string ohLogSetFile(ptree const& pt);  
-        static bool ohLogWriteMessage(ptree const& pt);
+        static bool ohLogSetConsole(boost::json::object& json_obj);  
+        static std::string ohLogSetFile(boost::json::object& json_obj);  
+        static bool ohLogWriteMessage(boost::json::object& json_obj);
     };
 };

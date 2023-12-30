@@ -45,7 +45,7 @@ namespace ql_rest
     struct garbagecollection
     {
       
-        static bool ohRepositoryDeleteAllObjects(ptree const& pt);  
-        static bool ohRepositoryLogObject(ptree const& pt);
+        static bool ohRepositoryDeleteAllObjects(boost::json::object& json_obj);  
+        static bool ohRepositoryLogObject(boost::json::object& json_obj);
     };
 };

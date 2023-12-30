@@ -47,13 +47,13 @@ namespace ql_rest
     struct payoffs
     {
       
-        static std::string qlDoubleStickyRatchetPayoff(ptree const& pt);  
-        static std::string qlRatchetMaxPayoff(ptree const& pt);  
-        static std::string qlRatchetMinPayoff(ptree const& pt);  
-        static std::string qlRatchetPayoff(ptree const& pt);  
-        static std::string qlStickyMaxPayoff(ptree const& pt);  
-        static std::string qlStickyMinPayoff(ptree const& pt);  
-        static std::string qlStickyPayoff(ptree const& pt);  
-        static std::string qlStrikedTypePayoff(ptree const& pt);
+        static std::string qlDoubleStickyRatchetPayoff(boost::json::object& json_obj);  
+        static std::string qlRatchetMaxPayoff(boost::json::object& json_obj);  
+        static std::string qlRatchetMinPayoff(boost::json::object& json_obj);  
+        static std::string qlRatchetPayoff(boost::json::object& json_obj);  
+        static std::string qlStickyMaxPayoff(boost::json::object& json_obj);  
+        static std::string qlStickyMinPayoff(boost::json::object& json_obj);  
+        static std::string qlStickyPayoff(boost::json::object& json_obj);  
+        static std::string qlStrikedTypePayoff(boost::json::object& json_obj);
     };
 };

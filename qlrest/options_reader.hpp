@@ -50,14 +50,14 @@ namespace ql_rest
     struct options
     {
       
-        static std::string qlBarrierOption(ptree const& pt);  
-        static std::string qlCaAsianOption(ptree const& pt);  
-        static std::string qlDaAsianOption(ptree const& pt);  
-        static std::string qlDividendVanillaOption(ptree const& pt);  
-        static std::string qlEuropeanOption(ptree const& pt);  
-        static std::string qlForwardVanillaOption(ptree const& pt);  
-        static std::string qlQuantoForwardVanillaOption(ptree const& pt);  
-        static std::string qlQuantoVanillaOption(ptree const& pt);  
-        static std::string qlVanillaOption(ptree const& pt);
+        static std::string qlBarrierOption(boost::json::object& json_obj);  
+        static std::string qlCaAsianOption(boost::json::object& json_obj);  
+        static std::string qlDaAsianOption(boost::json::object& json_obj);  
+        static std::string qlDividendVanillaOption(boost::json::object& json_obj);  
+        static std::string qlEuropeanOption(boost::json::object& json_obj);  
+        static std::string qlForwardVanillaOption(boost::json::object& json_obj);  
+        static std::string qlQuantoForwardVanillaOption(boost::json::object& json_obj);  
+        static std::string qlQuantoVanillaOption(boost::json::object& json_obj);  
+        static std::string qlVanillaOption(boost::json::object& json_obj);
     };
 };

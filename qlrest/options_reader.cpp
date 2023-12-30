@@ -34,133 +34,133 @@ using namespace ql_rest;
 
 
 
-std::string options::qlBarrierOption(ptree const& pt)
+std::string options::qlBarrierOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBarrierOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("BarrierType"),
-              pt.get<double>("Barrier"),
-              pt.get<double>("Rebate"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["BarrierType"]),
+              json_obj["Barrier"].is_double() ? json_obj["Barrier"].as_double() : json_obj["Barrier"].as_int64() ,
+              json_obj["Rebate"].is_double() ? json_obj["Rebate"].as_double() : json_obj["Rebate"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlCaAsianOption(ptree const& pt)
+std::string options::qlCaAsianOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlCaAsianOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("AverageType"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["AverageType"]),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlDaAsianOption(ptree const& pt)
+std::string options::qlDaAsianOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDaAsianOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("AverageType"),
-              pt.get<double>("RunningAccumulator"),
-              pt.get<long>("PastFixings"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("FixingDates")),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["AverageType"]),
+              json_obj["RunningAccumulator"].is_double() ? json_obj["RunningAccumulator"].as_double() : json_obj["RunningAccumulator"].as_int64() ,
+              long(json_obj["PastFixings"].as_int64()),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["FixingDates"].as_array()),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlDividendVanillaOption(ptree const& pt)
+std::string options::qlDividendVanillaOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDividendVanillaOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("DividendDates")),
-              ql_rest::vector_cast<double>(pt.get_child("Dividends")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["DividendDates"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["Dividends"].as_array()),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlEuropeanOption(ptree const& pt)
+std::string options::qlEuropeanOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlEuropeanOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlForwardVanillaOption(ptree const& pt)
+std::string options::qlForwardVanillaOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlForwardVanillaOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Moneyness"),
-              ql_rest::from_iso_string(pt.get<std::string>("ResetDate") ),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Moneyness"].is_double() ? json_obj["Moneyness"].as_double() : json_obj["Moneyness"].as_int64() ,
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["ResetDate"])),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlQuantoForwardVanillaOption(ptree const& pt)
+std::string options::qlQuantoForwardVanillaOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlQuantoForwardVanillaOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Moneyness"),
-              ql_rest::from_iso_string(pt.get<std::string>("ResetDate") ),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Moneyness"].is_double() ? json_obj["Moneyness"].as_double() : json_obj["Moneyness"].as_int64() ,
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["ResetDate"])),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlQuantoVanillaOption(ptree const& pt)
+std::string options::qlQuantoVanillaOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlQuantoVanillaOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string options::qlVanillaOption(ptree const& pt)
+std::string options::qlVanillaOption(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlVanillaOption(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Payoff"),
-              pt.get<std::string>("Exercise"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Payoff"]),
+              boost::json::value_to<std::string>(json_obj["Exercise"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

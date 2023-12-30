@@ -34,12 +34,12 @@ using namespace ql_rest;
 
 
 
-ObjectHandler::property_t valueobjects::ohObjectPropertyValues2(ptree const& pt)
+ObjectHandler::property_t valueobjects::ohObjectPropertyValues2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohObjectPropertyValues2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("PropertyName"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["PropertyName"]),
+              json_obj["Trigger"].as_bool()
     );
 }

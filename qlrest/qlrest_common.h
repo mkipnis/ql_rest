@@ -26,14 +26,12 @@
 #ifndef __common_h__
 #define __common_h__
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
 #include <ql/utilities/dataparsers.hpp>
 #include <oh/objecthandler.hpp>
 
 #include <iostream>
 
-using boost::property_tree::ptree;
+#include <boost/json.hpp>
 
 #define OH_NULL ObjectHandler::property_t()
 
@@ -47,13 +45,13 @@ inline long from_iso_string( const std::string& iso_date )
 
 
 template<class QL_TYPE>
-std::vector<QL_TYPE> vector_cast( const ptree& data )
+std::vector<QL_TYPE> vector_cast(  boost::json::array& data )
 {
 	std::vector<QL_TYPE> ql_data;
 
 	for ( auto& json_value : data) 
 	{
-		ql_data.push_back( json_value.second.get_value<QL_TYPE>() );
+		ql_data.push_back( boost::json::value_to<QL_TYPE>(json_value) );
 	}
 
 	return ql_data;
@@ -61,17 +59,17 @@ std::vector<QL_TYPE> vector_cast( const ptree& data )
 
 
 template<class QL_TYPE>
-std::vector<std::vector<QL_TYPE>> matrix_cast( const ptree& data )
+std::vector<std::vector<QL_TYPE>> matrix_cast( const boost::json::value& data )
 {
     std::vector<std::vector<QL_TYPE>> ql_data;
 
-    for ( auto& x_value : data )
+    for ( auto& x_value : data.as_array() )
     {
         ql_data.emplace_back( std::vector<QL_TYPE>() );
             
-        for ( auto& y_value : x_value.second )
+        for ( auto& y_value : x_value.as_array() )
         {
-            ql_data.back().emplace_back( y_value.second.get_value<QL_TYPE>() );
+            ql_data.back().emplace_back( boost::json::value_to<QL_TYPE>(y_value) );
         }
     }
 
@@ -80,17 +78,17 @@ std::vector<std::vector<QL_TYPE>> matrix_cast( const ptree& data )
 
 
 template<class QL_TYPE, class NATIVE_TYPE>
-std::vector<std::vector<QL_TYPE>> matrix_cast( const ptree& data )
+std::vector<std::vector<QL_TYPE>> matrix_cast( const boost::json::value& data  )
 {
     std::vector<std::vector<QL_TYPE>> ql_data;
 
-    for ( auto& x_value : data )
+    for ( auto& x_value : data.as_array() )
     {
         ql_data.emplace_back( std::vector<QL_TYPE>() );
             
-        for ( auto& y_value : x_value.second )
+        for ( auto& y_value : x_value.as_array() )
         {
-            ql_data.back().emplace_back( y_value.second.get_value<NATIVE_TYPE>() );
+            ql_data.back().emplace_back(  boost::json::value_to<NATIVE_TYPE>(y_value) );
         }
     }
 
@@ -100,13 +98,13 @@ std::vector<std::vector<QL_TYPE>> matrix_cast( const ptree& data )
 
 
 template<class QL_TYPE,class NATIVE_TYPE>
-std::vector<QL_TYPE> vector_cast( const ptree& data )
+std::vector<QL_TYPE> vector_cast(  boost::json::array& data )
 {
         std::vector<QL_TYPE> ql_data;
 
         for ( auto& json_value : data)
         {
-                ql_data.push_back( QL_TYPE(json_value.second.get_value<NATIVE_TYPE>()) );
+                ql_data.push_back( QL_TYPE(boost::json::value_to<NATIVE_TYPE>(json_value)) );
         }
 
         return ql_data;
@@ -120,6 +118,22 @@ inline ObjectHandler::property_t from_iso_string_to_oh_property( const std::stri
 
 	return ObjectHandler::property_t( static_cast<long>( QuantLib::Date( QuantLib::DateParser::parseFormatted( iso_date, "%Y-%m-%d") ).serialNumber() ));
 }
+
+template <class QL_TYPE>
+std::string from_ql_type_to_string( const QL_TYPE&& ql_type  )
+{
+    std::stringstream os;
+    os << ql_type;
+    return os.str();
+};
+
+template <class QL_TYPE>
+std::string from_ql_type_to_string( const QL_TYPE& ql_type  )
+{
+    std::stringstream os;
+    os << ql_type;
+    return os.str();
+};
 
 };
 

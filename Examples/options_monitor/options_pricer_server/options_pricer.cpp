@@ -49,28 +49,30 @@
 #include "european_option_helper.h"
 #include "american_option_helper.h"
 
+#include <boost/json/src.hpp>
 
 auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request)
 {
-    boost::property_tree::ptree pricer_results;
-    auto request_id = pricer_request->get<std::string>("request_id");
+    boost::json::object pricer_results;
+    auto request_id = boost::json::value_to<std::string>(pricer_request->at("request_id"));
     
     try
      {
-        pricer_results.put("request_id", request_id);
+         pricer_results["request_id"] = request_id;
+         
+         std::cout << "Request In: " << *pricer_request << std::endl;
          
          // Let's adjust the business date to a valid valuation date
          auto business_date = ObjectHandler::Create<QuantLib::Calendar>() ( "TARGET" ).adjust(
-                             QuantLib::DateParser::parseFormatted( pricer_request->get<std::string>("business_date"),"%Y-%m-%d"),
+                             QuantLib::DateParser::parseFormatted(
+                                                                  boost::json::value_to<std::string>(pricer_request->at("business_date")),"%Y-%m-%d"),
                              ObjectHandler::Create<QuantLib::BusinessDayConvention>() ( ObjectHandler::property_t("Modified Following") ) );
          
          QuantLibAddinCpp::qlSettingsSetEvaluationDate( (long) business_date.serialNumber(), OH_NULL);
          QuantLib::Calendar settlement_calendar = QuantLib::TARGET();
          auto settlement_date = settlement_calendar.advance(business_date, 0, QuantLib::Days);
          
-         std::cout << "Business Date : " << business_date << "Settlement Date : " << QuantLib::detail::iso_date_holder(settlement_date) << std::endl;
-         
-         auto exercise_type = pricer_request->get<std::string>("exercise_type");
+         auto exercise_type = boost::json::value_to<std::string>(pricer_request->at("exercise_type"));
          
         if ( exercise_type == "American" )
         {
@@ -79,21 +81,15 @@ auto options_pricer_request_processor = [] (ql_rest::json_raw_ptr pricer_request
         {
             pricer_results = european_option_helper::options_pricer(pricer_request, settlement_date);
         }  else {
-            pricer_results.put("error_code", -9);
-            pricer_results.put("error", "Unsupported Exercise Type");
+            pricer_results["error_code"] = -9;
+            pricer_results["error"] = "Unsupported Exercise Type";
         }
             
                   
-     } catch (const boost::property_tree::ptree_error& e )
-     {
-         std::cout << "Exception : " << e.what() << std::endl;
-         pricer_results.put("error_code", -1);
-         pricer_results.put("error", e.what());
-         
      } catch ( const std::exception& exp )
      {
-         pricer_results.put("error_code", -2);
-         pricer_results.put("error", exp.what());
+         pricer_results["error_code"] = -2;
+         pricer_results["error"] = exp.what();
          std::cout << "Exception : " << exp.what() << std::endl;
      }
     

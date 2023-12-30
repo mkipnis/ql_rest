@@ -34,46 +34,46 @@ using namespace ql_rest;
 
 
 
-std::vector<std::string> serialization::ohObjectLoad(ptree const& pt)
+std::vector<std::string> serialization::ohObjectLoad(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohObjectLoad(
          
-              pt.get<std::string>("Directory"),
-              pt.get<std::string>("Pattern"),
-              pt.get<bool>("Recurse"),
-              pt.get<bool>("Overwrite"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["Directory"]),
+              boost::json::value_to<std::string>(json_obj["Pattern"]),
+              json_obj["Recurse"].as_bool(),
+              json_obj["Overwrite"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::vector<std::string> serialization::ohObjectLoadString(ptree const& pt)
+std::vector<std::string> serialization::ohObjectLoadString(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohObjectLoadString(
          
-              pt.get<std::string>("Xml"),
-              pt.get<bool>("Overwrite"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["Xml"]),
+              json_obj["Overwrite"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-long serialization::ohObjectSave(ptree const& pt)
+long serialization::ohObjectSave(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohObjectSave(
          
-              ql_rest::vector_cast<std::string>(pt.get_child("ObjectList")),
-              pt.get<std::string>("Filename"),
-              pt.get<bool>("Overwrite"),
-              pt.get<bool>("IncludeGroups"),
-              pt.get<bool>("Trigger")
+              ql_rest::vector_cast<std::string>(json_obj["ObjectList"].as_array()),
+              boost::json::value_to<std::string>(json_obj["Filename"]),
+              json_obj["Overwrite"].as_bool(),
+              json_obj["IncludeGroups"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::string serialization::ohObjectSaveString(ptree const& pt)
+std::string serialization::ohObjectSaveString(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohObjectSaveString(
          
-              ql_rest::vector_cast<std::string>(pt.get_child("ObjectList")),
-              pt.get<bool>("Overwrite"),
-              pt.get<bool>("Trigger")
+              ql_rest::vector_cast<std::string>(json_obj["ObjectList"].as_array()),
+              json_obj["Overwrite"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }

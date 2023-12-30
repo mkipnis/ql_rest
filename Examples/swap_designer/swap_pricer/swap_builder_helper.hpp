@@ -29,70 +29,69 @@
 #include <qlo/qladdin.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 
+#include <boost/json.hpp>
+
 namespace swap_designer
 {
 
-boost::shared_ptr<QuantLib::VanillaSwap> json_to_swap( boost::property_tree::ptree& swap_out_in, std::string& libor_index_with_curve, std::string& discouning_engine )
+boost::shared_ptr<QuantLib::VanillaSwap> json_to_swap(  boost::json::object& swap_out_in, std::string& libor_index_with_curve, std::string& discouning_engine )
 {
-    boost::property_tree::ptree fixed_leg_json = swap_out_in.get_child("fixed_leg");
-    boost::property_tree::ptree floating_leg = swap_out_in.get_child("floating_leg");
+    auto fixed_leg_json = swap_out_in["fixed_leg"].as_object();
+    auto floating_leg = swap_out_in["floating_leg"].as_object();
      
     QuantLib::Frequency FixedLegFrequencyEnum =
-        ObjectHandler::Create<QuantLib::Frequency>()( fixed_leg_json.get<std::string>("frequency") );
+    ObjectHandler::Create<QuantLib::Frequency>()( boost::json::value_to<std::string>(fixed_leg_json["frequency"]) );
     
     QuantLib::Period periodFixedLeg = QuantLibAddin::periodFromFrequency( FixedLegFrequencyEnum );
 
-    
     auto fixed_leg_schedule = QuantLibAddinCpp::qlSchedule(
                   "FixedSchedule",
-                  ql_rest::from_iso_string_to_oh_property(fixed_leg_json.get<std::string>("start")),
-                  ql_rest::from_iso_string(fixed_leg_json.get<std::string>("end") ),
+                  ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(fixed_leg_json["start"])),
+                  ql_rest::from_iso_string(boost::json::value_to<std::string>(fixed_leg_json["end"])),
                   QuantLibAddin::libraryToScalar( periodFixedLeg),
                   "TARGET",
-                                                           fixed_leg_json.get<std::string>("bdc"),
-                                                           fixed_leg_json.get<std::string>("term_bdc"),
-                                                           fixed_leg_json.get<std::string>("gen_rule"),
+                  boost::json::value_to<std::string>(fixed_leg_json["bdc"]),
+                  boost::json::value_to<std::string>(fixed_leg_json["term_bdc"]),
+                  boost::json::value_to<std::string>(fixed_leg_json["gen_rule"]),
                   false,
                   OH_NULL,
                   OH_NULL,
                   false,
                   false,
                   false);
-    
+ 
     QuantLib::Frequency FloatingLegFrequencyEnum =
-        ObjectHandler::Create<QuantLib::Frequency>()( floating_leg.get<std::string>("frequency") );
+        ObjectHandler::Create<QuantLib::Frequency>()( boost::json::value_to<std::string>(floating_leg["frequency"]) );
     
     QuantLib::Period periodFloatingLeg = QuantLibAddin::periodFromFrequency( FloatingLegFrequencyEnum );
 
-    
     auto floating_leg_schedule = QuantLibAddinCpp::qlSchedule(
                   "FloatingSchedule",
-                  ql_rest::from_iso_string_to_oh_property(floating_leg.get<std::string>("start")),
-                  ql_rest::from_iso_string(floating_leg.get<std::string>("end") ),
+                  ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(floating_leg["start"])),
+                  ql_rest::from_iso_string(boost::json::value_to<std::string>(floating_leg["end"]) ),
                   QuantLibAddin::libraryToScalar( periodFloatingLeg),
                   "TARGET",
-                                                              floating_leg.get<std::string>("bdc"),
-                                                              floating_leg.get<std::string>("term_bdc"),
-                                                              floating_leg.get<std::string>("gen_rule"),
+                  boost::json::value_to<std::string>(floating_leg["bdc"]),
+                  boost::json::value_to<std::string>(floating_leg["term_bdc"]),
+                  boost::json::value_to<std::string>(floating_leg["gen_rule"]),
                   false,
                   OH_NULL,
                   OH_NULL,
                   false,
                   false,
                   false);
-        
-    
+ 
     auto vanilla_swap =  QuantLibAddinCpp::qlVanillaSwap ( "VanillaSwap",
-                                                          swap_out_in.get<std::string>("pay_or_recieve"),
-                                                          swap_out_in.get<double>("notional"),
-                                                                   fixed_leg_schedule,
-                                                          swap_out_in.get<double>("fixed_rate"),
-                                                                    fixed_leg_json.get<std::string>("day_counter"),
-                                                                    floating_leg_schedule,
-                                                                    libor_index_with_curve,
-                                                            swap_out_in.get<double>("spread"),
-                                                                    floating_leg.get<std::string>("day_counter"),
-                                                                    fixed_leg_json.get<std::string>("bdc"),
+                                                          boost::json::value_to<std::string>(swap_out_in["pay_or_recieve"]),
+                                                          boost::json::value_to<double>(swap_out_in["notional"]),
+                                                          fixed_leg_schedule,
+                                                          boost::json::value_to<double>(swap_out_in["fixed_rate"]),
+                                                          boost::json::value_to<std::string>(fixed_leg_json["day_counter"]),
+                                                          floating_leg_schedule,
+                                                          libor_index_with_curve,
+                                                          boost::json::value_to<double>(swap_out_in["spread"]),
+                                                          boost::json::value_to<std::string>(floating_leg["day_counter"]),
+                                                          boost::json::value_to<std::string>(fixed_leg_json["bdc"]),
                                                                     false,
                                                                     false,
                                                                     false
@@ -102,93 +101,97 @@ boost::shared_ptr<QuantLib::VanillaSwap> json_to_swap( boost::property_tree::ptr
     
     QuantLibAddinCpp::qlInstrumentSetPricingEngine( vanilla_swap,  discouning_engine, false );
     
+    
     return swap_ptr;
     
 };
 
-boost::property_tree::ptree swap_to_json( boost::shared_ptr<QuantLib::VanillaSwap> swap_ptr )
+boost::json::object swap_to_json( boost::shared_ptr<QuantLib::VanillaSwap> swap_ptr )
 {
     auto fixed_leg_schedule = swap_ptr->fixedSchedule();
     auto float_leg_schedule = swap_ptr->floatingSchedule();
     
-    boost::property_tree::ptree swap_out;
-    boost::property_tree::ptree fixed_leg;
-    boost::property_tree::ptree floating_leg;
+    boost::json::object swap_out;
+    boost::json::object fixed_leg;
+    boost::json::object floating_leg;
     
                                     
-    fixed_leg.put("start", QuantLib::detail::iso_date_holder(fixed_leg_schedule.startDate()) );
-    fixed_leg.put("end", QuantLib::detail::iso_date_holder(fixed_leg_schedule.endDate()) );
-    fixed_leg.put("frequency", fixed_leg_schedule.tenor().frequency() );
-    fixed_leg.put("bdc", fixed_leg_schedule.businessDayConvention() );
-    fixed_leg.put("day_counter", swap_ptr->fixedDayCount() );
-    fixed_leg.put("gen_rule", fixed_leg_schedule.rule() );
-    fixed_leg.put("term_bdc", fixed_leg_schedule.terminationDateBusinessDayConvention() );
+    fixed_leg["start"] =  ql_rest::from_ql_type_to_string( QuantLib::detail::iso_date_holder(fixed_leg_schedule.startDate()));
+    fixed_leg["end"] = ql_rest::from_ql_type_to_string( QuantLib::detail::iso_date_holder(fixed_leg_schedule.endDate()));
+    fixed_leg["frequency"] = ql_rest::from_ql_type_to_string(fixed_leg_schedule.tenor().frequency());
+    fixed_leg["bdc"] = ql_rest::from_ql_type_to_string( fixed_leg_schedule.businessDayConvention() );
+    fixed_leg["day_counter"] = ql_rest::from_ql_type_to_string( swap_ptr->fixedDayCount() );
+    fixed_leg["gen_rule"] = ql_rest::from_ql_type_to_string( fixed_leg_schedule.rule() );
+    fixed_leg["term_bdc"] = ql_rest::from_ql_type_to_string( fixed_leg_schedule.terminationDateBusinessDayConvention() );
     
     QuantLib::ClosestRounding closest(6);
     QuantLib::ClosestRounding closest_npv(2);
     
     auto fixedCoupons = swap_ptr->fixedLeg();
-    boost::property_tree::ptree fixed_leg_cashflows;
+    boost::json::object fixed_leg_cashflows;
     
     for ( auto cashflow : fixedCoupons )
     {
         auto coupon = boost::dynamic_pointer_cast<QuantLib::FixedRateCoupon>(cashflow);
-        boost::property_tree::ptree cash_flow_out;
+        boost::json::object cash_flow_out;
                             
-        cash_flow_out.put("accrual_start_date", QuantLib::detail::iso_date_holder(coupon->accrualStartDate()));
-        cash_flow_out.put("date", QuantLib::detail::iso_date_holder(coupon->date()));
-        cash_flow_out.put("amount", closest_npv(coupon->amount()));
+        cash_flow_out["accrual_start_date"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(coupon->accrualStartDate()));
+        
+        auto cashflow_date = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(coupon->date()));
+        cash_flow_out["date"] = cashflow_date;
+        cash_flow_out["amount"] = closest_npv(coupon->amount());
                                                 
-        fixed_leg_cashflows.add_child(cash_flow_out.get<std::string>("date"), cash_flow_out);
+        fixed_leg_cashflows[cashflow_date] = cash_flow_out;
     }
     
-    fixed_leg.add_child("cashflows", fixed_leg_cashflows);
+    fixed_leg["cashflows"] = fixed_leg_cashflows;
     
-    swap_out.add_child("fixed_leg", fixed_leg);
+    swap_out["fixed_leg"] = fixed_leg;
     
-    floating_leg.put("start", QuantLib::detail::iso_date_holder(float_leg_schedule.startDate()) );
-    floating_leg.put("end", QuantLib::detail::iso_date_holder(float_leg_schedule.endDate()) );
-    floating_leg.put("frequency", float_leg_schedule.tenor().frequency() );
-    floating_leg.put("bdc", float_leg_schedule.businessDayConvention() );
-    floating_leg.put("day_counter", swap_ptr->floatingDayCount() );
-    floating_leg.put("gen_rule", float_leg_schedule.rule() );
-    floating_leg.put("term_bdc", float_leg_schedule.terminationDateBusinessDayConvention() );
+    floating_leg["start"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(float_leg_schedule.startDate()));
+    floating_leg["end"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(float_leg_schedule.endDate()));
+    floating_leg["frequency"] = ql_rest::from_ql_type_to_string(float_leg_schedule.tenor().frequency());
+    floating_leg["bdc"] = ql_rest::from_ql_type_to_string( float_leg_schedule.businessDayConvention() );
+    floating_leg["day_counter"] = ql_rest::from_ql_type_to_string(swap_ptr->floatingDayCount());
+    floating_leg["gen_rule"] = ql_rest::from_ql_type_to_string( float_leg_schedule.rule() );
+    floating_leg["term_bdc"] = ql_rest::from_ql_type_to_string( float_leg_schedule.terminationDateBusinessDayConvention() );
     
     auto floatingCoupons = swap_ptr->floatingLeg();
-    boost::property_tree::ptree floating_leg_cashflows;
-    
+    boost::json::object floating_leg_cashflows;
     
     for ( auto cashflow : floatingCoupons )
     {
         auto coupon = boost::dynamic_pointer_cast<QuantLib::IborCoupon>(cashflow);
-        boost::property_tree::ptree cash_flow_out;
+        boost::json::object cash_flow_out;
                                                 
-        cash_flow_out.put("accrual_start_date", QuantLib::detail::iso_date_holder(coupon->accrualStartDate()));
-        cash_flow_out.put("date", QuantLib::detail::iso_date_holder(coupon->date()));
-        cash_flow_out.put("fixing_date", QuantLib::detail::iso_date_holder( coupon->fixingDate()));
-        cash_flow_out.put("accrual_period",coupon->accrualPeriod());
-        cash_flow_out.put("spread",coupon->spread());
-        cash_flow_out.put("amount",closest_npv(coupon->amount()));
+        cash_flow_out["accrual_start_date"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(coupon->accrualStartDate()));
+        
+        auto cashflow_date = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder(coupon->date()));
+        cash_flow_out["date"] = cashflow_date;
+        cash_flow_out["fixing_date"] = ql_rest::from_ql_type_to_string(QuantLib::detail::iso_date_holder( coupon->fixingDate()));
+        cash_flow_out["accrual_period"] = coupon->accrualPeriod();
+        cash_flow_out["spread"] = coupon->spread();
+        cash_flow_out["amount"] = closest_npv(coupon->amount());
                                                 
-        floating_leg_cashflows.add_child(cash_flow_out.get<std::string>("date"), cash_flow_out);
+        floating_leg_cashflows[cashflow_date] = cash_flow_out;
     }
     
-    floating_leg.add_child("cashflows", floating_leg_cashflows);
-    swap_out.add_child("floating_leg", floating_leg);
+    floating_leg["cashflows"] = floating_leg_cashflows;
+    swap_out["floating_leg"] = floating_leg;
     
-    swap_out.put("pay_or_recieve", swap_ptr->type());
-    swap_out.put("notional", swap_ptr->nominal());
-    swap_out.put("fixed_rate", closest(swap_ptr->fixedRate()));
-    swap_out.put("spread", closest(swap_ptr->spread()));
+    swap_out["pay_or_recieve"] = ql_rest::from_ql_type_to_string(swap_ptr->type());
+    swap_out["notional"] = swap_ptr->nominal();
+    swap_out["fixed_rate"] = closest(swap_ptr->fixedRate());
+    swap_out["spread"] = closest(swap_ptr->spread());
 
-    swap_out.put("par_rate", closest(swap_ptr->fairRate()));
-    swap_out.put("par_spread" , closest(swap_ptr->fairSpread()));
+    swap_out["par_rate"] = closest(swap_ptr->fairRate());
+    swap_out["par_spread"] = closest(swap_ptr->fairSpread());
     
-    swap_out.put("floating_leg_npv", closest_npv(swap_ptr->floatingLegNPV()));
-    swap_out.put("fixed_leg_npv",closest_npv(swap_ptr->fixedLegNPV()));
-    swap_out.put("floating_leg_bps",closest_npv(swap_ptr->floatingLegBPS()));
-    swap_out.put("fixed_leg_bps",closest_npv(swap_ptr->fixedLegBPS()));
-    swap_out.put("npv",closest_npv(swap_ptr->NPV()));
+    swap_out["floating_leg_npv"] = closest_npv(swap_ptr->floatingLegNPV());
+    swap_out["fixed_leg_npv"] = closest_npv(swap_ptr->fixedLegNPV());
+    swap_out["floating_leg_bps"] = closest_npv(swap_ptr->floatingLegBPS());
+    swap_out["fixed_leg_bps"] = closest_npv(swap_ptr->fixedLegBPS());
+    swap_out["npv"] = closest_npv(swap_ptr->NPV());
     
     return swap_out;
 }
