@@ -126,7 +126,7 @@ auto options_pricer = [] (ql_rest::json_raw_ptr pricer_request, QuantLib::Date& 
             try {
                 risk_and_npv[option_type + "_npv"] = closest( ObjectIdLibObjPtr->NPV() );
                 
-                if ( !isnan(ObjectIdLibObjPtr->delta()) )
+                if ( !boost::math::isnan(ObjectIdLibObjPtr->delta()) )
                 {
                     risk_and_npv[option_type + "_delta"] = closest( ObjectIdLibObjPtr->delta() );
                     risk_and_npv[option_type + "_gamma"] = closest( ObjectIdLibObjPtr->gamma() );
