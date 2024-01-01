@@ -40,7 +40,7 @@ std::string interpolation::qlAbcdInterpolation(boost::json::object& json_obj)
          
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               ql_rest::vector_cast<double>(json_obj["XArray"].as_array()),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["YArray"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["YArray"].as_array()),
               json_obj["A"].is_double() ? json_obj["A"].as_double() : json_obj["A"].as_int64() ,
               json_obj["B"].is_double() ? json_obj["B"].as_double() : json_obj["B"].as_int64() ,
               json_obj["C"].is_double() ? json_obj["C"].as_double() : json_obj["C"].as_int64() ,
@@ -64,7 +64,7 @@ std::string interpolation::qlCubicInterpolation(boost::json::object& json_obj)
          
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               ql_rest::vector_cast<double>(json_obj["XArray"].as_array()),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["YArray"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["YArray"].as_array()),
               boost::json::value_to<std::string>(json_obj["DerApprox"]),
               json_obj["Monotonic"].as_bool(),
               boost::json::value_to<std::string>(json_obj["LeftConditionType"]),
@@ -94,7 +94,7 @@ std::string interpolation::qlInterpolation(boost::json::object& json_obj)
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               boost::json::value_to<std::string>(json_obj["InterpolationType"]),
               ql_rest::vector_cast<double>(json_obj["XArray"].as_array()),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["YArray"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["YArray"].as_array()),
               json_obj["Permanent"].as_bool(),
               json_obj["Trigger"].as_bool(),
               json_obj["Overwrite"].as_bool()
@@ -107,7 +107,7 @@ std::string interpolation::qlMixedLinearCubicInterpolation(boost::json::object& 
          
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               ql_rest::vector_cast<double>(json_obj["XArray"].as_array()),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["YArray"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["YArray"].as_array()),
               long(json_obj["SwitchIndex"].as_int64()),
               boost::json::value_to<std::string>(json_obj["MixedInterpolationBehavior"]),
               boost::json::value_to<std::string>(json_obj["DerApprox"]),
@@ -128,7 +128,7 @@ std::string interpolation::qlSABRInterpolation(boost::json::object& json_obj)
          
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               ql_rest::vector_cast<double>(json_obj["XArray"].as_array()),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["YArray"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["YArray"].as_array()),
               json_obj["Expiry"].is_double() ? boost::json::value_to<double>(json_obj["Expiry"]) : boost::json::value_to<long>(json_obj["Expiry"]),
               json_obj["Forward"].is_double() ? boost::json::value_to<double>(json_obj["Forward"]) : boost::json::value_to<long>(json_obj["Forward"]) ,
               json_obj["Alpha"].is_double() ? json_obj["Alpha"].as_double() : json_obj["Alpha"].as_int64() ,

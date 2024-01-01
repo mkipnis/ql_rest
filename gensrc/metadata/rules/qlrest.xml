@@ -24,8 +24,9 @@
       <Wrap>&#10;%s</Wrap>
       <Rules>
         <Rule tensorRank='vector' nativeType='double'> %(indent)s ql_rest::vector_cast&lt;%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
-        <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
+        <!-- <Rule tensorRank='vector' type='QuantLib::Quote' nativeType="string">%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_array())</Rule> -->
+        <!-- <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule> -->
+        <Rule tensorRank='vector' type='QuantLib::Quote'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,double&gt;(json_obj["%(name)s"].as_array())</Rule>
         <Rule tensorRank='vector' type='QuantLib::Period'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
         <Rule tensorRank='vector' type='QuantLib::Date'>%(indent)s ql_rest::vector_cast&lt;ObjectHandler::property_t,%(nativeType)s&gt;(json_obj["%(name)s"].as_array())</Rule>
         <Rule tensorRank='vector' nativeType='string'> %(indent)s ql_rest::vector_cast&lt;std::string&gt;(json_obj["%(name)s"].as_array())</Rule>
