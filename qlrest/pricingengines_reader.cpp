@@ -34,257 +34,257 @@ using namespace ql_rest;
 
 
 
-std::string pricingengines::qlAnalyticCapFloorEngine(ptree const& pt)
+std::string pricingengines::qlAnalyticCapFloorEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlAnalyticCapFloorEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("HandleModel"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["HandleModel"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBachelierCapFloorEngine(ptree const& pt)
+std::string pricingengines::qlBachelierCapFloorEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBachelierCapFloorEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<std::string>("VolTS"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              boost::json::value_to<std::string>(json_obj["VolTS"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBachelierCapFloorEngine2(ptree const& pt)
+std::string pricingengines::qlBachelierCapFloorEngine2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBachelierCapFloorEngine2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              ObjectHandler::property_t(pt.get<std::string>("Vol")) ,
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Vol"].is_double() ? boost::json::value_to<double>(json_obj["Vol"]) : boost::json::value_to<long>(json_obj["Vol"]) ,
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBinomialPricingEngine(ptree const& pt)
+std::string pricingengines::qlBinomialPricingEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBinomialPricingEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("EngineID"),
-              pt.get<std::string>("ProcessID"),
-              pt.get<long>("TimeSteps"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["EngineID"]),
+              boost::json::value_to<std::string>(json_obj["ProcessID"]),
+              json_obj["TimeSteps"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackCalculator(ptree const& pt)
+std::string pricingengines::qlBlackCalculator(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackCalculator(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("OptionType"),
-              pt.get<double>("Strike"),
-              pt.get<double>("AtmForwardValue"),
-              pt.get<double>("StdDev"),
-              pt.get<double>("Deflator"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["OptionType"]),
+              json_obj["Strike"].is_double() ? json_obj["Strike"].as_double() : json_obj["Strike"].as_int64() ,
+              json_obj["AtmForwardValue"].is_double() ? json_obj["AtmForwardValue"].as_double() : json_obj["AtmForwardValue"].as_int64() ,
+              json_obj["StdDev"].is_double() ? json_obj["StdDev"].as_double() : json_obj["StdDev"].as_int64() ,
+              json_obj["Deflator"].is_double() ? json_obj["Deflator"].as_double() : json_obj["Deflator"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackCalculator2(ptree const& pt)
+std::string pricingengines::qlBlackCalculator2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackCalculator2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("PayoffID"),
-              pt.get<double>("AtmForwardValue"),
-              pt.get<double>("StdDev"),
-              pt.get<double>("Deflator"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["PayoffID"]),
+              json_obj["AtmForwardValue"].is_double() ? json_obj["AtmForwardValue"].as_double() : json_obj["AtmForwardValue"].as_int64() ,
+              json_obj["StdDev"].is_double() ? json_obj["StdDev"].as_double() : json_obj["StdDev"].as_int64() ,
+              json_obj["Deflator"].is_double() ? json_obj["Deflator"].as_double() : json_obj["Deflator"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackCapFloorEngine(ptree const& pt)
+std::string pricingengines::qlBlackCapFloorEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackCapFloorEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<std::string>("VolTS"),
-              pt.get<double>("Displacement"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              boost::json::value_to<std::string>(json_obj["VolTS"]),
+              json_obj["Displacement"].is_double() ? json_obj["Displacement"].as_double() : json_obj["Displacement"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackCapFloorEngine2(ptree const& pt)
+std::string pricingengines::qlBlackCapFloorEngine2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackCapFloorEngine2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              ObjectHandler::property_t(pt.get<std::string>("Vol")) ,
-              pt.get<double>("Displacement"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Vol"].is_double() ? boost::json::value_to<double>(json_obj["Vol"]) : boost::json::value_to<long>(json_obj["Vol"]) ,
+              json_obj["Displacement"].is_double() ? json_obj["Displacement"].as_double() : json_obj["Displacement"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackScholesCalculator(ptree const& pt)
+std::string pricingengines::qlBlackScholesCalculator(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackScholesCalculator(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("OptionType"),
-              pt.get<double>("Strike"),
-              pt.get<double>("Spot"),
-              pt.get<double>("Growth"),
-              pt.get<double>("StdDev"),
-              pt.get<double>("Deflator"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["OptionType"]),
+              json_obj["Strike"].is_double() ? json_obj["Strike"].as_double() : json_obj["Strike"].as_int64() ,
+              json_obj["Spot"].is_double() ? json_obj["Spot"].as_double() : json_obj["Spot"].as_int64() ,
+              json_obj["Growth"].is_double() ? boost::json::value_to<double>(json_obj["Growth"]) : boost::json::value_to<long>(json_obj["Growth"]),
+              json_obj["StdDev"].is_double() ? json_obj["StdDev"].as_double() : json_obj["StdDev"].as_int64() ,
+              json_obj["Deflator"].is_double() ? json_obj["Deflator"].as_double() : json_obj["Deflator"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackScholesCalculator2(ptree const& pt)
+std::string pricingengines::qlBlackScholesCalculator2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackScholesCalculator2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("PayoffID"),
-              pt.get<double>("Spot"),
-              pt.get<double>("Growth"),
-              pt.get<double>("StdDev"),
-              pt.get<double>("Deflator"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["PayoffID"]),
+              json_obj["Spot"].is_double() ? json_obj["Spot"].as_double() : json_obj["Spot"].as_int64() ,
+              json_obj["Growth"].is_double() ? boost::json::value_to<double>(json_obj["Growth"]) : boost::json::value_to<long>(json_obj["Growth"]),
+              json_obj["StdDev"].is_double() ? json_obj["StdDev"].as_double() : json_obj["StdDev"].as_int64() ,
+              json_obj["Deflator"].is_double() ? json_obj["Deflator"].as_double() : json_obj["Deflator"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackSwaptionEngine(ptree const& pt)
+std::string pricingengines::qlBlackSwaptionEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackSwaptionEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<std::string>("VolTS"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              boost::json::value_to<std::string>(json_obj["VolTS"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBlackSwaptionEngine2(ptree const& pt)
+std::string pricingengines::qlBlackSwaptionEngine2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackSwaptionEngine2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              ObjectHandler::property_t(pt.get<std::string>("Vol")) ,
-              pt.get<double>("Displacement"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Vol"].is_double() ? boost::json::value_to<double>(json_obj["Vol"]) : boost::json::value_to<long>(json_obj["Vol"]) ,
+              json_obj["Displacement"].is_double() ? json_obj["Displacement"].as_double() : json_obj["Displacement"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlBondEngine(ptree const& pt)
+std::string pricingengines::qlBondEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBondEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlDiscountingSwapEngine(ptree const& pt)
+std::string pricingengines::qlDiscountingSwapEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDiscountingSwapEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("IncludeSettlDate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("SettlementDate")),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("NpvDate")),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["IncludeSettlDate"].as_bool(),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["SettlementDate"])),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["NpvDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlJamshidianSwaptionEngine(ptree const& pt)
+std::string pricingengines::qlJamshidianSwaptionEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlJamshidianSwaptionEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Model"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Model"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlModelG2SwaptionEngine(ptree const& pt)
+std::string pricingengines::qlModelG2SwaptionEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlModelG2SwaptionEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Model"),
-              pt.get<double>("Range"),
-              pt.get<long>("Intervals"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Model"]),
+              json_obj["Range"].is_double() ? json_obj["Range"].as_double() : json_obj["Range"].as_int64() ,
+              long(json_obj["Intervals"].as_int64()),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlPricingEngine(ptree const& pt)
+std::string pricingengines::qlPricingEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlPricingEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("EngineID"),
-              pt.get<std::string>("ProcessID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["EngineID"]),
+              boost::json::value_to<std::string>(json_obj["ProcessID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string pricingengines::qlTreeSwaptionEngine(ptree const& pt)
+std::string pricingengines::qlTreeSwaptionEngine(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlTreeSwaptionEngine(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Model"),
-              pt.get<long>("Nsteps"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Model"]),
+              long(json_obj["Nsteps"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

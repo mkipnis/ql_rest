@@ -34,20 +34,20 @@ using namespace ql_rest;
 
 
 
-bool garbagecollection::ohRepositoryDeleteAllObjects(ptree const& pt)
+bool garbagecollection::ohRepositoryDeleteAllObjects(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohRepositoryDeleteAllObjects(
          
-              pt.get<bool>("DeletePermanent"),
-              pt.get<bool>("Trigger")
+              json_obj["DeletePermanent"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-bool garbagecollection::ohRepositoryLogObject(ptree const& pt)
+bool garbagecollection::ohRepositoryLogObject(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohRepositoryLogObject(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Trigger"].as_bool()
     );
 }

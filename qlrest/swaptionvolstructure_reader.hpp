@@ -52,13 +52,13 @@ namespace ql_rest
     struct swaptionvolstructure
     {
       
-        static std::string qlConstantSwaptionVolatility(ptree const& pt);  
-        static std::string qlRelinkableHandleSwaptionVolatilityStructure(ptree const& pt);  
-        static std::string qlSmileSectionByCube(ptree const& pt);  
-        static std::string qlSmileSectionByCube2(ptree const& pt);  
-        static std::string qlSpreadedSwaptionVolatility(ptree const& pt);  
-        static std::string qlSwaptionVTSMatrix(ptree const& pt);  
-        static std::string qlSwaptionVolCube1(ptree const& pt);  
-        static std::string qlSwaptionVolCube2(ptree const& pt);
+        static std::string qlConstantSwaptionVolatility(boost::json::object& json_obj);  
+        static std::string qlRelinkableHandleSwaptionVolatilityStructure(boost::json::object& json_obj);  
+        static std::string qlSmileSectionByCube(boost::json::object& json_obj);  
+        static std::string qlSmileSectionByCube2(boost::json::object& json_obj);  
+        static std::string qlSpreadedSwaptionVolatility(boost::json::object& json_obj);  
+        static std::string qlSwaptionVTSMatrix(boost::json::object& json_obj);  
+        static std::string qlSwaptionVolCube1(boost::json::object& json_obj);  
+        static std::string qlSwaptionVolCube2(boost::json::object& json_obj);
     };
 };

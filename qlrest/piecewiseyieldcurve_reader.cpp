@@ -34,44 +34,44 @@ using namespace ql_rest;
 
 
 
-std::string piecewiseyieldcurve::qlPiecewiseYieldCurve(ptree const& pt)
+std::string piecewiseyieldcurve::qlPiecewiseYieldCurve(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlPiecewiseYieldCurve(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<long>("NDays"),
-              pt.get<std::string>("Calendar"),
-              ql_rest::vector_cast<std::string>(pt.get_child("RateHelpers")),
-              pt.get<std::string>("DayCounter"),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("Jumps")),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("JumpDates")),
-              pt.get<double>("Accuracy"),
-              pt.get<std::string>("TraitsID"),
-              pt.get<std::string>("InterpolatorID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<long>(json_obj["NDays"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              ql_rest::vector_cast<std::string>(json_obj["RateHelpers"].as_array()),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["Jumps"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["JumpDates"].as_array()),
+              json_obj["Accuracy"].is_double() ? json_obj["Accuracy"].as_double() : json_obj["Accuracy"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["TraitsID"]),
+              boost::json::value_to<std::string>(json_obj["InterpolatorID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string piecewiseyieldcurve::qlPiecewiseYieldCurveMixedInterpolation(ptree const& pt)
+std::string piecewiseyieldcurve::qlPiecewiseYieldCurveMixedInterpolation(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlPiecewiseYieldCurveMixedInterpolation(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<long>("NDays"),
-              pt.get<std::string>("Calendar"),
-              ql_rest::vector_cast<std::string>(pt.get_child("RateHelpers")),
-              pt.get<std::string>("DayCounter"),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("Jumps")),
-             ql_rest::vector_cast<ObjectHandler::property_t,long>(pt.get_child("JumpDates")),
-              pt.get<double>("Accuracy"),
-              pt.get<std::string>("TraitsID"),
-              pt.get<std::string>("InterpolatorID"),
-              pt.get<std::string>("MixedInterpolationBehavior"),
-              pt.get<long>("PillarsBeforeChange"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<long>(json_obj["NDays"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              ql_rest::vector_cast<std::string>(json_obj["RateHelpers"].as_array()),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,double>(json_obj["Jumps"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,long>(json_obj["JumpDates"].as_array()),
+              json_obj["Accuracy"].is_double() ? json_obj["Accuracy"].as_double() : json_obj["Accuracy"].as_int64() ,
+              boost::json::value_to<std::string>(json_obj["TraitsID"]),
+              boost::json::value_to<std::string>(json_obj["InterpolatorID"]),
+              boost::json::value_to<std::string>(json_obj["MixedInterpolationBehavior"]),
+              long(json_obj["PillarsBeforeChange"].as_int64()),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

@@ -52,11 +52,11 @@ namespace ql_rest
     struct interpolation
     {
       
-        static std::string qlAbcdInterpolation(ptree const& pt);  
-        static std::string qlCubicInterpolation(ptree const& pt);  
-        static bool qlExtrapolatorEnableExtrapolation(ptree const& pt);  
-        static std::string qlInterpolation(ptree const& pt);  
-        static std::string qlMixedLinearCubicInterpolation(ptree const& pt);  
-        static std::string qlSABRInterpolation(ptree const& pt);
+        static std::string qlAbcdInterpolation(boost::json::object& json_obj);  
+        static std::string qlCubicInterpolation(boost::json::object& json_obj);  
+        static bool qlExtrapolatorEnableExtrapolation(boost::json::object& json_obj);  
+        static std::string qlInterpolation(boost::json::object& json_obj);  
+        static std::string qlMixedLinearCubicInterpolation(boost::json::object& json_obj);  
+        static std::string qlSABRInterpolation(boost::json::object& json_obj);
     };
 };

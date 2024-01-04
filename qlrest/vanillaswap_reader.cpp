@@ -34,85 +34,85 @@ using namespace ql_rest;
 
 
 
-std::string vanillaswap::qlMakeIMMSwap(ptree const& pt)
+std::string vanillaswap::qlMakeIMMSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlMakeIMMSwap(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("SwapTenor"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<double>("FixedRate"),
-              ql_rest::from_iso_string_to_oh_property(pt.get<std::string>("FirstImmDate")),
-              pt.get<std::string>("FixDayCounter"),
-              pt.get<double>("Spread"),
-              pt.get<std::string>("PricingEngineID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["SwapTenor"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["FixedRate"].is_double() ? boost::json::value_to<double>(json_obj["FixedRate"]) : boost::json::value_to<long>(json_obj["FixedRate"]),
+              ql_rest::from_iso_string_to_oh_property(boost::json::value_to<std::string>(json_obj["FirstImmDate"])),
+              boost::json::value_to<std::string>(json_obj["FixDayCounter"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]),
+              boost::json::value_to<std::string>(json_obj["PricingEngineID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string vanillaswap::qlMakeVanillaSwap(ptree const& pt)
+std::string vanillaswap::qlMakeVanillaSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlMakeVanillaSwap(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<long>("SettlDays"),
-              pt.get<std::string>("SwapTenor"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<double>("FixedRate"),
-              pt.get<std::string>("ForwardStart"),
-              pt.get<std::string>("FixDayCounter"),
-              pt.get<double>("Spread"),
-              pt.get<std::string>("PricingEngineID"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<long>(json_obj["SettlDays"]),
+              boost::json::value_to<std::string>(json_obj["SwapTenor"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["FixedRate"].is_double() ? boost::json::value_to<double>(json_obj["FixedRate"]) : boost::json::value_to<long>(json_obj["FixedRate"]),
+              boost::json::value_to<std::string>(json_obj["ForwardStart"]),
+              boost::json::value_to<std::string>(json_obj["FixDayCounter"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]),
+              boost::json::value_to<std::string>(json_obj["PricingEngineID"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string vanillaswap::qlVanillaSwap(ptree const& pt)
+std::string vanillaswap::qlVanillaSwap(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlVanillaSwap(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("PayerReceiver"),
-              pt.get<double>("Nominal"),
-              pt.get<std::string>("FixSchedule"),
-              pt.get<double>("FixedRate"),
-              pt.get<std::string>("FixDayCounter"),
-              pt.get<std::string>("FloatingLegSchedule"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<double>("Spread"),
-              pt.get<std::string>("FloatingLegDayCounter"),
-              pt.get<std::string>("PaymentConvention"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["PayerReceiver"]),
+              json_obj["Nominal"].is_double() ? boost::json::value_to<double>(json_obj["Nominal"]) : boost::json::value_to<long>(json_obj["Nominal"]),
+              boost::json::value_to<std::string>(json_obj["FixSchedule"]),
+              json_obj["FixedRate"].is_double() ? boost::json::value_to<double>(json_obj["FixedRate"]) : boost::json::value_to<long>(json_obj["FixedRate"]),
+              boost::json::value_to<std::string>(json_obj["FixDayCounter"]),
+              boost::json::value_to<std::string>(json_obj["FloatingLegSchedule"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]),
+              boost::json::value_to<std::string>(json_obj["FloatingLegDayCounter"]),
+              boost::json::value_to<std::string>(json_obj["PaymentConvention"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string vanillaswap::qlVanillaSwapFromSwapIndex(ptree const& pt)
+std::string vanillaswap::qlVanillaSwapFromSwapIndex(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlVanillaSwapFromSwapIndex(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("SwapIndex"),
-              ql_rest::from_iso_string(pt.get<std::string>("FixingDate") ),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["SwapIndex"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["FixingDate"])),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string vanillaswap::qlVanillaSwapFromSwapRateHelper(ptree const& pt)
+std::string vanillaswap::qlVanillaSwapFromSwapRateHelper(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlVanillaSwapFromSwapRateHelper(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("SwapRateHelper"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["SwapRateHelper"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

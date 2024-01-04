@@ -34,132 +34,132 @@ using namespace ql_rest;
 
 
 
-std::string swaptionvolstructure::qlConstantSwaptionVolatility(ptree const& pt)
+std::string swaptionvolstructure::qlConstantSwaptionVolatility(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlConstantSwaptionVolatility(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<long>("NDays"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("BusinessDayConvention"),
-              ObjectHandler::property_t(pt.get<std::string>("Volatility")) ,
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              long(json_obj["NDays"].as_int64()),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["BusinessDayConvention"]),
+              json_obj["Volatility"].is_double() ? boost::json::value_to<double>(json_obj["Volatility"]) : boost::json::value_to<long>(json_obj["Volatility"]) ,
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlRelinkableHandleSwaptionVolatilityStructure(ptree const& pt)
+std::string swaptionvolstructure::qlRelinkableHandleSwaptionVolatilityStructure(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRelinkableHandleSwaptionVolatilityStructure(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("CurrentLink"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["CurrentLink"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSmileSectionByCube(ptree const& pt)
+std::string swaptionvolstructure::qlSmileSectionByCube(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSmileSectionByCube(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("VolCube"),
-              ql_rest::from_iso_string(pt.get<std::string>("OptionDate") ),
-              pt.get<std::string>("SwapTenor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["VolCube"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["OptionDate"])),
+              boost::json::value_to<std::string>(json_obj["SwapTenor"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSmileSectionByCube2(ptree const& pt)
+std::string swaptionvolstructure::qlSmileSectionByCube2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSmileSectionByCube2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("VolCube"),
-              pt.get<std::string>("OptionDate"),
-              pt.get<std::string>("SwapTenor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["VolCube"]),
+              boost::json::value_to<std::string>(json_obj["OptionDate"]),
+              boost::json::value_to<std::string>(json_obj["SwapTenor"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSpreadedSwaptionVolatility(ptree const& pt)
+std::string swaptionvolstructure::qlSpreadedSwaptionVolatility(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSpreadedSwaptionVolatility(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("BaseVolStructure"),
-              ObjectHandler::property_t(pt.get<std::string>("Spread")) ,
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["BaseVolStructure"]),
+              json_obj["Spread"].is_double() ? boost::json::value_to<double>(json_obj["Spread"]) : boost::json::value_to<long>(json_obj["Spread"]) ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSwaptionVTSMatrix(ptree const& pt)
+std::string swaptionvolstructure::qlSwaptionVTSMatrix(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwaptionVTSMatrix(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("Calendar"),
-              pt.get<std::string>("BusinessDayConvention"),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("OptionTenors")),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("SwapTenors")),
-             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(pt.get_child("Volatilities")),
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              boost::json::value_to<std::string>(json_obj["BusinessDayConvention"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["OptionTenors"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["SwapTenors"].as_array()),
+             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(json_obj["Volatilities"].as_object()),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSwaptionVolCube1(ptree const& pt)
+std::string swaptionvolstructure::qlSwaptionVolCube1(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwaptionVolCube1(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("AtmVolStructure"),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("OptionTenors")),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("SwapTenors")),
-              ql_rest::vector_cast<double>(pt.get_child("StrikeSpreads")),
-             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(pt.get_child("SpreadVols")),
-              pt.get<std::string>("SwapIndexBase"),
-              pt.get<std::string>("ShortSwapIndexBase"),
-              pt.get<bool>("VegaWeightedSmileFit"),
-             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(pt.get_child("Guess")),
-              ql_rest::vector_cast<bool>(pt.get_child("IsFixed")),
-              pt.get<bool>("IsAtmCalibrated"),
-              pt.get<std::string>("EndCriteria"),
-              pt.get<double>("MaxErrorTol"),
-              pt.get<std::string>("OptMethod"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["AtmVolStructure"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["OptionTenors"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["SwapTenors"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["StrikeSpreads"].as_array()),
+             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(json_obj["SpreadVols"].as_object()),
+              boost::json::value_to<std::string>(json_obj["SwapIndexBase"]),
+              boost::json::value_to<std::string>(json_obj["ShortSwapIndexBase"]),
+              json_obj["VegaWeightedSmileFit"].as_bool(),
+             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(json_obj["Guess"].as_object()),
+              ql_rest::vector_cast<bool>(json_obj["IsFixed"].as_array()),
+              json_obj["IsAtmCalibrated"].as_bool(),
+              boost::json::value_to<std::string>(json_obj["EndCriteria"]),
+              json_obj["MaxErrorTol"].is_double() ? boost::json::value_to<double>(json_obj["MaxErrorTol"]) : boost::json::value_to<long>(json_obj["MaxErrorTol"]),
+              boost::json::value_to<std::string>(json_obj["OptMethod"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string swaptionvolstructure::qlSwaptionVolCube2(ptree const& pt)
+std::string swaptionvolstructure::qlSwaptionVolCube2(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlSwaptionVolCube2(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("AtmVolStructure"),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("OptionTenor")),
-             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(pt.get_child("SwapTenor")),
-              ql_rest::vector_cast<double>(pt.get_child("StrikeSpreads")),
-             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(pt.get_child("SpreadVols")),
-              pt.get<std::string>("SwapIndexBase"),
-              pt.get<std::string>("ShortSwapIndexBase"),
-              pt.get<bool>("VegaWeightedSmileFit"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["AtmVolStructure"]),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["OptionTenor"].as_array()),
+             ql_rest::vector_cast<ObjectHandler::property_t,std::string>(json_obj["SwapTenor"].as_array()),
+              ql_rest::vector_cast<double>(json_obj["StrikeSpreads"].as_array()),
+             ql_rest::matrix_cast<ObjectHandler::property_t,std::string>(json_obj["SpreadVols"].as_object()),
+              boost::json::value_to<std::string>(json_obj["SwapIndexBase"]),
+              boost::json::value_to<std::string>(json_obj["ShortSwapIndexBase"]),
+              json_obj["VegaWeightedSmileFit"].as_bool(),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

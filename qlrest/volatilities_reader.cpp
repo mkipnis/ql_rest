@@ -34,17 +34,17 @@ using namespace ql_rest;
 
 
 
-std::string volatilities::qlBlackConstantVol(ptree const& pt)
+std::string volatilities::qlBlackConstantVol(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlBlackConstantVol(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string(pt.get<std::string>("SettlementDate") ),
-              pt.get<std::string>("Calendar"),
-              pt.get<double>("Volatility"),
-              pt.get<std::string>("DayCounter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["SettlementDate"])),
+              boost::json::value_to<std::string>(json_obj["Calendar"]),
+              json_obj["Volatility"].is_double() ? boost::json::value_to<double>(json_obj["Volatility"]) : boost::json::value_to<long>(json_obj["Volatility"]),
+              boost::json::value_to<std::string>(json_obj["DayCounter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

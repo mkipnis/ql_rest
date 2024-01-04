@@ -29,19 +29,18 @@
 #include <stdio.h>
 #include <string>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
+#include <boost/json.hpp>
 
 class bond_pricer
 {
 public:
     bond_pricer(
-                const boost::property_tree::ptree& schedule,
-                const boost::property_tree::ptree& instrument,
+                 boost::json::object& schedule,
+                 boost::json::object& instrument,
                 std::string& pricing_engine
                 );
     
-    bool populate_pricing_results(boost::property_tree::ptree&);
+    bool populate_pricing_results(boost::json::object&);
     
 private:
     std::string _bond_object;

@@ -38,20 +38,23 @@
 
 #include <Addins/Cpp/addincpp.hpp>
 
+#include <boost/json/src.hpp>
+#include <boost/json/object.hpp>
+
 
 curve_builder::curve_builder( std::string request_id,
-                             const boost::property_tree::ptree& curve_points,
-                             boost::property_tree::ptree& bond_template)
+                             const boost::json::object& curve_points,
+                             boost::json::object& bond_template)
 {
-    auto fixed_rate_bond = bond_template.get_child("ust_fixed_rate_bond");
+    auto fixed_rate_bond = bond_template["ust_fixed_rate_bond"];
     
     std::vector<std::string> rate_helper;
     std::vector<std::string> idList;
     
     for (auto it = curve_points.begin(); it != curve_points.end(); ++it)
     {
-        std::string tenor = it->first;
-        double rate = curve_points.get<double>(tenor);
+        auto tenor = std::string(it->key());
+        auto rate = it->value().as_double();
         
         QuantLib::Period start_period;
         QuantLib::Period end_period;
@@ -65,34 +68,28 @@ curve_builder::curve_builder( std::string request_id,
         QuantLib::Date startDate = ust_calendar.advance( adjustedSettlmentDate, start_period);
         QuantLib::Date endDate = ust_calendar.advance( startDate, end_period);
 
-        std::string schedule_obj_id = request_id + std::string("/schedule/") +  tenor;
+        std::string schedule_obj_id = request_id + std::string("/schedule/") + tenor;
         
-        bond_template.get_child("ust_bond_schedule").put("ObjectId", schedule_obj_id);
-        bond_template.get_child("ust_bond_schedule").put("EffectiveDate", QuantLib::io::iso_date(startDate));
-        bond_template.get_child("ust_bond_schedule").put("TerminationDate", QuantLib::io::iso_date(endDate));
-        bond_template.get_child("ust_fixed_rate_bond").put("IssueDate", QuantLib::io::iso_date(startDate));
+        bond_template["ust_bond_schedule"].as_object()["ObjectId"] = schedule_obj_id;
+        
+        bond_template["ust_bond_schedule"].as_object()["EffectiveDate"] = ql_rest::from_ql_type_to_string( QuantLib::io::iso_date(startDate) );
+        bond_template["ust_bond_schedule"].as_object()["TerminationDate"] = ql_rest::from_ql_type_to_string(QuantLib::io::iso_date(endDate));
+        bond_template["ust_fixed_rate_bond"].as_object()["IssueDate"] = ql_rest::from_ql_type_to_string(QuantLib::io::iso_date(startDate));
                 
         try
         {
-            std::cout << "--------------------" << std::endl;
-
-            auto tmp_bond_template = bond_template.get_child("ust_fixed_rate_bond");
+            auto tmp_bond_template = bond_template["ust_fixed_rate_bond"].as_object();
             std::string bond_obj_id = request_id + std::string("/ust_fixed_rate_bond/") +  tenor;
-            auto schedule_id = ql_rest::schedule::qlSchedule(bond_template.get_child("ust_bond_schedule"));
+            auto schedule_id = ql_rest::schedule::qlSchedule(bond_template["ust_bond_schedule"].as_object());
             
-            tmp_bond_template.put("ObjectId", bond_obj_id);
-            tmp_bond_template.put("ScheduleID", schedule_id);
+            tmp_bond_template["ObjectId"] = bond_obj_id;
+            tmp_bond_template["ScheduleID"] = schedule_id;
 
-            boost::property_tree::ptree coupons;
-            boost::property_tree::ptree ptree_rate;
+            boost::json::array coupons;
             
-            ptree_rate.put_value(rate);
+            coupons.emplace_back(rate);
             
-            std::cout << "Par Rate : " << rate << std::endl;
-            
-            coupons.push_back(std::make_pair("", ptree_rate));
-                        
-            tmp_bond_template.put_child("Coupons", coupons);
+            tmp_bond_template["Coupons"].as_array() = coupons;
     
             auto fixed_date_bond = ql_rest::bonds::qlFixedRateBond(tmp_bond_template);
             std::string bond_rate_helper = std::string("qlBondHelper/") + fixed_date_bond;
@@ -102,8 +99,6 @@ curve_builder::curve_builder( std::string request_id,
             idList.push_back(schedule_id);
             idList.push_back(fixed_date_bond);
             idList.push_back(bond_rate_helper);
-
-            std::cout << "--------------------" << std::endl;
 
         } catch( const std::exception& exp )
         {

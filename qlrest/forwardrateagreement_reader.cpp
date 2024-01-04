@@ -34,20 +34,20 @@ using namespace ql_rest;
 
 
 
-std::string forwardrateagreement::qlFRA(ptree const& pt)
+std::string forwardrateagreement::qlFRA(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlFRA(
          
-              pt.get<std::string>("ObjectId"),
-              ql_rest::from_iso_string(pt.get<std::string>("ValueDate") ),
-              ql_rest::from_iso_string(pt.get<std::string>("MaturityDate") ),
-              pt.get<std::string>("Position"),
-              pt.get<double>("Strike"),
-              pt.get<double>("Notional"),
-              pt.get<std::string>("IborIndex"),
-              pt.get<std::string>("YieldCurve"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["ValueDate"])),
+              ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["MaturityDate"])),
+              boost::json::value_to<std::string>(json_obj["Position"]),
+              json_obj["Strike"].is_double() ? boost::json::value_to<double>(json_obj["Strike"]) : boost::json::value_to<long>(json_obj["Strike"]),
+              json_obj["Notional"].is_double() ? boost::json::value_to<double>(json_obj["Notional"]) : boost::json::value_to<long>(json_obj["Notional"]),
+              boost::json::value_to<std::string>(json_obj["IborIndex"]),
+              boost::json::value_to<std::string>(json_obj["YieldCurve"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

@@ -43,9 +43,7 @@
 #include <vector>
 #include <tuple>
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/lockfree/queue.hpp>
+#include <boost/json.hpp>
 
 #include <ql/quantlib.hpp>
 #include <Addins/Cpp/addincpp.hpp>
@@ -61,6 +59,8 @@
 #include <qlo/qladdin.hpp>
 #include <Addins/Cpp/addincpp.hpp>
 
+#include <boost/lockfree/queue.hpp>
+
 #include <thread>
 
 namespace beast = boost::beast;         // from <boost/beast.hpp>
@@ -71,18 +71,16 @@ using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 namespace ql_rest
 {
 
-using json_raw_ptr = boost::property_tree::ptree*;
+using json_raw_ptr = boost::json::object*;
 using json_ptr_pc_queue = boost::lockfree::queue< json_raw_ptr >;
 using json_ptr_pc_queue_ptr = std::shared_ptr<json_ptr_pc_queue>;
 
-using pricing_function = std::function<std::tuple<std::string, boost::property_tree::ptree>( json_raw_ptr )>;
+using pricing_function = std::function<std::tuple<std::string, boost::json::object>( json_raw_ptr )>;
 
 auto const print_json =
-[](boost::property_tree::ptree& pricer_request)
+[](boost::json::object& pricer_request)
 {
-    std::ostringstream oss;
-    boost::property_tree::json_parser::write_json(oss, pricer_request);
-    std::cout << oss.str() << std::endl;
+    std::cout << boost::json::serialize(pricer_request) << std::endl;
 };
 
 
@@ -98,22 +96,22 @@ public:
     };
     
 public:
-    void set_request_state( const std::string request_id, boost::property_tree::ptree& current_state )
+    void set_request_state( const std::string request_id, boost::json::object& current_state )
     {
         std::lock_guard<std::mutex> lock(_state_map_mutex);
         
         _state_map[request_id] = current_state;
     }
     
-    boost::property_tree::ptree get_request_state( const std::string request_id )
+    boost::json::object get_request_state( const std::string request_id )
     {
         std::lock_guard<std::mutex> lock(_state_map_mutex);
         
         if ( _state_map.find(request_id) == _state_map.end() )
         {
-            boost::property_tree::ptree request_not_found;
-            request_not_found.put("request_id", request_id);
-            request_not_found.put("status", static_cast<int>(request_state_manager::request_state::not_found));
+            boost::json::object request_not_found;
+            request_not_found["request_id"] = request_id;
+            request_not_found["status"] = static_cast<int>(request_state_manager::request_state::not_found);
             
             return request_not_found;
         }
@@ -122,7 +120,7 @@ public:
     }
     
 private:
-    std::map<std::string, boost::property_tree::ptree> _state_map;
+    std::map<std::string, boost::json::object> _state_map;
     std::mutex _state_map_mutex;
     
 };
@@ -155,11 +153,11 @@ public:
          
             while (_pricer_queue->pop(pricer_request))
             {
-                print_json(*pricer_request);
+                // print_json(*pricer_request);
                 
                 auto results = _pricing_function(pricer_request);
                     
-                std::get<1>(results).put("state", static_cast<int>(request_state_manager::request_state::processed));
+                std::get<1>(results)["state"] = static_cast<int>(request_state_manager::request_state::processed);
                 _request_state_manager.set_request_state( std::get<0>(results),  std::get<1>(results));
                 
                 delete pricer_request;
@@ -177,13 +175,13 @@ public:
     void enqueue_request(std::string request_id, json_raw_ptr request_ptr) {
         
         _pricer_queue->push(request_ptr);
-        boost::property_tree::ptree pending_request_state;
-        pending_request_state.put("request_id", request_id);
-        pending_request_state.put("state", static_cast<int>(request_state_manager::request_state::pending));
+        boost::json::object pending_request_state;
+        pending_request_state["request_id"] = request_id;
+        pending_request_state["state"] = static_cast<int>(request_state_manager::request_state::pending);
         _request_state_manager.set_request_state(request_id, pending_request_state);
     }
     
-    boost::property_tree::ptree get_request_state( std::string request_id ){
+    boost::json::object get_request_state( std::string request_id ){
         return _request_state_manager.get_request_state( request_id );
     }
 };
@@ -229,33 +227,24 @@ handle_request(
         
         if ( req.target() == "/submit_request/")
         {
-            auto request_state = pricing_thread->get_request_state(request_id);
-
             boost::uuids::uuid uuid = boost::uuids::random_generator()();
-              
-            json_raw_ptr request = new boost::property_tree::ptree();
-            std::istringstream stream(req.body());
-            boost::property_tree::read_json(stream, *request);
+            json_raw_ptr request = new boost::json::object(boost::json::parse(req.body()).as_object());
 
             request_id = boost::uuids::to_string(uuid);
-            request->put("request_id", request_id);
+            (*request)["request_id"] = request_id;
 
             pricing_thread->enqueue_request(request_id, request);
 
         } else if ( req.target() == "/check_request/" )
         {
-            boost::property_tree::ptree request;
-            std::istringstream stream(req.body());
-            boost::property_tree::read_json(stream, request);
-                  
-            request_id = request.get<std::string>("request_id");
+            boost::json::object request = boost::json::parse(req.body()).as_object();
+            request_id = boost::json::value_to<std::string>(request["request_id"]);
 
         }
         
         auto request_state = pricing_thread->get_request_state(request_id);
         
-        boost::property_tree::json_parser::write_json(oss, request_state);
-
+        oss << boost::json::serialize(request_state);
     }
     
     boost::beast::http::string_body::value_type string_body(oss.str());

@@ -34,153 +34,153 @@ using namespace ql_rest;
 
 
 
-std::string payoffs::qlDoubleStickyRatchetPayoff(ptree const& pt)
+std::string payoffs::qlDoubleStickyRatchetPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlDoubleStickyRatchetPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Type1"),
-              pt.get<double>("Type2"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Gearing3"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("Spread3"),
-              pt.get<double>("InitialValue1"),
-              pt.get<double>("InitialValue2"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Type1"].is_double() ? json_obj["Type1"].as_double() : json_obj["Type1"].as_int64() ,
+              json_obj["Type2"].is_double() ? json_obj["Type2"].as_double() : json_obj["Type2"].as_int64() ,
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Gearing3"].is_double() ? json_obj["Gearing3"].as_double() : json_obj["Gearing3"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["Spread3"].is_double() ? json_obj["Spread3"].as_double() : json_obj["Spread3"].as_int64() ,
+              json_obj["InitialValue1"].is_double() ? json_obj["InitialValue1"].as_double() : json_obj["InitialValue1"].as_int64() ,
+              json_obj["InitialValue2"].is_double() ? json_obj["InitialValue2"].as_double() : json_obj["InitialValue2"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlRatchetMaxPayoff(ptree const& pt)
+std::string payoffs::qlRatchetMaxPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRatchetMaxPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Gearing3"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("Spread3"),
-              pt.get<double>("InitialValue1"),
-              pt.get<double>("InitialValue2"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Gearing3"].is_double() ? json_obj["Gearing3"].as_double() : json_obj["Gearing3"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["Spread3"].is_double() ? json_obj["Spread3"].as_double() : json_obj["Spread3"].as_int64() ,
+              json_obj["InitialValue1"].is_double() ? json_obj["InitialValue1"].as_double() : json_obj["InitialValue1"].as_int64() ,
+              json_obj["InitialValue2"].is_double() ? json_obj["InitialValue2"].as_double() : json_obj["InitialValue2"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlRatchetMinPayoff(ptree const& pt)
+std::string payoffs::qlRatchetMinPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRatchetMinPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Gearing3"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("Spread3"),
-              pt.get<double>("InitialValue1"),
-              pt.get<double>("InitialValue2"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Gearing3"].is_double() ? json_obj["Gearing3"].as_double() : json_obj["Gearing3"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["Spread3"].is_double() ? json_obj["Spread3"].as_double() : json_obj["Spread3"].as_int64() ,
+              json_obj["InitialValue1"].is_double() ? json_obj["InitialValue1"].as_double() : json_obj["InitialValue1"].as_int64() ,
+              json_obj["InitialValue2"].is_double() ? json_obj["InitialValue2"].as_double() : json_obj["InitialValue2"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlRatchetPayoff(ptree const& pt)
+std::string payoffs::qlRatchetPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlRatchetPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("InitialValue"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["InitialValue"].is_double() ? json_obj["InitialValue"].as_double() : json_obj["InitialValue"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlStickyMaxPayoff(ptree const& pt)
+std::string payoffs::qlStickyMaxPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlStickyMaxPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Gearing3"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("Spread3"),
-              pt.get<double>("InitialValue1"),
-              pt.get<double>("InitialValue2"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Gearing3"].is_double() ? json_obj["Gearing3"].as_double() : json_obj["Gearing3"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["Spread3"].is_double() ? json_obj["Spread3"].as_double() : json_obj["Spread3"].as_int64() ,
+              json_obj["InitialValue1"].is_double() ? json_obj["InitialValue1"].as_double() : json_obj["InitialValue1"].as_int64() ,
+              json_obj["InitialValue2"].is_double() ? json_obj["InitialValue2"].as_double() : json_obj["InitialValue2"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlStickyMinPayoff(ptree const& pt)
+std::string payoffs::qlStickyMinPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlStickyMinPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Gearing3"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("Spread3"),
-              pt.get<double>("InitialValue1"),
-              pt.get<double>("InitialValue2"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Gearing3"].is_double() ? json_obj["Gearing3"].as_double() : json_obj["Gearing3"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["Spread3"].is_double() ? json_obj["Spread3"].as_double() : json_obj["Spread3"].as_int64() ,
+              json_obj["InitialValue1"].is_double() ? json_obj["InitialValue1"].as_double() : json_obj["InitialValue1"].as_int64() ,
+              json_obj["InitialValue2"].is_double() ? json_obj["InitialValue2"].as_double() : json_obj["InitialValue2"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlStickyPayoff(ptree const& pt)
+std::string payoffs::qlStickyPayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlStickyPayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<double>("Gearing1"),
-              pt.get<double>("Gearing2"),
-              pt.get<double>("Spread1"),
-              pt.get<double>("Spread2"),
-              pt.get<double>("InitialValue"),
-              pt.get<double>("AccrualFactor"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              json_obj["Gearing1"].is_double() ? json_obj["Gearing1"].as_double() : json_obj["Gearing1"].as_int64() ,
+              json_obj["Gearing2"].is_double() ? json_obj["Gearing2"].as_double() : json_obj["Gearing2"].as_int64() ,
+              json_obj["Spread1"].is_double() ? json_obj["Spread1"].as_double() : json_obj["Spread1"].as_int64() ,
+              json_obj["Spread2"].is_double() ? json_obj["Spread2"].as_double() : json_obj["Spread2"].as_int64() ,
+              json_obj["InitialValue"].is_double() ? json_obj["InitialValue"].as_double() : json_obj["InitialValue"].as_int64() ,
+              json_obj["AccrualFactor"].is_double() ? json_obj["AccrualFactor"].as_double() : json_obj["AccrualFactor"].as_int64() ,
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }
 
-std::string payoffs::qlStrikedTypePayoff(ptree const& pt)
+std::string payoffs::qlStrikedTypePayoff(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::qlStrikedTypePayoff(
          
-              pt.get<std::string>("ObjectId"),
-              pt.get<std::string>("PayoffID"),
-              pt.get<std::string>("OptionType"),
-              pt.get<double>("Strike"),
-              pt.get<double>("ThirdParameter"),
-              pt.get<bool>("Permanent"),
-              pt.get<bool>("Trigger"),
-              pt.get<bool>("Overwrite")
+              boost::json::value_to<std::string>(json_obj["ObjectId"]),
+              boost::json::value_to<std::string>(json_obj["PayoffID"]),
+              boost::json::value_to<std::string>(json_obj["OptionType"]),
+              json_obj["Strike"].is_double() ? json_obj["Strike"].as_double() : json_obj["Strike"].as_int64() ,
+              json_obj["ThirdParameter"].is_double() ? boost::json::value_to<double>(json_obj["ThirdParameter"]) : boost::json::value_to<long>(json_obj["ThirdParameter"]),
+              json_obj["Permanent"].as_bool(),
+              json_obj["Trigger"].as_bool(),
+              json_obj["Overwrite"].as_bool()
     );
 }

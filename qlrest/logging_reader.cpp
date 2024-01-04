@@ -34,32 +34,32 @@ using namespace ql_rest;
 
 
 
-bool logging::ohLogSetConsole(ptree const& pt)
+bool logging::ohLogSetConsole(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohLogSetConsole(
          
-              pt.get<long>("Console"),
-              pt.get<long>("LogLevel"),
-              pt.get<bool>("Trigger")
+              json_obj["Console"].as_bool(),
+              json_obj["LogLevel"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-std::string logging::ohLogSetFile(ptree const& pt)
+std::string logging::ohLogSetFile(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohLogSetFile(
          
-              pt.get<std::string>("LogFileName"),
-              pt.get<long>("LogLevel"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["LogFileName"]),
+              json_obj["LogLevel"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }
 
-bool logging::ohLogWriteMessage(ptree const& pt)
+bool logging::ohLogWriteMessage(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohLogWriteMessage(
          
-              pt.get<std::string>("LogMessage"),
-              pt.get<long>("LogLevel"),
-              pt.get<bool>("Trigger")
+              boost::json::value_to<std::string>(json_obj["LogMessage"]),
+              json_obj["LogLevel"].as_bool(),
+              json_obj["Trigger"].as_bool()
     );
 }

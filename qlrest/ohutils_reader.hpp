@@ -46,6 +46,6 @@ namespace ql_rest
     struct ohutils
     {
       
-        static std::string ohVersion(ptree const& pt);
+        static std::string ohVersion(boost::json::object& json_obj);
     };
 };

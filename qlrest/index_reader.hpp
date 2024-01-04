@@ -59,19 +59,19 @@ namespace ql_rest
     struct index
     {
       
-        static std::string qlBMAIndex(ptree const& pt);  
-        static std::string qlEonia(ptree const& pt);  
-        static std::string qlEuribor(ptree const& pt);  
-        static std::string qlEuribor365(ptree const& pt);  
-        static std::string qlEuriborSwap(ptree const& pt);  
-        static std::string qlEuriborSwapIsdaFixA(ptree const& pt);  
-        static std::string qlIborIndex(ptree const& pt);  
-        static bool qlIndexAddFixings(ptree const& pt);  
-        static std::string qlLibor(ptree const& pt);  
-        static std::string qlLiborSwap(ptree const& pt);  
-        static std::string qlOvernightIndex(ptree const& pt);  
-        static std::string qlProxyIbor(ptree const& pt);  
-        static std::string qlSonia(ptree const& pt);  
-        static std::string qlSwapIndex(ptree const& pt);
+        static std::string qlBMAIndex(boost::json::object& json_obj);  
+        static std::string qlEonia(boost::json::object& json_obj);  
+        static std::string qlEuribor(boost::json::object& json_obj);  
+        static std::string qlEuribor365(boost::json::object& json_obj);  
+        static std::string qlEuriborSwap(boost::json::object& json_obj);  
+        static std::string qlEuriborSwapIsdaFixA(boost::json::object& json_obj);  
+        static std::string qlIborIndex(boost::json::object& json_obj);  
+        static bool qlIndexAddFixings(boost::json::object& json_obj);  
+        static std::string qlLibor(boost::json::object& json_obj);  
+        static std::string qlLiborSwap(boost::json::object& json_obj);  
+        static std::string qlOvernightIndex(boost::json::object& json_obj);  
+        static std::string qlProxyIbor(boost::json::object& json_obj);  
+        static std::string qlSonia(boost::json::object& json_obj);  
+        static std::string qlSwapIndex(boost::json::object& json_obj);
     };
 };

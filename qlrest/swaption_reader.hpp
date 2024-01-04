@@ -57,7 +57,7 @@ namespace ql_rest
     struct swaption
     {
       
-        static std::string qlMakeSwaption(ptree const& pt);  
-        static std::string qlSwaption(ptree const& pt);
+        static std::string qlMakeSwaption(boost::json::object& json_obj);  
+        static std::string qlSwaption(boost::json::object& json_obj);
     };
 };
