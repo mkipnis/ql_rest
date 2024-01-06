@@ -80,7 +80,7 @@ std::string pricingengines::qlBinomialPricingEngine(boost::json::object& json_ob
               boost::json::value_to<std::string>(json_obj["ObjectId"]),
               boost::json::value_to<std::string>(json_obj["EngineID"]),
               boost::json::value_to<std::string>(json_obj["ProcessID"]),
-              json_obj["TimeSteps"].as_bool(),
+              boost::json::value_to<long>(json_obj["TimeSteps"]),
               json_obj["Permanent"].as_bool(),
               json_obj["Trigger"].as_bool(),
               json_obj["Overwrite"].as_bool()

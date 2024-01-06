@@ -182,7 +182,7 @@ std::string ratehelpers::qlFuturesRateHelper2(boost::json::object& json_obj)
               json_obj["Price"].is_double() ? boost::json::value_to<double>(json_obj["Price"]) : boost::json::value_to<long>(json_obj["Price"]) ,
               boost::json::value_to<std::string>(json_obj["FuturesType"]),
               ql_rest::from_iso_string(boost::json::value_to<std::string>(json_obj["FuturesDate"])),
-              json_obj["LengthInMonths"].as_bool(),
+              boost::json::value_to<long>(json_obj["LengthInMonths"]),
               boost::json::value_to<std::string>(json_obj["Calendar"]),
               boost::json::value_to<std::string>(json_obj["Convention"]),
               json_obj["EndOfMonth"].as_bool(),
