@@ -43,6 +43,7 @@
         <Rule tensorRank='scalar' type='QuantLib::Size'> %(indent)s long(json_obj["%(name)s"].as_int64())</Rule>
         <Rule tensorRank='scalar' nativeType='string'> %(indent)s boost::json::value_to&lt;std::string&gt;(json_obj["%(name)s"])</Rule>
         <Rule tensorRank='scalar' nativeType='double'> %(indent)s json_obj["%(name)s"].is_double() ? boost::json::value_to&lt;double&gt;(json_obj["%(name)s"]) : boost::json::value_to&lt;long&gt;(json_obj["%(name)s"])</Rule>
+        <Rule tensorRank='scalar' nativeType='long'> %(indent)s boost::json::value_to&lt;long&gt;(json_obj["%(name)s"])</Rule>
         <Rule tensorRank='scalar' nativeType='any'> %(indent)s json_obj["%(name)s"].as_bool()</Rule>
         <Rule tensorRank='scalar'> %(indent)s json_obj["%(name)s"].as_bool()</Rule>
         <Rule tensorRank='scalar' nativeType='string'>%(indent)s static_cast&lt;std::%(nativeType)s &gt;(obj.%(name)s)</Rule>

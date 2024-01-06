@@ -38,8 +38,8 @@ bool logging::ohLogSetConsole(boost::json::object& json_obj)
 {
     return QuantLibAddinCpp::ohLogSetConsole(
          
-              json_obj["Console"].as_bool(),
-              json_obj["LogLevel"].as_bool(),
+              boost::json::value_to<long>(json_obj["Console"]),
+              boost::json::value_to<long>(json_obj["LogLevel"]),
               json_obj["Trigger"].as_bool()
     );
 }
@@ -49,7 +49,7 @@ std::string logging::ohLogSetFile(boost::json::object& json_obj)
     return QuantLibAddinCpp::ohLogSetFile(
          
               boost::json::value_to<std::string>(json_obj["LogFileName"]),
-              json_obj["LogLevel"].as_bool(),
+              boost::json::value_to<long>(json_obj["LogLevel"]),
               json_obj["Trigger"].as_bool()
     );
 }
@@ -59,7 +59,7 @@ bool logging::ohLogWriteMessage(boost::json::object& json_obj)
     return QuantLibAddinCpp::ohLogWriteMessage(
          
               boost::json::value_to<std::string>(json_obj["LogMessage"]),
-              json_obj["LogLevel"].as_bool(),
+              boost::json::value_to<long>(json_obj["LogLevel"]),
               json_obj["Trigger"].as_bool()
     );
 }
