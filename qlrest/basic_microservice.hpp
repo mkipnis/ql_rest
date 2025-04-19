@@ -163,6 +163,8 @@ public:
                 delete pricer_request;
                 ObjectHandler::Repository::instance().deleteAllObjects(true);
             };
+
+	    std::this_thread::sleep_for(std::chrono::microseconds(100));
             
         };
     };
