@@ -19,13 +19,13 @@ else
     INSTALL_DIR=$1
 fi
 
-BOOST_PKG=boost_1_80_0
+BOOST_PKG=boost-1.84.0
 QUANTLIB_PKG=QuantLib-1.22
 GENSRC_PKG=gensrc-1.22.0
 OBJECTHANDLER_PKG=ObjectHandler-1.22.0
 QUANTLIBADDIN_PKG=QuantLibAddin-1.22.0
 
-[[ ! -f $DEPS_BUILD_DIR/$BOOST_PKG.tar.gz ]] && curl -L "https://boostorg.jfrog.io/artifactory/main/release/1.80.0/source/$BOOST_PKG.tar.gz"  -o $DEPS_BUILD_DIR/$BOOST_PKG.tar.gz
+[[ ! -f $DEPS_BUILD_DIR/$BOOST_PKG.tar.gz ]] && curl -L "https://github.com/boostorg/boost/releases/download/$BOOST_PKG/$BOOST_PKG.tar.gz"  -o $DEPS_BUILD_DIR/$BOOST_PKG.tar.gz
 [[ ! -f $DEPS_BUILD_DIR/$QUANTLIB_PKG.tar.gz ]] && curl -L "https://github.com/lballabio/QuantLib/releases/download/QuantLib-v1.22/$QUANTLIB_PKG.tar.gz"  -o $DEPS_BUILD_DIR/$QUANTLIB_PKG.tar.gz
 [[ ! -f $DEPS_BUILD_DIR/$GENSRC_PKG.tar.gz ]] && curl -L "https://github.com/eehlers/QuantLibAddin-Old/files/6415426/$GENSRC_PKG.tar.gz"  -o $DEPS_BUILD_DIR/$GENSRC_PKG.tar.gz
 [[ ! -f $DEPS_BUILD_DIR/$OBJECTHANDLER_PKG.tar.gz ]] && curl -L "https://github.com/eehlers/QuantLibAddin-Old/files/6415431/$OBJECTHANDLER_PKG.tar.gz"  -o $DEPS_BUILD_DIR/$OBJECTHANDLER_PKG.tar.gz
