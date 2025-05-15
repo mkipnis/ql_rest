@@ -55,7 +55,7 @@
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "0.0.1"
 
-/* Define to 1 if all of the C90 standard headers exist (not just the ones
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
    required in a freestanding environment). This macro is provided for
    backward compatibility; new code need not use it. */
 #define STDC_HEADERS 1

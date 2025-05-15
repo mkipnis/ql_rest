@@ -1,40 +1,28 @@
-FROM ubuntu:20.04
-FROM gcc
+FROM ghcr.io/mkipnis/quantlib-addin-old:latest as builder
 
-RUN apt-get update
-RUN apt-get install --no-install-recommends -y vim libtool curl wget npm python3-pip
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    cmake \
+    libboost-all-dev \
+    python3-pip \
+    curl wget npm \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /ql_rest_deps_build
-
-WORKDIR /ql_rest_deps_build
-
-ADD build_boost.sh .
-RUN ./build_boost.sh
-
-ADD build_quantlib.sh .
-RUN ./build_quantlib.sh
-
-ADD build_gensrc_obj_handler.sh .
-RUN ./build_gensrc_obj_handler.sh
-
-ADD build_quantlib_addin.sh .
-RUN ./build_quantlib_addin.sh
-
-WORKDIR /
-RUN rm -rf /ql_rest_deps_build
-
+RUN pip3 install build --break-system-packages
 ADD build_ql_rest.sh .
 RUN ./build_ql_rest.sh
 
-WORKDIR /ql_rest/Examples/options_monitor/
-RUN ./setup_options_monitor.sh
+ADD build_ql_rest_examples.sh .
+RUN ./build_ql_rest_examples.sh
 
-EXPOSE 8000
 
-WORKDIR /ql_rest/Examples/swap_designer
-RUN ./build_frontend.sh
+FROM ubuntu:latest
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libboost-all-dev vim libtool curl wget npm python3-pip \
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install django yfinance django-cors-headers djangorestframework --break-system-packages
+COPY --from=builder /usr/local /usr/local
+COPY --from=builder /ql_rest/Examples /ql_rest/Examples
 
-EXPOSE 7922
-EXPOSE 3000
+run pip3 install requests /usr/local/dist/ql_rest-0.0.1-py3-none-any.whl --break-system-packages

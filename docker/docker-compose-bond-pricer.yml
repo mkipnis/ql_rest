@@ -1,0 +1,6 @@
+version: '2'
+services:
+  bond_pricer:
+    image: ghcr.io/mkipnis/ql_rest:latest
+    #image: ql_rest
+    command: ["bash", "-c", "cd /ql_rest/Examples/bond_pricer; LD_LIBRARY_PATH=/usr/local/lib ./run_pricer.sh"]
