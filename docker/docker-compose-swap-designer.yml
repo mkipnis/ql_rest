@@ -1,0 +1,8 @@
+version: '2'
+services:
+  swap_designer:
+    image: ghcr.io/mkipnis/ql_rest:latest
+    #image: ql_rest
+    command: ["bash", "-c", "cd /ql_rest/Examples/swap_designer; LD_LIBRARY_PATH=/usr/local/lib ./run_designer.sh"]
+    ports:
+      - 3000:3000
