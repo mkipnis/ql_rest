@@ -5,15 +5,24 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     cmake \
     libboost-all-dev \
+    python3-pip \
+    curl wget npm \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip3 install build --break-system-packages
 ADD build_ql_rest.sh .
 RUN ./build_ql_rest.sh
 
+ADD build_ql_rest_examples.sh .
+RUN ./build_ql_rest_examples.sh
+
 
 FROM ubuntu:latest
-RUN apt-get update && apt-get install -y \
-    libboost-all-dev \
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libboost-all-dev vim libtool curl wget npm python3-pip \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local /usr/local
+COPY --from=builder /ql_rest/Examples /ql_rest/Examples
+
+run pip3 install requests /usr/local/dist/ql_rest-0.0.1-py3-none-any.whl --break-system-packages
