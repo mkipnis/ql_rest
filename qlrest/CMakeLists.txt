@@ -16,7 +16,7 @@ install(TARGETS ql_rest_lib
         DESTINATION lib)
 
 install(FILES ${QL_REST_LIB_HDR}
-        DESTINATION include)
+        DESTINATION include/qlrest)
 
 install(EXPORT ql_restTargets
         FILE ql_restTargets.cmake
