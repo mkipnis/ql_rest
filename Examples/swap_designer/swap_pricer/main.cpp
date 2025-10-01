@@ -27,7 +27,7 @@
 #include <boost/asio.hpp>
 #include <thread>
 #include <boost/lockfree/queue.hpp>
-#include <qlrest/qlrest_common.h>
+#include <qlrest/qlrest_common.hpp>
 #include <qlrest/basic_microservice.hpp>
 
 #include <iostream>

@@ -30,7 +30,7 @@
 #include <Addins/Cpp/addincpp.hpp>
 #include <oh/ohdefines.hpp>
 
-#include <qlrest/qlrest_common.h>
+#include <qlrest/qlrest_common.hpp>
 
 #include <qlrest/schedule_reader.hpp>
 #include <qlrest/bonds_reader.hpp>

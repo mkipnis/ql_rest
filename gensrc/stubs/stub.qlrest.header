@@ -6,7 +6,7 @@
 #include <qlo/conversions/all.hpp>
 #include <oh/property.hpp>
 
-#include "qlrest_common.h"
+#include "qlrest_common.hpp"
 
 #include <qlo/Addins/Cpp/addincpp.hpp>
 
