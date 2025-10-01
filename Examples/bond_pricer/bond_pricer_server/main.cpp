@@ -28,7 +28,7 @@
 #include <boost/asio.hpp>
 #include <thread>
 
-#include <qlrest/qlrest_common.h>
+#include <qlrest/qlrest_common.hpp>
 #include <qlrest/basic_microservice.hpp>
 #include "curve_builder.hpp"
 #include "bond_pricer.hpp"
