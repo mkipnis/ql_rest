@@ -90,7 +90,7 @@ ReactJS client publishes market data and term structures to a calculator and dis
 ![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/example_libor_swaps.png?raw=true)
 
 
-#### Vanilla Options [https://options.ustreasuries.online](https://options.ustreasuries.online)
+#### Vanilla Options [https://options.alpharesearch.online](https://options.alpharesearch.online)
 ReactJS front-end retrieves market data from the django server and posts results to a calculator through the same server that serves as a proxy.
 
 ![N|Solid](https://github.com/mkipnis/ql_rest/blob/master/misc/example_options.png?raw=true)
