@@ -17,7 +17,7 @@ if(NOT EXISTS "${QuantLibAddin_INCLUDE_DIRS}/qlo/config.hpp")
     include(ExternalProject)
     ExternalProject_Add(QuantLibAddinOld
         GIT_REPOSITORY https://github.com/mkipnis/QuantLibAddin-Old.git
-        GIT_TAG cmake
+        GIT_TAG master
         UPDATE_DISCONNECTED TRUE
         INSTALL_DIR ""
         CMAKE_ARGS
