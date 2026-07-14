@@ -17,7 +17,7 @@ services:
         condition: any
 
   options_pricer_py:
-    image: options_pricer_py:latest
+    image: ghcr.io/mkipnis/ql_rest_opt_pricer_py:latest
     networks:
       - pricing_net
     environment:
@@ -34,7 +34,7 @@ services:
         mode: ingress
 
   options_pricer_cpp:
-    image: options_pricer_cpp:latest
+    image: ghcr.io/mkipnis/ql_rest_opt_pricer_cpp:latest
     networks:
       - pricing_net
     environment:
