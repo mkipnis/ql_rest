@@ -1,0 +1,66 @@
+# ============================================================
+# Stage 1: Build
+# ============================================================
+FROM ubuntu:24.04 AS builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    pkg-config \
+    g++ \
+    libboost-all-dev \
+    libhiredis-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable C++20 by default
+ENV CXXFLAGS="-std=c++20"
+
+WORKDIR /app
+
+# Copy source
+COPY server_cpp/*.h .
+COPY server_cpp/*.cpp .
+COPY server_cpp/CMakeLists.txt .
+
+# Configure + build
+RUN rm -rf build && \
+    cmake -S . -B build \
+      -DQUANTLIB_PREFIX=/app \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_CXX_STANDARD=20 \
+    && cmake --build build --config Release
+
+# ============================================================
+# Stage 2: Runtime
+# ============================================================
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install only runtime dependencies
+RUN apt-get update && apt-get install -y \
+    libboost-system1.83.0 \
+    libboost-thread1.83.0 \
+    libboost-json1.83.0 \
+    libhiredis1.1.0 \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy executable
+COPY --from=builder /app/build/options_pricer /app/options_pricer
+
+# Copy QuantLib shared library
+COPY --from=builder /app/lib/libQuantLib.so* /usr/local/lib/
+
+# Refresh runtime linker cache
+RUN ldconfig
+
+EXPOSE 8000
+
+CMD ["./options_pricer"]
