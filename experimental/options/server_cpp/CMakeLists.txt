@@ -60,7 +60,6 @@ endif()
 
 ExternalProject_Add(quantlib_ep
     GIT_REPOSITORY https://github.com/lballabio/QuantLib.git
-    GIT_TAG master
 
     CMAKE_ARGS
         -DCMAKE_INSTALL_PREFIX=${QUANTLIB_PREFIX}

@@ -71,11 +71,17 @@ void dispatcher( ThreadPoolPtr pool, rest_service::PricingRequestQueuePtr queue)
                 
                     redis.set(item->token, json::serialize(status));
                 
+                    auto start = std::chrono::steady_clock::now();
+                    
                     auto result = options_pricer::process_price_request(item->request);
-                
+                    
+                    auto latency_us = std::chrono::duration_cast<std::chrono::microseconds>(
+                        std::chrono::steady_clock::now() - start).count();
+                    
                     json::object completed;
                 
                     completed["token"] = item->token;
+                    completed["pricing_latency"] = latency_us;
                     completed["status"] = "completed";
                     completed["results"] = result;
                     completed["timestamp"] = rest_service::timestamp_now();

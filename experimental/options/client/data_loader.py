@@ -25,9 +25,10 @@ def assigned_dates_to_indexed_vols(base_request, vols):
         weekday = expiration_cycle[exp_date_index]
         current_date = next_future_weekday(current_date,weekday)
 
-        base_request["exp_date"] = current_date.strftime("%Y-%m-%d")
-        base_request["vols"] = vols
-        requests_with_vols.append(base_request)
+        base_request_out = base_request.copy()
+        base_request_out["exp_date"] = current_date.strftime("%Y-%m-%d")
+        base_request_out["vols"] = vols
+        requests_with_vols.append(base_request_out)
 
     return requests_with_vols
 
