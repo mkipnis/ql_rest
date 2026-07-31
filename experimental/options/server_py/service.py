@@ -1,6 +1,7 @@
 # Copyright (c) Mike Kipnis
 
 import os
+import time
 from datetime import datetime
 
 from fastapi import FastAPI
@@ -41,6 +42,14 @@ executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 
 request_queue = asyncio.Queue()
 
+_perf_counter = time.perf_counter
+
+def process_price_request_latency_check(req):
+    start = _perf_counter()
+    result = process_price_request(req)
+    latency_us = (_perf_counter() - start) * 1_000_000
+    return result, latency_us
+
 async def dispatcher():
 
     loop = asyncio.get_running_loop()
@@ -56,12 +65,17 @@ async def dispatcher():
 
         try:
             await redis.set(token, json.dumps(pricing_status), ex=3600)
-            result = await loop.run_in_executor( executor, process_price_request, req )
+            result, latency_us = await loop.run_in_executor(
+                executor,
+                process_price_request_latency_check,
+                req,
+            )
 
             pricing_status = {
                 "token": token,
                 "status": "completed",
                 "results": result,
+                "pricing_latency_us": round(latency_us),
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             }
 
