@@ -66,8 +66,6 @@ void dispatcher( ThreadPoolPtr pool, rest_service::PricingRequestQueuePtr queue)
                     status["timestamp"] = rest_service::timestamp_now();
                     
                     std::string status_txt = json::serialize(status);
-
-                    std::cout << "status : " << status_txt << std::endl;
                 
                     redis.set(item->token, json::serialize(status));
                 

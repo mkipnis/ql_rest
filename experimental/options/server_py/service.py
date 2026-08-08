@@ -105,6 +105,7 @@ async def price_option(req: dict):
 
     pricing_state = {
             "token": token,
+            "pricer": "python",
             "status": "queued",
             "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         }

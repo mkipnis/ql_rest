@@ -72,10 +72,6 @@ handle_request(
     {
         const std::string target = std::string(req.target());
 
-        std::cout << "Method : " << req.method_string() << std::endl;
-        std::cout << "Target : " << target << std::endl;
-
-        
         auto& redis = redis_client::get_thread_redis();
         
         // ============================================================
@@ -101,6 +97,7 @@ handle_request(
             queue->push(pricing_request);
 
             json::object request_state;
+            request_state["pricer"] = "cpp";
             request_state["token"] = token;
             request_state["status"] = "queued";
             request_state["timestamp"] =
@@ -124,10 +121,6 @@ handle_request(
             {
                 std::string token =
                     target.substr(prefix.size());
-
-                std::cout << "Token : "
-                          << token
-                          << std::endl;
 
                 auto value = redis.get(token);
 

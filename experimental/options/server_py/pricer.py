@@ -154,6 +154,4 @@ def process_price_request(req: dict):
         )
         results["puts"].append({"strike": put["strike"], **res})
 
-    #print(results)
-
     return results
