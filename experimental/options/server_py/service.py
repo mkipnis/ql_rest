@@ -1,6 +1,7 @@
 # Copyright (c) Mike Kipnis
 
 import os
+import socket
 import time
 from datetime import datetime
 
@@ -104,9 +105,11 @@ async def price_option(req: dict):
     token = str(uuid.uuid4())
 
     pricing_state = {
+            "underlying_symbol": req["underlying_symbol"],
             "token": token,
             "pricer": "python",
             "status": "queued",
+            "pricer_host": socket.gethostname(),
             "timestamp" : datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         }
 

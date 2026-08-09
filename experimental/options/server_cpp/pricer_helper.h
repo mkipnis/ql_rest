@@ -128,9 +128,7 @@ namespace options_pricer {
     Calendar CALENDAR = UnitedStates(UnitedStates::NYSE);
 
         json::object process_price_request(const json::value& request) {
-    
-        
-        std::string symbol = boost::json::value_to<std::string>(request.at("symbol"));
+            
         std::string exp_date = boost::json::value_to<std::string>(request.at("exp_date"));
         
         auto price = boost::json::value_to<double>( request.at("price"));

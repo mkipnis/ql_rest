@@ -97,9 +97,11 @@ handle_request(
             queue->push(pricing_request);
 
             json::object request_state;
+            request_state["underlying_symbol"] = body["underlying_symbol"];
             request_state["pricer"] = "cpp";
             request_state["token"] = token;
             request_state["status"] = "queued";
+            request_state["pricer_host"] =  boost::asio::ip::host_name();
             request_state["timestamp"] =
                 rest_service::timestamp_now();
 

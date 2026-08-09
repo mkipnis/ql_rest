@@ -175,7 +175,7 @@ class WorkerThread(threading.Thread):
         resp.raise_for_status()
 
         response_details = resp.json()
-        response_details['request_key'] = request['symbol'] + "_" + request['exp_date']
+        response_details['request_key'] = request['underlying_symbol'] + "_" + request['exp_date']
         response_details['options_count'] = len(request['vols']['calls']) + len(request['vols']['puts'])
 
         return response_details

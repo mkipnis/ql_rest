@@ -41,7 +41,7 @@ def populate_vols(rates, underlying_symbols, indexed_vols ):
         if underlying_symbol in indexed_vols and underlying_symbol in ('AAPL', 'GOOGL', 'META'):
 
            base_request = {
-               "symbol": symbol_data["symbol"],
+               "underlying_symbol": symbol_data["symbol"],
                "price": float(symbol_data["price"]),
                "dividend_yield": round( float( symbol_data[ "dividend" ] ) / float( symbol_data[ "price" ] ), 6 ),
                "risk_free_rate": round( rates["1Y"], 6 ),
