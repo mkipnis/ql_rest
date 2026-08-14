@@ -22,7 +22,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
     deploy:
-      replicas: 6
+      replicas: 4
       placement:
         max_replicas_per_node: 2
       restart_policy:
@@ -41,7 +41,7 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
     deploy:
-      replicas: 6
+      replicas: 4
       placement:
         max_replicas_per_node: 2
       restart_policy:
