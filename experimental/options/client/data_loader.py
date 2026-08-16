@@ -38,7 +38,7 @@ def populate_vols(rates, underlying_symbols, indexed_vols ):
     requests = {}
     for underlying_symbol, symbol_data in underlying_symbols.items():
 
-        if underlying_symbol in indexed_vols and underlying_symbol in ('AAPL', 'GOOGL', 'META'):
+        if underlying_symbol in indexed_vols:
 
            base_request = {
                "underlying_symbol": symbol_data["symbol"],

@@ -7,6 +7,7 @@ import queue
 import asyncio
 import threading
 from datetime import datetime
+from pprint import pprint
 from sqlite3 import Cursor
 
 import httpx
@@ -47,10 +48,13 @@ async def poll_single_token(server_url, token, client):
             return token, data
 
 
-def create_database():
+def create_database(output_file):
     #  Create a database to store the results
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    db_name = f"{timestamp}.db"
+    if output_file is None:
+        db_name = f"{timestamp}.db"
+    else:
+        db_name = output_file
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS pricing_stats "
@@ -60,11 +64,11 @@ def create_database():
     return conn, cursor
 
 
-async def polling_engine(server_url, request_queue: queue.Queue):
+async def polling_engine(server_url, request_queue: queue.Queue, output_file):
     tasks = {}
     exit_flag = False
 
-    conn, db_cursor = create_database()
+    conn, db_cursor = create_database(output_file)
 
     async with httpx.AsyncClient(
             timeout=timeout,
@@ -110,6 +114,7 @@ async def polling_engine(server_url, request_queue: queue.Queue):
                 try:
                     t, data = await task
                     #print(data)
+                    pprint(data, sort_dicts=False, width=1024)
                     data.pop("results", None)
 
 
@@ -138,16 +143,16 @@ async def polling_engine(server_url, request_queue: queue.Queue):
             if exit_flag and not tasks:
                 break
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(1)
 
     # final commit (safe now)
     conn.commit()
     conn.close()
 
 
-def start_async_engine(server_url, request_queue: queue.Queue):
+def start_async_engine(server_url, request_queue: queue.Queue, output_file):
     def runner():
-        asyncio.run(polling_engine(server_url, request_queue))
+        asyncio.run(polling_engine(server_url, request_queue, output_file))
 
     thread = threading.Thread(target=runner)
     thread.start()
@@ -219,6 +224,11 @@ if __name__ == "__main__":
         help="Destination Server Url"
     )
 
+    parser.add_argument(
+        "--output_file",
+        help="Output File"
+    )
+
     args = parser.parse_args()
 
 
@@ -236,7 +246,7 @@ if __name__ == "__main__":
     request_queue = queue.Queue(maxsize=10000)
 
     # start async polling engine
-    polling_thread = start_async_engine(args.server_url, request_queue)
+    polling_thread = start_async_engine(args.server_url, request_queue, args.output_file)
 
     # start workers
     workers = []

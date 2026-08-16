@@ -76,7 +76,7 @@ async def dispatcher():
                 "token": token,
                 "status": "completed",
                 "results": result,
-                "pricing_latency_us": round(latency_us),
+                "pricing_latency": round(latency_us),
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             }
 
