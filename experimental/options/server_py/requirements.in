@@ -1,0 +1,12 @@
+# --- Core Quant ---
+QuantLib
+
+# --- API Layer ---
+fastapi
+uvicorn[standard]
+
+# --- Async / Networking ---
+httpx
+
+# --- Redis (async support) ---
+redis>=5.0   # includes asyncio support (redis.asyncio)

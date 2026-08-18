@@ -1,0 +1,47 @@
+{
+  "AAPL": {
+    "symbol": "AAPL",
+    "name": "Apple Inc",
+    "sector": "Electronic Technology",
+    "industry": "Telecommunications Equipment",
+    "price": "291.60",
+    "dividend": "1.04",
+    "close_price": "294.11"
+  },
+  "AMZN": {
+    "symbol": "AMZN",
+    "name": "Amazon.com Inc.",
+    "sector": "Retail Trade",
+    "industry": "Internet Retail",
+    "price": "237.24",
+    "dividend": "0.00",
+    "close_price": "238.86"
+  },
+  "GOOG": {
+    "symbol": "GOOG",
+    "name": "Alphabet Inc - Class C",
+    "sector": "Technology Services",
+    "industry": "Internet Software/Services",
+    "price": "359.12",
+    "dividend": "0.84",
+    "close_price": "351.35"
+  },
+  "META": {
+    "symbol": "META",
+    "name": null,
+    "sector": "Technology Services",
+    "industry": "Internet Software/Services",
+    "price": "567.94",
+    "dividend": "2.10",
+    "close_price": "565.44"
+  },
+  "NFLX": {
+    "symbol": "NFLX",
+    "name": "Netflix Inc.",
+    "sector": "Technology Services",
+    "industry": "Data Processing Services",
+    "price": "80.35",
+    "dividend": "0.00",
+    "close_price": "81.10"
+  }
+}

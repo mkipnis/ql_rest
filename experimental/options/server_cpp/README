@@ -1,0 +1,15 @@
+rm -rf build
+mkdir build
+cd build
+cmake ..
+
+cmake --build . --config Debug
+
+
+rm -rf build
+
+cmake -G Xcode -B build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build --config Debug
+
+# docker
+docker build -t options_pricer .

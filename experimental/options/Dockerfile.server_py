@@ -1,0 +1,32 @@
+# ============================================================
+# Base Image
+# ============================================================
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Install optional system packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for Docker cache efficiency
+COPY server_py/requirements.txt .
+
+# Install dependencies
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application
+COPY server_py ./server_py
+
+WORKDIR /app/server_py
+
+EXPOSE 8000
+
+# Run FastAPI
+CMD ["sh", "-c", "uvicorn service:app --host 0.0.0.0 --port 8000 --workers $(nproc)"]
