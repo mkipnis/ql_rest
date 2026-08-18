@@ -27,7 +27,7 @@ SELECT
         CAST(status_processed->>'pricing_latency' AS REAL) / 1000
     ) AS avg_pricing_latency_ms,
 
-    COUNT(*) AS count,
+    COUNT(*) AS request_count,
 
     MAX(
         (
@@ -63,7 +63,7 @@ SELECT
         CAST(status_processed->>'pricing_latency' AS REAL) / 1000
     ) AS avg_pricing_latency_ms,
 
-    COUNT(*) AS count
+    COUNT(*) AS request_count
 
 FROM pricing_stats ps
 
