@@ -1,14 +1,140 @@
-1. create docker swarm instance
-	
-$ docker swarm init
+**American Options Pricing at Scale: C++ vs. Python in a Distributed Docker Swarm Environment***
 
-2. join workers
+This article presents an experiment comparing two approaches to pricing American options in a distributed environment: a multithreaded C++ service built with Boost.Beast and an asynchronous Python service built with FastAPI and Uvicorn. Both implementations run as microservices across two hosts in a Docker Swarm cluster, with the number of C++ threads and Python processes matched to the number of CPUs on each host. The experiment uses a fire-and-forget model, where the client submits a pricing request and immediately receives a token rather than waiting for the calculation to complete. Using the same workload, I compare the two implementations in terms of throughput and latency.
 
-$ docker swarm join --token SWMTKN-1-3p8p57vsvnqcph0inugutjsovb7cqjq0ofdtg58apuuo1il2zo-4qqbm5tfrfzovniqwj6a1a803 192.168.65.3:2377
+**Pricing workflow**
 
-3. start on the single instance
+* Client sends an option-pricing request to the Docker Swarm ingress. Each request contains all options for a given symbol and expiration date.
+* Docker Swarm ingress distributes the request to one of the pricing servers.
+* Pricing server generates a unique token and immediately returns it to the client.
+* Pricing server puts the request on its local pricing queue.
+* Pricing thread/process takes the request from the queue and prices the option.
+* Pricing server stores the result in the shared Redis cache using the token.
+* Client polls the pricing service using the token.
+* Pricing service checks Redis and returns the result when it is available.
+* Client Writes results to the database
 
-docker stack deploy -c docker-compose-instance-per-node-1.yml options
+```
+                         ┌──────────────┐
+                         │    CLIENT    │
+                         └──────┬───────┘
+                                │
+                    ┌───────────┴───────────┐
+                    │                       │
+                  :18000                  :28000
+                    │                       │
+                    ▼                       ▼
+             ┌──────────────┐       ┌──────────────┐
+             │    SWARM     │       │    SWARM     │
+             │   INGRESS    │       │   INGRESS    │
+             │   Python     │       │     C++      │
+             └──────┬───────┘       └──────┬───────┘
+                    │                      │
+             ┌──────┼──────┐        ┌──────┼──────┐
+             ▼      ▼      ▼        ▼      ▼      ▼
+           ┌────┐ ┌────┐ ┌────┐  ┌────┐ ┌────┐ ┌────┐
+           │PY1 │ │PY2 │ │PY3 │  │C++1│ │C++2│ │C++3│
+           └────┘ └────┘ └────┘  └────┘ └────┘ └────┘
+                              ...              ...
+                              │                  │
+                              └────────┬─────────┘
+                                       │
+                                       │ pricing_net
+                                       │   (overlay)
+                                       ▼
+                              ┌─────────────────┐
+                              │      REDIS      │
+                              │                 │
+                              │   1 replica     │
+                              │   Manager node  │
+                              │                 │
+                              │  token → result │
+                              └─────────────────┘
 
-4. check service
-docker stack services options
+```
+
+To obtain the statistics, I created two Debian Virtual Private Servers on OVHcloud with Docker installed. Each server had 4 vCPUs and 8 GB of memory. I created a Docker Swarm manager on one host and had the other host join the newly created Swarm cluster as a worker. I also made sure that the calculations were evenly distributed by running two pricers of each type—Python and C++—on each node.
+
+```
+    deploy:
+      replicas: 4
+      placement:
+        max_replicas_per_node: 2
+```
+
+Python
+========================================================================================================================
+PRICING STATISTICS BY PRICER
+========================================================================================================================
+pricer | options_count | queued_timestamp           | processed_timestamp        | min_pricing_latency_ms | max_pricing_latency_ms | avg_pricing_latency_ms | request_count | total_time
+-------+---------------+----------------------------+----------------------------+------------------------+------------------------+------------------------+---------------+-----------
+python | 33,954        | 2026-08-16 20:34:54.166829 | 2026-08-16 20:35:48.354635 | 715.96                 | 14,380.64              | 5,260.50               | 108           | 53.17     
+
+Rows: 1
+
+========================================================================================================================
+PRICING STATISTICS BY PRICER / UNDERLYING SYMBOL
+========================================================================================================================
+pricer | underlying_symbol | options_count | min_pricing_latency_ms | max_pricing_latency_ms | avg_pricing_latency_ms | request_count
+-------+-------------------+---------------+------------------------+------------------------+------------------------+--------------
+python | AAPL              | 4,704         | 878.13                 | 5,994.62               | 2,983.92               | 24           
+python | AMZN              | 3,450         | 715.96                 | 3,935.65               | 2,449.36               | 23           
+python | GOOG              | 4,370         | 3,517.06               | 6,009.25               | 4,833.25               | 19           
+python | META              | 10,258        | 2,045.46               | 12,198.56              | 7,919.05               | 23           
+python | NFLX              | 11,172        | 3,008.01               | 14,380.64              | 8,748.14               | 19  
+
+
+C++
+========================================================================================================================
+PRICING STATISTICS BY PRICER
+========================================================================================================================
+pricer | options_count | queued_timestamp           | processed_timestamp        | min_pricing_latency_ms | max_pricing_latency_ms | avg_pricing_latency_ms | request_count | total_time
+-------+---------------+----------------------------+----------------------------+------------------------+------------------------+------------------------+---------------+-----------
+cpp    | 33,954        | 2026-08-16 14:21:53.735610 | 2026-08-16 14:22:28.484618 | 1,568.78               | 10,742.43              | 4,460.18               | 108           | 33.74     
+
+Rows: 1
+
+========================================================================================================================
+PRICING STATISTICS BY PRICER / UNDERLYING SYMBOL
+========================================================================================================================
+pricer | underlying_symbol | options_count | min_pricing_latency_ms | max_pricing_latency_ms | avg_pricing_latency_ms | request_count
+-------+-------------------+---------------+------------------------+------------------------+------------------------+--------------
+cpp    | AAPL              | 4,704         | 2,037.56               | 3,817.71               | 2,968.47               | 24           
+cpp    | AMZN              | 3,450         | 1,568.78               | 2,743.67               | 2,128.88               | 23           
+cpp    | GOOG              | 4,370         | 2,687.99               | 4,342.66               | 3,308.71               | 19           
+cpp    | META              | 10,258        | 3,482.42               | 7,776.71               | 5,945.63               | 23           
+cpp    | NFLX              | 11,172        | 6,884.85               | 10,742.43              | 8,519.87               | 19   
+
+
+The key takeaway is that **C++ completed the same workload substantially faster overall, but Python had slightly better average per-request pricing latency for AAPL and NFLX was similar in relative terms.**
+
+| Metric                 |       Python |          C++ |       C++ advantage |
+| ---------------------- | -----------: | -----------: | ------------------: |
+| Total options          |       33,954 |       33,954 |                   — |
+| Requests               |          108 |          108 |                   — |
+| **Total elapsed time** |  **53.17 s** |  **33.74 s** |    **36.5% faster** |
+| Avg pricing latency    |  5,260.50 ms |  4,460.18 ms |     **15.2% lower** |
+| Min latency            |    715.96 ms |  1,568.78 ms |       Python better |
+| Max latency            | 14,380.64 ms | 10,742.43 ms | **C++ 25.3% lower** |
+
+### By underlying
+
+| Symbol |  Python avg |     C++ avg | C++ improvement |
+| ------ | ----------: | ----------: | --------------: |
+| AAPL   | 2,983.92 ms | 2,968.47 ms |        **0.5%** |
+| AMZN   | 2,449.36 ms | 2,128.88 ms |       **13.1%** |
+| GOOG   | 4,833.25 ms | 3,308.71 ms |       **31.5%** |
+| META   | 7,919.05 ms | 5,945.63 ms |       **24.9%** |
+| NFLX   | 8,748.14 ms | 8,519.87 ms |        **2.6%** |
+
+### Summary
+
+The most important result is **total elapsed time**:
+
+* Python: **53.17 seconds**
+* C++: **33.74 seconds**
+* C++ finished the workload **19.43 seconds faster**, or approximately **36.5% faster**.
+* Average pricing latency was also lower for C++ by about **15.2%**.
+* The biggest C++ advantage was for **GOOG (31.5%)** and **META (24.9%)**.
+* **AAPL and NFLX showed almost no difference** in average pricing latency.
+
